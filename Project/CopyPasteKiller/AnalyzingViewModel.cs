@@ -6,40 +6,40 @@ namespace CopyPasteKiller
 {
 	public class AnalyzingViewModel : INotifyPropertyChanged
 	{
-		private int int_0;
+		private int _min;
 
-		private int int_1;
+		private int _max;
 
-		private int int_2;
+		private int _value;
 
-		private string string_0;
+		private string _message;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler_0;
+		private PropertyChangedEventHandler propertyChangedEventHandler;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -49,14 +49,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.int_0;
+				return _min;
 			}
 			set
 			{
-				if (this.int_0 != value)
+				if (_min != value)
 				{
-					this.int_0 = value;
-					this.method_0("Min");
+					_min = value;
+					OnPropertyChanged("Min");
 				}
 			}
 		}
@@ -65,14 +65,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.int_1;
+				return _max;
 			}
 			set
 			{
-				if (this.int_1 != value)
+				if (_max != value)
 				{
-					this.int_1 = value;
-					this.method_0("Max");
+					_max = value;
+					OnPropertyChanged("Max");
 				}
 			}
 		}
@@ -81,14 +81,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.int_2;
+				return _value;
 			}
 			set
 			{
-				if (this.int_2 != value)
+				if (_value != value)
 				{
-					this.int_2 = value;
-					this.method_0("Value");
+					_value = value;
+					OnPropertyChanged("Value");
 				}
 			}
 		}
@@ -97,23 +97,23 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.string_0;
+				return _message;
 			}
 			set
 			{
-				if (this.string_0 != value)
+				if (_message != value)
 				{
-					this.string_0 = value;
-					this.method_0("Message");
+					_message = value;
+					OnPropertyChanged("Message");
 				}
 			}
 		}
 
-		private void method_0(string string_1)
+		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler_0 != null)
+			if (this.propertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler_0(this, new PropertyChangedEventArgs(string_1));
+				this.propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 	}

@@ -61,29 +61,7 @@ namespace CopyPasteKiller
 
 		private static int int_0;
 
-		private string string_0;
-
-		private string string_1;
-
-		private string string_2;
-
-		private string string_3;
-
-		private int[] int_1;
-
-		private string[] string_4;
-
-		private int[] int_2;
-
-		private string[] string_5;
-
 		private int int_3;
-
-		private List<Similarity> list_0 = new List<Similarity>();
-
-		private Dictionary<int, string> dictionary_0 = new Dictionary<int, string>();
-
-		private CodeDir codeDir_0;
 
 		[CompilerGenerated]
 		private static Func<string, string> func_0;
@@ -118,35 +96,15 @@ namespace CopyPasteKiller
 		[CompilerGenerated]
 		private static Func<Similarity, CodeFile> func_10;
 
-		public string Path
-		{
-			get
-			{
-				return this.string_0;
-			}
-			set
-			{
-				this.string_0 = value;
-			}
-		}
+		public string Path { get; set; }
 
-		public string ShortPath
-		{
-			get
-			{
-				return this.string_1;
-			}
-			set
-			{
-				this.string_1 = value;
-			}
-		}
+		public string ShortPath { get; set; }
 
 		public string Name
 		{
 			get
 			{
-				return System.IO.Path.GetFileName(this.string_0);
+				return System.IO.Path.GetFileName(Path);
 			}
 		}
 
@@ -154,90 +112,30 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return System.IO.Path.GetExtension(this.string_0);
+				return System.IO.Path.GetExtension(Path);
 			}
 		}
 
-		public string Code
-		{
-			get
-			{
-				return this.string_2;
-			}
-			set
-			{
-				this.string_2 = value;
-			}
-		}
+		public string Code { get; set; }
 
-		public string StrippedCode
-		{
-			get
-			{
-				return this.string_3;
-			}
-			set
-			{
-				this.string_3 = value;
-			}
-		}
+		public string StrippedCode { get; set; }
 
-		public int[] Hashes
-		{
-			get
-			{
-				return this.int_1;
-			}
-			set
-			{
-				this.int_1 = value;
-			}
-		}
+		public int[] Hashes { get; set; }
 
-		public string[] StrippedLines
-		{
-			get
-			{
-				return this.string_4;
-			}
-			set
-			{
-				this.string_4 = value;
-			}
-		}
+		public string[] StrippedLines { get; set; }
 
-		public int[] HashIndexToLineIndex
-		{
-			get
-			{
-				return this.int_2;
-			}
-			set
-			{
-				this.int_2 = value;
-			}
-		}
+		public int[] HashIndexToLineIndex { get; set; }
 
-		public string[] Lines
-		{
-			get
-			{
-				return this.string_5;
-			}
-			set
-			{
-				this.string_5 = value;
-			}
-		}
+		public string[] Lines { get; set; }
 
 		public int ProcessedLines
 		{
 			get
 			{
-				IEnumerable<Similarity> arg_23_0 = this.list_0;
+				IEnumerable<Similarity> arg_23_0 = Similarities;
 				if (CodeFile.func_8 == null)
 				{
-					CodeFile.func_8 = new Func<Similarity, int>(CodeFile.smethod_9);
+					CodeFile.func_8 = new Func<Similarity, int>(CodeFile.GetMyHashIndexRangeLength);
 				}
 				List<int> list = arg_23_0.Select(CodeFile.func_8).ToList<int>();
 				int result;
@@ -257,10 +155,10 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				IEnumerable<Similarity> arg_23_0 = this.list_0;
+				IEnumerable<Similarity> arg_23_0 = Similarities;
 				if (CodeFile.func_9 == null)
 				{
-					CodeFile.func_9 = new Func<Similarity, int>(CodeFile.smethod_10);
+					CodeFile.func_9 = new Func<Similarity, int>(CodeFile.GetMyRangeLength);
 				}
 				List<int> list = arg_23_0.Select(CodeFile.func_9).ToList<int>();
 				int result;
@@ -280,10 +178,10 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				IEnumerable<Similarity> arg_23_0 = this.list_0;
+				IEnumerable<Similarity> arg_23_0 = Similarities;
 				if (CodeFile.func_10 == null)
 				{
-					CodeFile.func_10 = new Func<Similarity, CodeFile>(CodeFile.smethod_11);
+					CodeFile.func_10 = new Func<Similarity, CodeFile>(CodeFile.GetOtherFile);
 				}
 				return arg_23_0.Select(CodeFile.func_10).Distinct<CodeFile>().Count<CodeFile>();
 			}
@@ -297,49 +195,23 @@ namespace CopyPasteKiller
 			}
 		}
 
-		public List<Similarity> Similarities
-		{
-			get
-			{
-				return this.list_0;
-			}
-			set
-			{
-				this.list_0 = value;
-			}
-		}
+		public List<Similarity> Similarities { get; set; }
 
-		public Dictionary<int, string> HashToLine
-		{
-			get
-			{
-				return this.dictionary_0;
-			}
-			set
-			{
-				this.dictionary_0 = value;
-			}
-		}
+		public Dictionary<int, string> HashToLine { get; set; }
 
-		public CodeDir DirectParent
-		{
-			get
-			{
-				return this.codeDir_0;
-			}
-		}
+		public CodeDir DirectParent { get; private set; }
 
 		public CodeFile(string path, string code, CodeDir directParent)
 		{
-			this.string_0 = path;
-			this.string_2 = code;
+			Path = path;
+			Code = code;
 			this.method_0(this.Code);
-			this.codeDir_0 = directParent;
+			DirectParent = directParent;
 		}
 
-		private static string smethod_0(Match match_0)
+		private static string smethod_0(Match match)
 		{
-			return Regex.Replace(match_0.Groups["comment"].Value, "[^\\r\\n]+", "");
+			return Regex.Replace(match.Groups["comment"].Value, "[^\\r\\n]+", "");
 		}
 
 		private void method_0(string string_6)
@@ -381,7 +253,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func_1 == null)
 				{
-					CodeFile.func_1 = new Func<string, string>(CodeFile.smethod_2);
+					CodeFile.func_1 = new Func<string, string>(CodeFile.Replace_1);
 				}
 				func = CodeFile.func_1;
 			}
@@ -389,7 +261,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func_2 == null)
 				{
-					CodeFile.func_2 = new Func<string, string>(CodeFile.smethod_3);
+					CodeFile.func_2 = new Func<string, string>(CodeFile.Replace_2);
 				}
 				func = CodeFile.func_2;
 			}
@@ -397,7 +269,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func_3 == null)
 				{
-					CodeFile.func_3 = new Func<string, string>(CodeFile.smethod_4);
+					CodeFile.func_3 = new Func<string, string>(CodeFile.Replace_3);
 				}
 				func = CodeFile.func_3;
 			}
@@ -405,7 +277,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func_4 == null)
 				{
-					CodeFile.func_4 = new Func<string, string>(CodeFile.smethod_5);
+					CodeFile.func_4 = new Func<string, string>(CodeFile.Replace_4);
 				}
 				func = CodeFile.func_4;
 			}
@@ -462,97 +334,98 @@ namespace CopyPasteKiller
 
 		internal void method_1()
 		{
-			if (this.list_0.Count == 0)
+			if (Similarities.Count == 0)
 			{
-				this.string_2 = null;
-				this.string_3 = null;
-				this.int_1 = null;
-				this.string_4 = null;
-				this.int_2 = null;
-				this.string_5 = null;
+				Code = null;
+				StrippedCode = null;
+				Hashes = null;
+				StrippedLines = null;
+				HashIndexToLineIndex = null;
+				Lines = null;
 			}
-			this.dictionary_0 = null;
+
+			HashToLine = null;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_1(string string_6)
+		private static string smethod_1(string str)
 		{
-			return string_6;
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_2(string string_6)
+		private static string Replace_1(string str)
 		{
-			string_6 = CodeFile.regex_2.Replace(string_6, "");
-			string_6 = CodeFile.regex_4.Replace(string_6, "");
-			string_6 = CodeFile.regex_13.Replace(string_6, "");
-			return string_6;
+			str = CodeFile.regex_2.Replace(str, "");
+			str = CodeFile.regex_4.Replace(str, "");
+			str = CodeFile.regex_13.Replace(str, "");
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_3(string string_6)
+		private static string Replace_2(string str)
 		{
-			string_6 = CodeFile.regex_2.Replace(string_6, "");
-			string_6 = CodeFile.regex_5.Replace(string_6, "");
-			string_6 = CodeFile.regex_13.Replace(string_6, "");
-			return string_6;
+			str = CodeFile.regex_2.Replace(str, "");
+			str = CodeFile.regex_5.Replace(str, "");
+			str = CodeFile.regex_13.Replace(str, "");
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_4(string string_6)
+		private static string Replace_3(string str)
 		{
-			string_6 = CodeFile.regex_2.Replace(string_6, "");
-			string_6 = CodeFile.regex_6.Replace(string_6, "");
-			string_6 = CodeFile.regex_13.Replace(string_6, "");
-			return string_6;
+			str = CodeFile.regex_2.Replace(str, "");
+			str = CodeFile.regex_6.Replace(str, "");
+			str = CodeFile.regex_13.Replace(str, "");
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_5(string string_6)
+		private static string Replace_4(string str)
 		{
-			string_6 = CodeFile.regex_3.Replace(string_6, "");
-			string_6 = CodeFile.regex_7.Replace(string_6, "");
-			string_6 = CodeFile.regex_8.Replace(string_6, "");
-			string_6 = CodeFile.regex_9.Replace(string_6, "");
-			string_6 = CodeFile.regex_10.Replace(string_6, "");
-			return string_6;
+			str = CodeFile.regex_3.Replace(str, "");
+			str = CodeFile.regex_7.Replace(str, "");
+			str = CodeFile.regex_8.Replace(str, "");
+			str = CodeFile.regex_9.Replace(str, "");
+			str = CodeFile.regex_10.Replace(str, "");
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_6(string string_6)
+		private static string smethod_6(string str)
 		{
-			return string_6;
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_7(string string_6)
+		private static string smethod_7(string str)
 		{
-			return string_6;
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static string smethod_8(string string_6)
+		private static string smethod_8(string str)
 		{
-			string_6 = CodeFile.regex_12.Replace(string_6, "");
-			return string_6;
+			str = CodeFile.regex_12.Replace(str, "");
+			return str;
 		}
 
 		[CompilerGenerated]
-		private static int smethod_9(Similarity similarity_0)
+		private static int GetMyHashIndexRangeLength(Similarity similarity)
 		{
-			return similarity_0.MyHashIndexRange.Length;
+			return similarity.MyHashIndexRange.Length;
 		}
 
 		[CompilerGenerated]
-		private static int smethod_10(Similarity similarity_0)
+		private static int GetMyRangeLength(Similarity similarity)
 		{
-			return similarity_0.MyRange.Length;
+			return similarity.MyRange.Length;
 		}
 
 		[CompilerGenerated]
-		private static CodeFile smethod_11(Similarity similarity_0)
+		private static CodeFile GetOtherFile(Similarity similarity)
 		{
-			return similarity_0.OtherFile;
+			return similarity.OtherFile;
 		}
 
 		static CodeFile()

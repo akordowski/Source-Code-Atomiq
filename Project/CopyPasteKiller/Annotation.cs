@@ -21,95 +21,39 @@ namespace CopyPasteKiller
 
 		private double double_2;
 
-		private CodeFile codeFile_0;
-
-		private Similarity similarity_0;
-
-		private double double_3;
-
-		private double double_4;
-
-		private double double_5;
-
-		private Thickness thickness_0;
-
-		private Brush brush_2;
-
 		[CompilerGenerated]
 		private static Func<Annotation, double> func_0;
 
-		public CodeFile CodeFile
-		{
-			get
-			{
-				return this.codeFile_0;
-			}
-		}
+		public CodeFile CodeFile { get; private set; }
 
-		public Similarity Similarity
-		{
-			get
-			{
-				return this.similarity_0;
-			}
-		}
+		public Similarity Similarity { get; private set; }
 
-		public double Height
-		{
-			get
-			{
-				return this.double_3;
-			}
-		}
+		public double Height { get; private set; }
 
-		public double Top
-		{
-			get
-			{
-				return this.double_4;
-			}
-		}
+		public double Top { get; private set; }
 
-		public double Left
-		{
-			get
-			{
-				return this.double_5;
-			}
-		}
+		public double Left { get; private set; }
 
-		public Thickness Margin
-		{
-			get
-			{
-				return this.thickness_0;
-			}
-		}
+		public Thickness Margin { get; private set; }
 
-		public Brush Brush
-		{
-			get
-			{
-				return this.brush_2;
-			}
-		}
+		public Brush Brush { get; private set; }
 
 		public Annotation(CodeFile file, Similarity sim, IEnumerable<Annotation> existingAnnotations)
 		{
 			Func<Annotation, bool> func = null;
-			this.double_5 = 0.0;
-			this.codeFile_0 = file;
-			this.similarity_0 = sim;
-			this.double_3 = (double)sim.MyRange.Length * Annotation.TextHeight;
-			this.double_4 = (double)sim.MyRange.Start * Annotation.TextHeight;
-			this.double_2 = this.double_4 + this.double_3;
+			Left = 0.0;
+			CodeFile = file;
+			Similarity = sim;
+			Height = (double)sim.MyRange.Length * Annotation.TextHeight;
+			Top = (double)sim.MyRange.Start * Annotation.TextHeight;
+			this.double_2 = Top + Height;
 			if (file == sim.OtherFile)
 			{
-				this.brush_2 = Annotation.brush_1;
+				Brush = Annotation.brush_1;
 			}
 			else
 			{
-				this.brush_2 = Annotation.brush_0;
+				Brush = Annotation.brush_0;
 			}
 			if (func == null)
 			{
@@ -118,7 +62,7 @@ namespace CopyPasteKiller
 			List<Annotation> list = existingAnnotations.Where(func).ToList<Annotation>();
 			if (list.Count == 0)
 			{
-				this.double_5 = Annotation.double_1 + 2.0;
+				Left = Annotation.double_1 + 2.0;
 			}
 			else
 			{
@@ -128,21 +72,21 @@ namespace CopyPasteKiller
 					Annotation.func_0 = new Func<Annotation, double>(Annotation.smethod_0);
 				}
 				double num = arg_EE_0.Max(Annotation.func_0);
-				this.double_5 = num + Annotation.double_1 + Annotation.double_0;
+				Left = num + Annotation.double_1 + Annotation.double_0;
 			}
-			this.thickness_0 = new Thickness(this.double_5, this.double_4, 0.0, 0.0);
+			Margin = new Thickness(Left, Top, 0.0, 0.0);
 		}
 
 		[CompilerGenerated]
-		private bool method_0(Annotation annotation_0)
+		private bool method_0(Annotation annotation)
 		{
-			return this.double_4 <= annotation_0.double_2 && this.double_2 >= annotation_0.double_4;
+			return Top <= annotation.double_2 && double_2 >= annotation.Top;
 		}
 
 		[CompilerGenerated]
-		private static double smethod_0(Annotation annotation_0)
+		private static double smethod_0(Annotation annotation)
 		{
-			return annotation_0.double_5;
+			return annotation.Left;
 		}
 
 		static Annotation()

@@ -636,7 +636,7 @@ namespace CopyPasteKiller
 						{
 							codeFile_0.Similarities.Remove(similarity);
 							flag = true;
-							IL_9A:
+							//IL_9A:
 							if (!flag)
 							{
 								i++;
@@ -645,7 +645,7 @@ namespace CopyPasteKiller
 							goto IL_A1;
 						}
 					}
-					goto IL_9A;
+					//goto IL_9A;
 				}
 			}
 		}
@@ -672,7 +672,7 @@ namespace CopyPasteKiller
 						if (excludeRegexes[j].IsMatch(fileInfo.FullName))
 						{
 							flag = true;
-							IL_87:
+							//IL_87:
 							if (!flag)
 							{
 								num++;
@@ -681,7 +681,7 @@ namespace CopyPasteKiller
 							goto IL_98;
 						}
 					}
-					goto IL_87;
+					//goto IL_87;
 				}
 				if (num == 0)
 				{

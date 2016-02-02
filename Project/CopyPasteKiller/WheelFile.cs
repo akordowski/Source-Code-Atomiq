@@ -4,11 +4,11 @@ namespace CopyPasteKiller
 {
 	public class WheelFile
 	{
-		private WheelViewModel wheelViewModel_0;
+		private WheelViewModel _wheelViewModel;
 
 		public WheelFile(CodeFile file, WheelViewModel wheelViewModel)
 		{
-			this.wheelViewModel_0 = wheelViewModel;
+			_wheelViewModel = wheelViewModel;
 		}
 	}
 }

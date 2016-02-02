@@ -9,19 +9,19 @@ namespace CopyPasteKiller
 {
 	public class Annotations : UserControl, IComponentConnector
 	{
-		private bool bool_0;
+		private bool _isInitialized;
 
 		public Annotations()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_0)
+			if (!_isInitialized)
 			{
-				this.bool_0 = true;
+				_isInitialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/annotations.xaml", UriKind.Relative);
 				Application.LoadComponent(this, resourceLocator);
 			}
@@ -30,7 +30,7 @@ namespace CopyPasteKiller
 		[EditorBrowsable(EditorBrowsableState.Never), DebuggerNonUserCode]
 		void IComponentConnector.Connect(int connectionId, object target)
 		{
-			this.bool_0 = true;
+			_isInitialized = true;
 		}
 	}
 }

@@ -10,18 +10,18 @@ namespace CopyPasteKiller
 {
 	public class AnnotatedTextViewModel : INotifyPropertyChanged
 	{
-		private CodeFile codeFile_0;
+		private CodeFile _codeFile;
 
-		private string string_0;
+		private string _lineNumbers;
 
-		private double double_0;
+		private double _annotationWidth;
 
-		private double double_1;
+		private double _annotationHeight;
 
-		private ObservableCollection<Annotation> observableCollection_0 = new ObservableCollection<Annotation>();
+		private ObservableCollection<Annotation> _annotations = new ObservableCollection<Annotation>();
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler_0;
+		private PropertyChangedEventHandler propertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<Annotation, double> func_0;
@@ -30,25 +30,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -58,16 +58,16 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.codeFile_0;
+				return _codeFile;
 			}
 			set
 			{
-				if (this.codeFile_0 != value)
+				if (_codeFile != value)
 				{
-					this.codeFile_0 = value;
+					_codeFile = value;
 					this.method_0();
 					this.method_1();
-					this.method_2("CodeFile");
+					OnPropertyChanged("CodeFile");
 				}
 			}
 		}
@@ -76,14 +76,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.string_0;
+				return _lineNumbers;
 			}
 			set
 			{
-				if (this.string_0 != value)
+				if (_lineNumbers != value)
 				{
-					this.string_0 = value;
-					this.method_2("LineNumbers");
+					_lineNumbers = value;
+					OnPropertyChanged("LineNumbers");
 				}
 			}
 		}
@@ -92,14 +92,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.double_0;
+				return _annotationWidth;
 			}
 			set
 			{
-				if (this.double_0 != value)
+				if (_annotationWidth != value)
 				{
-					this.double_0 = value;
-					this.method_2("AnnotationWidth");
+					_annotationWidth = value;
+					OnPropertyChanged("AnnotationWidth");
 				}
 			}
 		}
@@ -108,14 +108,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.double_1;
+				return _annotationHeight;
 			}
 			set
 			{
-				if (this.double_1 != value)
+				if (_annotationHeight != value)
 				{
-					this.double_1 = value;
-					this.method_2("AnnotationHeight");
+					_annotationHeight = value;
+					OnPropertyChanged("AnnotationHeight");
 				}
 			}
 		}
@@ -124,63 +124,71 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.observableCollection_0;
+				return _annotations;
 			}
 		}
 
 		private void method_0()
 		{
-			this.observableCollection_0.Clear();
-			this.AnnotationHeight = 0.0;
-			if (this.codeFile_0 != null)
+			_annotations.Clear();
+			AnnotationHeight = 0.0;
+
+			if (_codeFile != null)
 			{
-				this.AnnotationHeight = Annotation.TextHeight * (double)(this.codeFile_0.Lines.Length + 1);
-				foreach (Similarity current in this.codeFile_0.Similarities)
+				AnnotationHeight = Annotation.TextHeight * (double)(_codeFile.Lines.Length + 1);
+
+				foreach (Similarity current in _codeFile.Similarities)
 				{
-					this.observableCollection_0.Add(new Annotation(this.codeFile_0, current, this.observableCollection_0));
+					_annotations.Add(new Annotation(_codeFile, current, _annotations));
 				}
-				if (this.observableCollection_0.Count > 0)
+
+				if (_annotations.Count > 0)
 				{
-					IEnumerable<Annotation> arg_D0_0 = this.observableCollection_0;
+					IEnumerable<Annotation> annotations = this._annotations;
+
 					if (AnnotatedTextViewModel.func_0 == null)
 					{
 						AnnotatedTextViewModel.func_0 = new Func<Annotation, double>(AnnotatedTextViewModel.smethod_0);
 					}
-					this.AnnotationWidth = arg_D0_0.Max(AnnotatedTextViewModel.func_0);
+
+					AnnotationWidth = annotations.Max(AnnotatedTextViewModel.func_0);
 				}
 				else
 				{
-					this.AnnotationWidth = Annotation.double_0;
+					AnnotationWidth = Annotation.double_0;
 				}
 			}
 		}
 
 		private void method_1()
 		{
-			this.LineNumbers = null;
-			if (this.codeFile_0 != null)
+			LineNumbers = null;
+
+			if (_codeFile != null)
 			{
 				Builder builder = new Builder("\r\n");
-				for (int i = 0; i < this.codeFile_0.Lines.Length; i++)
+
+				for (int i = 0; i < _codeFile.Lines.Length; i++)
 				{
 					builder.Append(i);
 				}
-				this.LineNumbers = builder.ToString();
+
+				LineNumbers = builder.ToString();
 			}
 		}
 
-		private void method_2(string string_1)
+		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler_0 != null)
+			if (propertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler_0(this, new PropertyChangedEventArgs(string_1));
+				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 
 		[CompilerGenerated]
-		private static double smethod_0(Annotation annotation_0)
+		private static double smethod_0(Annotation annotation)
 		{
-			return annotation_0.Left + Annotation.double_1 * 2.0 + Annotation.double_0;
+			return annotation.Left + Annotation.double_1 * 2.0 + Annotation.double_0;
 		}
 	}
 }

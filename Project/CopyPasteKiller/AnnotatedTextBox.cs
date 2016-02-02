@@ -12,45 +12,45 @@ namespace CopyPasteKiller
 {
 	public class AnnotatedTextBox : UserControl, IComponentConnector, IStyleConnector
 	{
-		private AnnotatedTextViewModel annotatedTextViewModel_0 = new AnnotatedTextViewModel();
+		private AnnotatedTextViewModel annotatedTextViewModel = new AnnotatedTextViewModel();
 
 		public static readonly DependencyProperty CodeFileProperty;
 
 		public static readonly DependencyProperty SimilarityProperty;
 
-		private EventHandler<SimilaritySelectedEventArgs> eventHandler_0;
+		private EventHandler<SimilaritySelectedEventArgs> eventHandler;
 
-		internal Grid grid_0;
+		internal Grid grid;
 
-		internal TextBox textBox_0;
+		internal TextBox textBox1;
 
-		internal TextBox textBox_1;
+		internal TextBox textBox2;
 
-		private bool bool_0;
+		private bool _isInitialized;
 
 		public event EventHandler<SimilaritySelectedEventArgs> SimilaritySelected
 		{
 			add
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler_0;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Combine(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler_0, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
 			remove
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler_0;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Remove(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler_0, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
@@ -82,79 +82,79 @@ namespace CopyPasteKiller
 
 		public AnnotatedTextBox()
 		{
-			this.InitializeComponent();
-			this.grid_0.DataContext = this.annotatedTextViewModel_0;
+			InitializeComponent();
+			grid.DataContext = annotatedTextViewModel;
 		}
 
-		private static object smethod_0(DependencyObject dependencyObject_0, CodeFile codeFile_0)
+		private static object smethod_0(DependencyObject dependencyObject, CodeFile codeFile)
 		{
-			AnnotatedTextBox annotatedTextBox = dependencyObject_0 as AnnotatedTextBox;
+			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			object result;
 			if (annotatedTextBox != null)
 			{
-				result = annotatedTextBox.OnCoerceCodeFile((CodeFile)codeFile_0);
+				result = annotatedTextBox.OnCoerceCodeFile((CodeFile)codeFile);
 			}
 			else
 			{
-				result = codeFile_0;
+				result = codeFile;
 			}
 			return result;
 		}
 
-		private static void smethod_1(DependencyObject dependencyObject_0, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private static void smethod_1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			AnnotatedTextBox annotatedTextBox = dependencyObject_0 as AnnotatedTextBox;
+			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			if (annotatedTextBox != null)
 			{
-				annotatedTextBox.OnCodeFileChanged((CodeFile)dependencyPropertyChangedEventArgs_0.OldValue, (CodeFile)dependencyPropertyChangedEventArgs_0.NewValue);
+				annotatedTextBox.OnCodeFileChanged((CodeFile)eventArgs.OldValue, (CodeFile)eventArgs.NewValue);
 			}
 		}
 
-		protected virtual CodeFile OnCoerceCodeFile(CodeFile value)
+		protected virtual CodeFile OnCoerceCodeFile(CodeFile codeFile)
 		{
-			return value;
+			return codeFile;
 		}
 
 		protected virtual void OnCodeFileChanged(CodeFile oldValue, CodeFile newValue)
 		{
-			this.annotatedTextViewModel_0.CodeFile = newValue;
+			annotatedTextViewModel.CodeFile = newValue;
 		}
 
-		private static object smethod_2(DependencyObject dependencyObject_0, Similarity similarity_0)
+		private static object smethod_2(DependencyObject dependencyObject, Similarity similarity)
 		{
-			AnnotatedTextBox annotatedTextBox = dependencyObject_0 as AnnotatedTextBox;
+			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			object result;
 			if (annotatedTextBox != null)
 			{
-				result = annotatedTextBox.OnCoerceSimilarity((Similarity)similarity_0);
+				result = annotatedTextBox.OnCoerceSimilarity((Similarity)similarity);
 			}
 			else
 			{
-				result = similarity_0;
+				result = similarity;
 			}
 			return result;
 		}
 
-		private static void smethod_3(DependencyObject dependencyObject_0, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private static void smethod_3(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			AnnotatedTextBox annotatedTextBox = dependencyObject_0 as AnnotatedTextBox;
+			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			if (annotatedTextBox != null)
 			{
-				annotatedTextBox.OnSimilarityChanged((Similarity)dependencyPropertyChangedEventArgs_0.OldValue, (Similarity)dependencyPropertyChangedEventArgs_0.NewValue);
+				annotatedTextBox.OnSimilarityChanged((Similarity)eventArgs.OldValue, (Similarity)eventArgs.NewValue);
 			}
 		}
 
-		protected virtual Similarity OnCoerceSimilarity(Similarity value)
+		protected virtual Similarity OnCoerceSimilarity(Similarity similarity)
 		{
-			if (value == null)
+			if (similarity == null)
 			{
-				this.method_1(0);
+				method_1(0);
 			}
 			else
 			{
-				this.method_1(value.MyRange.Start);
+				this.method_1(similarity.MyRange.Start);
 			}
-			return value;
+			return similarity;
 		}
 
 		protected virtual void OnSimilarityChanged(Similarity oldValue, Similarity newValue)
@@ -165,20 +165,20 @@ namespace CopyPasteKiller
 		{
 			FrameworkElement frameworkElement = (FrameworkElement)sender;
 			Annotation annotation = (Annotation)frameworkElement.DataContext;
-			if (this.eventHandler_0 != null)
+			if (eventHandler != null)
 			{
-				this.eventHandler_0(this, new SimilaritySelectedEventArgs
+				eventHandler(this, new SimilaritySelectedEventArgs
 				{
 					Similarity = annotation.Similarity.CorrespondingSimilarity
 				});
 			}
 		}
 
-		internal void method_1(int int_0)
+		internal void method_1(int value)
 		{
 			try
 			{
-				this.textBox_1.ScrollToVerticalOffset((double)int_0 * Annotation.TextHeight);
+				textBox2.ScrollToVerticalOffset((double)value * Annotation.TextHeight);
 			}
 			catch (Exception)
 			{
@@ -188,9 +188,9 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_0)
+			if (!_isInitialized)
 			{
-				this.bool_0 = true;
+				_isInitialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/annotatedtextbox.xaml", UriKind.Relative);
 				Application.LoadComponent(this, resourceLocator);
 			}
@@ -201,17 +201,18 @@ namespace CopyPasteKiller
 		{
 			switch (connectionId)
 			{
-			case 1:
-				this.grid_0 = (Grid)target;
-				return;
-			case 3:
-				this.textBox_0 = (TextBox)target;
-				return;
-			case 4:
-				this.textBox_1 = (TextBox)target;
-				return;
+				case 1:
+					grid = (Grid)target;
+					return;
+				case 3:
+					textBox1 = (TextBox)target;
+					return;
+				case 4:
+					textBox2 = (TextBox)target;
+					return;
 			}
-			this.bool_0 = true;
+
+			_isInitialized = true;
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never), DebuggerNonUserCode]
@@ -225,8 +226,8 @@ namespace CopyPasteKiller
 
 		static AnnotatedTextBox()
 		{
-			AnnotatedTextBox.CodeFileProperty = DependencyProperty.Register("CodeFile", typeof(CodeFile), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_1), new CoerceValueCallback(AnnotatedTextBox.smethod_0)));
-			AnnotatedTextBox.SimilarityProperty = DependencyProperty.Register("Similarity", typeof(Similarity), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_3), new CoerceValueCallback(AnnotatedTextBox.smethod_2)));
+			//AnnotatedTextBox.CodeFileProperty = DependencyProperty.Register("CodeFile", typeof(CodeFile), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_1), new CoerceValueCallback(AnnotatedTextBox.smethod_0)));
+			//AnnotatedTextBox.SimilarityProperty = DependencyProperty.Register("Similarity", typeof(Similarity), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_3), new CoerceValueCallback(AnnotatedTextBox.smethod_2)));
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace CopyPasteKiller
 
 		public static string InitialProject;
 
-		private bool bool_0;
+		private bool _isInitialiezed;
 
 		private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 		{
@@ -26,12 +26,12 @@ namespace CopyPasteKiller
 			}
 		}
 
-		internal static string smethod_0(Exception exception_0)
+		internal static string smethod_0(Exception ex)
 		{
 			string text = "exception " + DateTime.Now.ToString("yyyyMMdd HH mm ss") + ".log";
 			using (StreamWriter streamWriter = new StreamWriter(text))
 			{
-				streamWriter.Write(exception_0.ToString());
+				streamWriter.Write(ex.ToString());
 			}
 			return text;
 		}
@@ -47,9 +47,9 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_0)
+			if (!_isInitialiezed)
 			{
-				this.bool_0 = true;
+				_isInitialiezed = true;
 				base.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(this.App_DispatcherUnhandledException);
 				base.Startup += new StartupEventHandler(this.App_Startup);
 				base.StartupUri = new Uri("Window1.xaml", UriKind.Relative);

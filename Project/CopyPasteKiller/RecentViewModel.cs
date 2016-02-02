@@ -6,25 +6,9 @@ namespace CopyPasteKiller
 {
 	public class RecentViewModel
 	{
-		private ObservableCollection<string> observableCollection_0 = new ObservableCollection<string>();
+		public ObservableCollection<string> RecentDirectories { get; private set; }
 
-		private string string_0;
-
-		public ObservableCollection<string> RecentDirectories
-		{
-			get
-			{
-				return this.observableCollection_0;
-			}
-		}
-
-		public string OpenDirectory
-		{
-			get
-			{
-				return this.string_0;
-			}
-		}
+		public string OpenDirectory { get; private set; }
 
 		public RecentViewModel()
 		{
@@ -35,7 +19,7 @@ namespace CopyPasteKiller
 					while (!streamReader.EndOfStream)
 					{
 						string item = streamReader.ReadLine();
-						this.RecentDirectories.Add(item);
+						RecentDirectories.Add(item);
 					}
 				}
 			}
@@ -45,14 +29,14 @@ namespace CopyPasteKiller
 		{
 			try
 			{
-				this.string_0 = directory;
+				OpenDirectory = directory;
 				int num = 0;
 				using (StreamWriter streamWriter = new StreamWriter("RecentDirectories.txt"))
 				{
-					streamWriter.WriteLine(this.string_0);
-					foreach (string current in this.observableCollection_0)
+					streamWriter.WriteLine(OpenDirectory);
+					foreach (string current in RecentDirectories)
 					{
-						if (!(this.string_0 == current))
+						if (!(OpenDirectory == current))
 						{
 							streamWriter.WriteLine(current);
 							if (num++ >= 10)

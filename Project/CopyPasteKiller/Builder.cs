@@ -5,11 +5,11 @@ namespace CopyPasteKiller
 {
 	public class Builder
 	{
-		private string string_0;
+		private string _delimiter;
 
-		private StringBuilder stringBuilder_0 = new StringBuilder();
+		private StringBuilder stringBuilder = new StringBuilder();
 
-		private bool bool_0 = true;
+		private bool _isCleared = true;
 
 		public Builder() : this(", ")
 		{
@@ -17,36 +17,37 @@ namespace CopyPasteKiller
 
 		public Builder(string delimiter)
 		{
-			this.string_0 = delimiter;
+			_delimiter = delimiter;
 		}
 
 		public void Clear()
 		{
-			this.stringBuilder_0.Remove(0, this.stringBuilder_0.Length);
-			this.bool_0 = true;
+			stringBuilder.Remove(0, stringBuilder.Length);
+			_isCleared = true;
 		}
 
 		public void Append(object obj)
 		{
-			this.Append(obj.ToString());
+			Append(obj.ToString());
 		}
 
 		public void Append(string text)
 		{
-			if (this.bool_0)
+			if (_isCleared)
 			{
-				this.bool_0 = false;
+				_isCleared = false;
 			}
 			else
 			{
-				this.stringBuilder_0.Append(this.string_0);
+				stringBuilder.Append(_delimiter);
 			}
-			this.stringBuilder_0.Append(text.ToString());
+
+			stringBuilder.Append(text.ToString());
 		}
 
 		public override string ToString()
 		{
-			return this.stringBuilder_0.ToString();
+			return stringBuilder.ToString();
 		}
 	}
 }

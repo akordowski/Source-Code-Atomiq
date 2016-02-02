@@ -8,102 +8,34 @@ namespace CopyPasteKiller
 	[DebuggerDisplay("Similarity: {MyFile.Name} - {OtherFile.Name}")]
 	public class Similarity
 	{
-		private CodeFile codeFile_0;
-
-		private CodeFile codeFile_1;
-
-		private LineRange lineRange_0 = new LineRange();
-
-		private LineRange lineRange_1 = new LineRange();
-
-		private HashIndexRange hashIndexRange_0;
-
-		private HashIndexRange hashIndexRange_1;
-
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private static Regex regex_0;
 
-		private int int_0;
+		public CodeFile MyFile { get; set; }
 
-		private Similarity similarity_0;
-
-		public CodeFile MyFile
-		{
-			get
-			{
-				return this.codeFile_0;
-			}
-			set
-			{
-				this.codeFile_0 = value;
-			}
-		}
-
-		public CodeFile OtherFile
-		{
-			get
-			{
-				return this.codeFile_1;
-			}
-			set
-			{
-				this.codeFile_1 = value;
-			}
-		}
+		public CodeFile OtherFile { get; set; }
 
 		public bool SameFile
 		{
 			get
 			{
-				return this.codeFile_0 == this.codeFile_1;
+				return MyFile == OtherFile;
 			}
 		}
 
-		public LineRange MyRange
-		{
-			get
-			{
-				return this.lineRange_0;
-			}
-		}
+		public LineRange MyRange { get; private set; }
 
-		public LineRange OtherRange
-		{
-			get
-			{
-				return this.lineRange_1;
-			}
-		}
+		public LineRange OtherRange { get; private set; }
 
-		public HashIndexRange MyHashIndexRange
-		{
-			get
-			{
-				return this.hashIndexRange_0;
-			}
-			set
-			{
-				this.hashIndexRange_0 = value;
-			}
-		}
+		public HashIndexRange MyHashIndexRange { get; set; }
 
-		public HashIndexRange OtherHashIndexRange
-		{
-			get
-			{
-				return this.hashIndexRange_1;
-			}
-			set
-			{
-				this.hashIndexRange_1 = value;
-			}
-		}
+		public HashIndexRange OtherHashIndexRange { get; set; }
 
 		public string MyText
 		{
 			get
 			{
-				return this.GetText(this.codeFile_0, this.lineRange_0);
+				return GetText(MyFile, MyRange);
 			}
 		}
 
@@ -111,7 +43,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.GetText(this.codeFile_1, this.lineRange_1);
+				return GetText(OtherFile, OtherRange);
 			}
 		}
 
@@ -119,7 +51,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.GetText(this.codeFile_0, this.lineRange_0, false);
+				return GetText(MyFile, MyRange, false);
 			}
 		}
 
@@ -127,7 +59,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.GetText(this.codeFile_1, this.lineRange_1, false);
+				return GetText(OtherFile, OtherRange, false);
 			}
 		}
 
@@ -135,7 +67,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.method_1(this.codeFile_0, this.hashIndexRange_0);
+				return this.method_1(MyFile, MyHashIndexRange);
 			}
 		}
 
@@ -143,52 +75,32 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.method_1(this.codeFile_1, this.hashIndexRange_1);
+				return this.method_1(OtherFile, OtherHashIndexRange);
 			}
 		}
 
-		public int UniqueId
-		{
-			get
-			{
-				return this.int_0;
-			}
-			set
-			{
-				this.int_0 = value;
-			}
-		}
+		public int UniqueId { get; set; }
 
-		public Similarity CorrespondingSimilarity
-		{
-			get
-			{
-				return this.similarity_0;
-			}
-			set
-			{
-				this.similarity_0 = value;
-			}
-		}
+		public Similarity CorrespondingSimilarity { get; set; }
 
 		public void SetLineRanges()
 		{
-			this.lineRange_0 = this.method_0(this.MyFile, this.hashIndexRange_0, this.lineRange_0);
-			this.lineRange_1 = this.method_0(this.OtherFile, this.hashIndexRange_1, this.lineRange_1);
+			MyRange = this.method_0(MyFile, MyHashIndexRange, MyRange);
+			OtherRange = this.method_0(OtherFile, OtherHashIndexRange, OtherRange);
 		}
 
-		private LineRange method_0(CodeFile codeFile_2, HashIndexRange hashIndexRange_2, LineRange lineRange_2)
+		private LineRange method_0(CodeFile codeFile, HashIndexRange hashIndexRange, LineRange lineRange)
 		{
-			lineRange_2.Start = codeFile_2.HashIndexToLineIndex[hashIndexRange_2.Start];
-			if (codeFile_2.HashIndexToLineIndex.Length <= hashIndexRange_2.End)
+			lineRange.Start = codeFile.HashIndexToLineIndex[hashIndexRange.Start];
+			if (codeFile.HashIndexToLineIndex.Length <= hashIndexRange.End)
 			{
-				lineRange_2.End = codeFile_2.HashIndexToLineIndex[codeFile_2.HashIndexToLineIndex.Length - 1];
+				lineRange.End = codeFile.HashIndexToLineIndex[codeFile.HashIndexToLineIndex.Length - 1];
 			}
 			else
 			{
-				lineRange_2.End = codeFile_2.HashIndexToLineIndex[hashIndexRange_2.End];
+				lineRange.End = codeFile.HashIndexToLineIndex[hashIndexRange.End];
 			}
-			return lineRange_2;
+			return lineRange;
 		}
 
 		public string GetText(CodeFile file, LineRange range)
@@ -245,20 +157,20 @@ namespace CopyPasteKiller
 			return stringBuilder.ToString();
 		}
 
-		private string method_1(CodeFile codeFile_2, HashIndexRange hashIndexRange_2)
+		private string method_1(CodeFile codeFile, HashIndexRange hashIndexRange)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
-			for (int i = hashIndexRange_2.Start; i < hashIndexRange_2.End; i++)
+			for (int i = hashIndexRange.Start; i < hashIndexRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
-				if (i >= codeFile_2.Hashes.Length)
+				if (i >= codeFile.Hashes.Length)
 				{
 					break;
 				}
-				stringBuilder.Append(codeFile_2.Hashes[i].ToString().PadLeft(13, ' ') + "  " + codeFile_2.HashToLine[codeFile_2.Hashes[i]]);
+				stringBuilder.Append(codeFile.Hashes[i].ToString().PadLeft(13, ' ') + "  " + codeFile.HashToLine[codeFile.Hashes[i]]);
 			}
 			return stringBuilder.ToString();
 		}
@@ -266,24 +178,24 @@ namespace CopyPasteKiller
 		public string GetSimilarText()
 		{
 			StringBuilder stringBuilder = new StringBuilder();
-			for (int i = this.lineRange_0.Start; i < this.lineRange_0.End; i++)
+			for (int i = MyRange.Start; i < MyRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
-				stringBuilder.Append(this.codeFile_0.Lines[i]);
+				stringBuilder.Append(MyFile.Lines[i]);
 			}
 			stringBuilder.AppendLine();
 			stringBuilder.AppendLine("********************");
 			stringBuilder.AppendLine();
-			for (int i = this.lineRange_1.Start; i < this.lineRange_1.End; i++)
+			for (int i = OtherRange.Start; i < OtherRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
-				stringBuilder.Append(this.codeFile_1.Lines[i]);
+				stringBuilder.Append(OtherFile.Lines[i]);
 			}
 			return stringBuilder.ToString();
 		}

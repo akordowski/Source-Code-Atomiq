@@ -10,20 +10,8 @@ namespace CopyPasteKiller
 {
 	public class CodeDir : INotifyPropertyChanged
 	{
-		private CodeDir codeDir_0;
-
-		private string string_0;
-
-		private string string_1;
-
-		private ObservableCollection<object> observableCollection_0 = new ObservableCollection<object>();
-
-		private ObservableCollection<CodeDir> observableCollection_1 = new ObservableCollection<CodeDir>();
-
-		private ObservableCollection<CodeFile> observableCollection_2 = new ObservableCollection<CodeFile>();
-
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler_0;
+		private PropertyChangedEventHandler PropertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<CodeFile, int> func_0;
@@ -47,54 +35,44 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 		}
 
-		public CodeDir DirectParent
-		{
-			get
-			{
-				return this.codeDir_0;
-			}
-			set
-			{
-				this.codeDir_0 = value;
-			}
-		}
+		public CodeDir DirectParent { get; set; }
 
 		public int Depth
 		{
 			get
 			{
 				int result;
-				if (this.codeDir_0 == null)
+				if (DirectParent == null)
 				{
 					result = 1;
 				}
 				else
 				{
-					result = this.codeDir_0.Depth + 1;
+					result = DirectParent.Depth + 1;
 				}
 				return result;
 			}
@@ -117,82 +95,32 @@ namespace CopyPasteKiller
 			}
 		}
 
-		public string Path
-		{
-			get
-			{
-				return this.string_0;
-			}
-			set
-			{
-				this.string_0 = value;
-			}
-		}
+		public string Path { get; set; }
 
 		public string ShortPath
 		{
 			get
 			{
 				string result;
-				if (this.codeDir_0 == null)
+				if (DirectParent == null)
 				{
 					result = "";
 				}
 				else
 				{
-					result = this.codeDir_0.ShortPath + "\\" + this.codeDir_0.Name;
+					result = DirectParent.ShortPath + "\\" + DirectParent.Name;
 				}
 				return result;
 			}
 		}
 
-		public string Name
-		{
-			get
-			{
-				return this.string_1;
-			}
-			set
-			{
-				this.string_1 = value;
-			}
-		}
+		public string Name { get; set; }
 
-		public ObservableCollection<object> ItemCollection
-		{
-			get
-			{
-				return this.observableCollection_0;
-			}
-			set
-			{
-				this.observableCollection_0 = value;
-			}
-		}
+		public ObservableCollection<object> ItemCollection { get; set; }
 
-		public ObservableCollection<CodeDir> Directories
-		{
-			get
-			{
-				return this.observableCollection_1;
-			}
-			set
-			{
-				this.observableCollection_1 = value;
-			}
-		}
+		public ObservableCollection<CodeDir> Directories { get; set; }
 
-		public ObservableCollection<CodeFile> Files
-		{
-			get
-			{
-				return this.observableCollection_2;
-			}
-			set
-			{
-				this.observableCollection_2 = value;
-			}
-		}
+		public ObservableCollection<CodeFile> Files { get; set; }
 
 		public int RawLines
 		{
@@ -200,7 +128,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeDir.func_0 == null)
 				{
-					CodeDir.func_0 = new Func<CodeFile, int>(CodeDir.smethod_0);
+					CodeDir.func_0 = new Func<CodeFile, int>(CodeDir.GetRawLines);
 				}
 				return this.method_2(CodeDir.func_0);
 			}
@@ -212,7 +140,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeDir.func_1 == null)
 				{
-					CodeDir.func_1 = new Func<CodeFile, int>(CodeDir.smethod_1);
+					CodeDir.func_1 = new Func<CodeFile, int>(CodeDir.GetProcessedLines);
 				}
 				return this.method_2(CodeDir.func_1);
 			}
@@ -232,12 +160,12 @@ namespace CopyPasteKiller
 			get
 			{
 				HashSet<CodeFile> hashSet = this.method_1();
-				IEnumerable<CodeFile> arg_25_0 = hashSet;
+				IEnumerable<CodeFile> codeFiles = hashSet;
 				if (CodeDir.func_2 == null)
 				{
-					CodeDir.func_2 = new Func<CodeFile, int>(CodeDir.smethod_2);
+					CodeDir.func_2 = new Func<CodeFile, int>(CodeDir.GetSimilaritiesCount);
 				}
-				return arg_25_0.Sum(CodeDir.func_2);
+				return codeFiles.Sum(CodeDir.func_2);
 			}
 		}
 
@@ -247,7 +175,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeDir.func_3 == null)
 				{
-					CodeDir.func_3 = new Func<CodeFile, int>(CodeDir.smethod_3);
+					CodeDir.func_3 = new Func<CodeFile, int>(CodeDir.GetHashesLength);
 				}
 				return this.method_2(CodeDir.func_3);
 			}
@@ -255,24 +183,28 @@ namespace CopyPasteKiller
 
 		public IEnumerable<CodeDir> GetAllDirectories()
 		{
-			CodeDir.<GetAllDirectories>d__0 <GetAllDirectories>d__ = new CodeDir.<GetAllDirectories>d__0(-2);
-			<GetAllDirectories>d__.<>4__this = this;
-			return <GetAllDirectories>d__;
+			//CodeDir.<GetAllDirectories>d__0 <GetAllDirectories>d__ = new CodeDir.<GetAllDirectories>d__0(-2);
+			//<GetAllDirectories>d__.<>4__this = this;
+			//return <GetAllDirectories>d__;
+
+			return null;
 		}
 
 		public IEnumerable<CodeFile> GetAllFiles()
 		{
-			CodeDir.<GetAllFiles>d__9 <GetAllFiles>d__ = new CodeDir.<GetAllFiles>d__9(-2);
-			<GetAllFiles>d__.<>4__this = this;
-			return <GetAllFiles>d__;
+			//CodeDir.<GetAllFiles>d__9 <GetAllFiles>d__ = new CodeDir.<GetAllFiles>d__9(-2);
+			//<GetAllFiles>d__.<>4__this = this;
+			//return <GetAllFiles>d__;
+
+			return null;
 		}
 
 		public int GetAllFilesCount()
 		{
-			int num = this.observableCollection_2.Count;
-			foreach (CodeDir current in this.observableCollection_1)
+			int num = Files.Count;
+			foreach (CodeDir codeDir in Directories)
 			{
-				num += current.GetAllFilesCount();
+				num += codeDir.GetAllFilesCount();
 			}
 			return num;
 		}
@@ -280,19 +212,19 @@ namespace CopyPasteKiller
 		private HashSet<CodeFile> method_0()
 		{
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
-			IEnumerable<CodeFile> arg_29_0 = this.observableCollection_2;
+			IEnumerable<CodeFile> files = Files;
 			if (CodeDir.func_4 == null)
 			{
-				CodeDir.func_4 = new Func<CodeFile, IEnumerable<Similarity>>(CodeDir.smethod_4);
+				CodeDir.func_4 = new Func<CodeFile, IEnumerable<Similarity>>(CodeDir.GetSimilarities);
 			}
-			IEnumerable<Similarity> arg_4B_0 = arg_29_0.SelectMany(CodeDir.func_4);
+			IEnumerable<Similarity> arg_4B_0 = files.SelectMany(CodeDir.func_4);
 			if (CodeDir.func_5 == null)
 			{
-				CodeDir.func_5 = new Func<Similarity, CodeFile>(CodeDir.smethod_5);
+				CodeDir.func_5 = new Func<Similarity, CodeFile>(CodeDir.GetOtherFile);
 			}
 			IEnumerable<CodeFile> range = arg_4B_0.Select(CodeDir.func_5);
 			hashSet.AddRange(range);
-			foreach (CodeDir current in this.observableCollection_1)
+			foreach (CodeDir current in Directories)
 			{
 				range = current.method_0();
 				hashSet.AddRange(range);
@@ -303,67 +235,69 @@ namespace CopyPasteKiller
 		private HashSet<CodeFile> method_1()
 		{
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
-			hashSet.AddRange(this.observableCollection_2);
-			foreach (CodeDir current in this.observableCollection_1)
+			hashSet.AddRange(Files);
+
+			foreach (CodeDir current in Directories)
 			{
 				HashSet<CodeFile> range = current.method_1();
 				hashSet.AddRange(range);
 			}
+
 			return hashSet;
 		}
 
 		private int method_2(Func<CodeFile, int> sumFunc)
 		{
-			int num = this.observableCollection_2.Sum(sumFunc);
-			foreach (CodeDir current in this.observableCollection_1)
+			int num = Files.Sum(sumFunc);
+			foreach (CodeDir current in Directories)
 			{
 				num += current.method_2(sumFunc);
 			}
 			return num;
 		}
 
-		private void method_3(string string_2)
+		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler_0 != null)
+			if (this.PropertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler_0(this, new PropertyChangedEventArgs(string_2));
+				this.PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 
 		[CompilerGenerated]
-		private static int smethod_0(CodeFile codeFile_0)
+		private static int GetRawLines(CodeFile codeFile)
 		{
-			return codeFile_0.RawLines;
+			return codeFile.RawLines;
 		}
 
 		[CompilerGenerated]
-		private static int smethod_1(CodeFile codeFile_0)
+		private static int GetProcessedLines(CodeFile codeFile)
 		{
-			return codeFile_0.ProcessedLines;
+			return codeFile.ProcessedLines;
 		}
 
 		[CompilerGenerated]
-		private static int smethod_2(CodeFile codeFile_0)
+		private static int GetSimilaritiesCount(CodeFile codeFile)
 		{
-			return codeFile_0.Similarities.Count<Similarity>();
+			return codeFile.Similarities.Count<Similarity>();
 		}
 
 		[CompilerGenerated]
-		private static int smethod_3(CodeFile codeFile_0)
+		private static int GetHashesLength(CodeFile codeFile)
 		{
-			return codeFile_0.Hashes.Length;
+			return codeFile.Hashes.Length;
 		}
 
 		[CompilerGenerated]
-		private static IEnumerable<Similarity> smethod_4(CodeFile codeFile_0)
+		private static IEnumerable<Similarity> GetSimilarities(CodeFile codeFile)
 		{
-			return codeFile_0.Similarities;
+			return codeFile.Similarities;
 		}
 
 		[CompilerGenerated]
-		private static CodeFile smethod_5(Similarity similarity_0)
+		private static CodeFile GetOtherFile(Similarity similarity)
 		{
-			return similarity_0.OtherFile;
+			return similarity.OtherFile;
 		}
 	}
 }

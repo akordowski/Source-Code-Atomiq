@@ -115,24 +115,24 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private static void smethod_0(DependencyObject dependencyObject_0, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private static void smethod_0(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			(dependencyObject_0 as CanonicalSpline).method_0(dependencyPropertyChangedEventArgs_0);
+			(dependencyObject as CanonicalSpline).method_0(eventArgs);
 		}
 
 		private void method_0(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
 		{
-			this.pathGeometry_0 = CanonicalSplineHelper.smethod_0(this.Points, this.Tension, this.Tensions, this.IsClosed, this.IsFilled, this.Tolerance);
+			this.pathGeometry_0 = CanonicalSplineHelper.smethod_0(Points, Tension, Tensions, IsClosed, IsFilled, Tolerance);
 			base.InvalidateMeasure();
 			this.method_1(dependencyPropertyChangedEventArgs_0);
 		}
 
-		private static void smethod_1(DependencyObject dependencyObject_0, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private static void smethod_1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			(dependencyObject_0 as CanonicalSpline).method_1(dependencyPropertyChangedEventArgs_0);
+			(dependencyObject as CanonicalSpline).method_1(eventArgs);
 		}
 
-		private void method_1(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private void method_1(DependencyPropertyChangedEventArgs eventArgs)
 		{
 			if (this.pathGeometry_0 != null)
 			{

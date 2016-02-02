@@ -10,47 +10,49 @@ namespace CopyPasteKiller
 {
 	public class RecentDirectories : Window, IComponentConnector, IStyleConnector
 	{
-		private RecentViewModel recentViewModel_0;
+		private RecentViewModel _recentViewModel;
 
-		private bool bool_0;
+		private bool _initialized;
 
 		public string SelectedPath
 		{
 			get
 			{
-				return this.recentViewModel_0.OpenDirectory;
+				return _recentViewModel.OpenDirectory;
 			}
 		}
 
 		public RecentDirectories()
 		{
-			this.InitializeComponent();
-			base.Loaded += new RoutedEventHandler(this.RecentDirectories_Loaded);
+			InitializeComponent();
+			base.Loaded += RecentDirectories_Loaded;
 		}
 
 		private void RecentDirectories_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.recentViewModel_0 = new RecentViewModel();
-			base.DataContext = this.recentViewModel_0;
+			_recentViewModel = new RecentViewModel();
+			base.DataContext = _recentViewModel;
 		}
 
-		private void method_0(object sender, RoutedEventArgs e)
+		private void eventHandler_1(object sender, RoutedEventArgs e)
 		{
 			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 			folderBrowserDialog.ShowNewFolderButton = false;
 			folderBrowserDialog.Description = "Pick Code Directory To Analyze";
+
 			if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
-				this.recentViewModel_0.Open(folderBrowserDialog.SelectedPath);
+				_recentViewModel.Open(folderBrowserDialog.SelectedPath);
 				base.DialogResult = new bool?(true);
 				base.Close();
 			}
 		}
 
-		private void method_1(object sender, RoutedEventArgs e)
+		private void eventHandler_2(object sender, RoutedEventArgs e)
 		{
 			FrameworkElement frameworkElement = sender as FrameworkElement;
-			this.recentViewModel_0.Open(frameworkElement.DataContext.ToString());
+			_recentViewModel.Open(frameworkElement.DataContext.ToString());
+
 			base.DialogResult = new bool?(true);
 			base.Close();
 		}
@@ -58,9 +60,9 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_0)
+			if (!_initialized)
 			{
-				this.bool_0 = true;
+				_initialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/recentdirectories.xaml", UriKind.Relative);
 				System.Windows.Application.LoadComponent(this, resourceLocator);
 			}
@@ -71,11 +73,11 @@ namespace CopyPasteKiller
 		{
 			if (connectionId != 1)
 			{
-				this.bool_0 = true;
+				_initialized = true;
 			}
 			else
 			{
-				((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(this.method_0);
+				((System.Windows.Controls.Button)target).Click += eventHandler_1;
 			}
 		}
 
@@ -84,7 +86,7 @@ namespace CopyPasteKiller
 		{
 			if (connectionId == 2)
 			{
-				((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(this.method_1);
+				((System.Windows.Controls.Button)target).Click += eventHandler_2;
 			}
 		}
 	}

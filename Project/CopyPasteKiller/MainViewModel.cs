@@ -11,28 +11,10 @@ namespace CopyPasteKiller
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
-		private string string_0;
-
-		private string string_1;
-
-		private int int_0;
-
-		private RibbonIconProvider ribbonIconProvider_0 = new RibbonIconProvider();
-
-		private ObservableCollection<CodeDir> observableCollection_0 = new ObservableCollection<CodeDir>();
-
-		private ObservableCollection<CodeFile> observableCollection_1 = new ObservableCollection<CodeFile>();
-
-		private CodeFile codeFile_0;
-
-		private Similarity similarity_0;
-
-		private Options options_0;
-
 		private bool bool_0;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler_0;
+		private PropertyChangedEventHandler PropertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<CodeFile, IEnumerable<int>> func_0;
@@ -50,145 +32,107 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 		}
 
-		public string LicenseName
-		{
-			get
-			{
-				return this.string_0;
-			}
-			set
-			{
-				this.string_0 = value;
-			}
-		}
+		public string LicenseName { get; set; }
 
-		public string LicenseCompany
-		{
-			get
-			{
-				return this.string_1;
-			}
-			set
-			{
-				this.string_1 = value;
-			}
-		}
+		public string LicenseCompany { get; set; }
+
+		private int _trialDays;
 
 		public int TrialDays
 		{
 			get
 			{
-				return this.int_0;
+				return _trialDays;
 			}
 			set
 			{
-				if (this.int_0 != value)
+				if (_trialDays != value)
 				{
-					this.int_0 = value;
-					this.method_1("TrialDays");
+					_trialDays = value;
+					OnPropertyChanged("TrialDays");
 				}
 			}
 		}
 
-		public RibbonIconProvider RibbonIcons
-		{
-			get
-			{
-				return this.ribbonIconProvider_0;
-			}
-		}
+		public RibbonIconProvider RibbonIcons { get; private set; }
 
-		public ObservableCollection<CodeDir> RootDirectories
-		{
-			get
-			{
-				return this.observableCollection_0;
-			}
-			set
-			{
-				this.observableCollection_0 = value;
-			}
-		}
+		public ObservableCollection<CodeDir> RootDirectories { get; set; }
 
-		public ObservableCollection<CodeFile> Files
-		{
-			get
-			{
-				return this.observableCollection_1;
-			}
-			set
-			{
-				this.observableCollection_1 = value;
-			}
-		}
+		public ObservableCollection<CodeFile> Files { get; set; }
+
+		private CodeFile _selectedFile;
 
 		public CodeFile SelectedFile
 		{
 			get
 			{
-				return this.codeFile_0;
+				return _selectedFile;
 			}
 			set
 			{
-				if (this.codeFile_0 != value)
+				if (_selectedFile != value)
 				{
-					this.codeFile_0 = value;
-					this.method_1("SelectedFile");
-					this.SelectedSimilarity = this.codeFile_0.Similarities.First<Similarity>();
+					_selectedFile = value;
+					OnPropertyChanged("SelectedFile");
+					SelectedSimilarity = _selectedFile.Similarities.First<Similarity>();
 				}
 			}
 		}
+
+		private Similarity _selectedSimilarity;
 
 		public Similarity SelectedSimilarity
 		{
 			get
 			{
-				return this.similarity_0;
+				return _selectedSimilarity;
 			}
 			set
 			{
-				this.similarity_0 = value;
-				this.method_1("SelectedSimilarity");
+				_selectedSimilarity = value;
+				OnPropertyChanged("SelectedSimilarity");
 			}
 		}
+
+		private Options _options;
 
 		public Options Options
 		{
 			get
 			{
-				return this.options_0;
+				return _options;
 			}
 			set
 			{
-				if (this.options_0 != value)
+				if (_options != value)
 				{
-					this.options_0 = value;
-					this.method_1("Options");
-					this.method_1("SaveEnabled");
+					_options = value;
+					OnPropertyChanged("Options");
+					OnPropertyChanged("SaveEnabled");
 				}
 			}
 		}
@@ -197,7 +141,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.options_0 != null;
+				return _options != null;
 			}
 		}
 
@@ -205,12 +149,12 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				IEnumerable<CodeFile> arg_23_0 = this.observableCollection_1;
+				IEnumerable<CodeFile> files = Files;
 				if (MainViewModel.func_0 == null)
 				{
 					MainViewModel.func_0 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod_0);
 				}
-				List<int> list = arg_23_0.SelectMany(MainViewModel.func_0).ToList<int>();
+				List<int> list = files.SelectMany(MainViewModel.func_0).ToList<int>();
 				int result;
 				if (list.Count == 0)
 				{
@@ -228,12 +172,12 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				IEnumerable<CodeFile> arg_23_0 = this.observableCollection_1;
+				IEnumerable<CodeFile> files = Files;
 				if (MainViewModel.func_2 == null)
 				{
 					MainViewModel.func_2 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod_2);
 				}
-				List<int> list = arg_23_0.SelectMany(MainViewModel.func_2).ToList<int>();
+				List<int> list = files.SelectMany(MainViewModel.func_2).ToList<int>();
 				int result;
 				if (list.Count == 0)
 				{
@@ -255,55 +199,55 @@ namespace CopyPasteKiller
 			}
 		}
 
-		internal void method_0(CodeFile codeFile_1)
+		internal void method_0(CodeFile codeFile)
 		{
-			if (this.codeFile_0 != codeFile_1)
+			if (_selectedFile != codeFile)
 			{
-				this.codeFile_0 = codeFile_1;
-				this.method_1("SelectedFile");
+				_selectedFile = codeFile;
+				OnPropertyChanged("SelectedFile");
 			}
 		}
 
-		private void method_1(string string_2)
+		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler_0 != null)
+			if (PropertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler_0(this, new PropertyChangedEventArgs(string_2));
+				PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 
 		[CompilerGenerated]
-		private static IEnumerable<int> smethod_0(CodeFile codeFile_1)
+		private static IEnumerable<int> smethod_0(CodeFile codeFile)
 		{
-			IEnumerable<Similarity> arg_23_0 = codeFile_1.Similarities;
+			IEnumerable<Similarity> similarities = codeFile.Similarities;
 			if (MainViewModel.func_1 == null)
 			{
-				MainViewModel.func_1 = new Func<Similarity, int>(MainViewModel.smethod_1);
+				MainViewModel.func_1 = new Func<Similarity, int>(MainViewModel.GetMyRangeLength);
 			}
-			return arg_23_0.Select(MainViewModel.func_1);
+			return similarities.Select(MainViewModel.func_1);
 		}
 
 		[CompilerGenerated]
-		private static int smethod_1(Similarity similarity_1)
+		private static int GetMyRangeLength(Similarity similarity)
 		{
-			return similarity_1.MyRange.Length;
+			return similarity.MyRange.Length;
 		}
 
 		[CompilerGenerated]
-		private static IEnumerable<int> smethod_2(CodeFile codeFile_1)
+		private static IEnumerable<int> smethod_2(CodeFile codeFile)
 		{
-			IEnumerable<Similarity> arg_23_0 = codeFile_1.Similarities;
+			IEnumerable<Similarity> similarities = codeFile.Similarities;
 			if (MainViewModel.func_3 == null)
 			{
-				MainViewModel.func_3 = new Func<Similarity, int>(MainViewModel.smethod_3);
+				MainViewModel.func_3 = new Func<Similarity, int>(MainViewModel.GetMyHashIndexRangeLength);
 			}
-			return arg_23_0.Select(MainViewModel.func_3);
+			return similarities.Select(MainViewModel.func_3);
 		}
 
 		[CompilerGenerated]
-		private static int smethod_3(Similarity similarity_1)
+		private static int GetMyHashIndexRangeLength(Similarity similarity)
 		{
-			return similarity_1.MyHashIndexRange.Length;
+			return similarity.MyHashIndexRange.Length;
 		}
 	}
 }

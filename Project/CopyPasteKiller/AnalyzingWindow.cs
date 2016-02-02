@@ -10,65 +10,60 @@ namespace CopyPasteKiller
 {
 	public class AnalyzingWindow : Window, IComponentConnector
 	{
-		private AnalyzingViewModel analyzingViewModel_0;
+		private AnalyzingViewModel _analyzingViewModel;
 
-		private Analysis analysis_0;
-
-		private bool bool_0;
+		private bool _isInitialized;
 
 		[CompilerGenerated]
-		private static Action<string> action_0;
+		private static Action<string> action;
 
-		public Analysis Analysis
-		{
-			get
-			{
-				return this.analysis_0;
-			}
-		}
+		public Analysis Analysis { get; private set; }
 
 		public AnalyzingWindow(Options options)
 		{
-			this.InitializeComponent();
-			this.analyzingViewModel_0 = new AnalyzingViewModel();
-			this.analysis_0 = new Analysis(options.Directory);
-			this.analysis_0.Options = options;
-			base.DataContext = this.analyzingViewModel_0;
-			base.Loaded += new RoutedEventHandler(this.AnalyzingWindow_Loaded);
+			InitializeComponent();
+			_analyzingViewModel = new AnalyzingViewModel();
+			Analysis = new Analysis(options.Directory);
+			Analysis.Options = options;
+			base.DataContext = this._analyzingViewModel;
+			base.Loaded += AnalyzingWindow_Loaded;
 		}
 
 		private void AnalyzingWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.analysis_0.UpdateProgressAction = new Action<int, int, string>(this.method_2);
-			this.analysis_0.IncrementProgressValue = new Action(this.method_3);
-			this.analysis_0.UpdateProgressValue = new Action<int>(this.method_4);
-			Analysis arg_68_0 = this.analysis_0;
-			if (AnalyzingWindow.action_0 == null)
+			Analysis.UpdateProgressAction = new Action<int, int, string>(this.method_2);
+			Analysis.IncrementProgressValue = new Action(this.method_3);
+			Analysis.UpdateProgressValue = new Action<int>(this.method_4);
+			Analysis analysis = Analysis;
+
+			if (AnalyzingWindow.action == null)
 			{
-				AnalyzingWindow.action_0 = new Action<string>(AnalyzingWindow.smethod_0);
+				AnalyzingWindow.action = new Action<string>(AnalyzingWindow.smethod_0);
 			}
-			arg_68_0.AlertAction = AnalyzingWindow.action_0;
-			this.analysis_0.Done = new Action(this.method_5);
-			this.analysis_0.method_0();
+
+			analysis.AlertAction = AnalyzingWindow.action;
+
+			Analysis.Done = new Action(this.method_5);
+			Analysis.method_0();
 		}
 
-		private void method_0()
+		private void Close()
 		{
 			base.Close();
 		}
 
-		private void method_1(object sender, RoutedEventArgs e)
+		private void button_Click(object sender, RoutedEventArgs e)
 		{
-			this.analysis_0.method_1();
+			Analysis.method_1();
 			base.Close();
 		}
 
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_0)
+			if (!_isInitialized)
 			{
-				this.bool_0 = true;
+				_isInitialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/analyzingwindow.xaml", UriKind.Relative);
 				Application.LoadComponent(this, resourceLocator);
 			}
@@ -79,22 +74,22 @@ namespace CopyPasteKiller
 		{
 			if (connectionId != 1)
 			{
-				this.bool_0 = true;
+				_isInitialized = true;
 			}
 			else
 			{
-				((Button)target).Click += new RoutedEventHandler(this.method_1);
+				((Button)target).Click += button_Click;
 			}
 		}
 
 		[CompilerGenerated]
-		private void method_2(int int_0, int int_1, string string_0)
+		private void method_2(int int_0, int int_1, string str)
 		{
 			base.Dispatcher.Invoke(new Action(delegate
 			{
-				this.analyzingViewModel_0.Value = int_0;
-				this.analyzingViewModel_0.Max = int_1;
-				this.analyzingViewModel_0.Message = string_0;
+				_analyzingViewModel.Value = int_0;
+				_analyzingViewModel.Max = int_1;
+				_analyzingViewModel.Message = str;
 			}), new object[0]);
 		}
 
@@ -109,7 +104,7 @@ namespace CopyPasteKiller
 		{
 			base.Dispatcher.Invoke(new Action(delegate
 			{
-				this.analyzingViewModel_0.Value = int_0;
+				this._analyzingViewModel.Value = int_0;
 			}), new object[0]);
 		}
 
@@ -122,13 +117,13 @@ namespace CopyPasteKiller
 		[CompilerGenerated]
 		private void method_5()
 		{
-			base.Dispatcher.Invoke(new Action(this.method_0), new object[0]);
+			base.Dispatcher.Invoke(new Action(this.Close), new object[0]);
 		}
 
 		[CompilerGenerated]
 		private void method_6()
 		{
-			this.analyzingViewModel_0.Value++;
+			_analyzingViewModel.Value++;
 		}
 	}
 }

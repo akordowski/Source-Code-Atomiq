@@ -23,7 +23,7 @@ namespace CopyPasteKiller
 {
 	public class Window1 : System.Windows.Window, IComponentConnector
 	{
-		private MainViewModel mainViewModel_0 = new MainViewModel();
+		private MainViewModel _mainViewModel = new MainViewModel();
 
 		private static bool bool_0;
 
@@ -31,17 +31,17 @@ namespace CopyPasteKiller
 
 		private static string string_1;
 
-		private WheelView wheelView_0;
+		private WheelView wheelView;
 
 		internal ActiproSoftware.Windows.Controls.Ribbon.Controls.Button button_0;
 
-		internal Group group_0;
+		internal Group group;
 
-		internal DockSite dockSite_0;
+		internal DockSite dockSite;
 
-		internal ToolWindow toolWindow_0;
+		internal ToolWindow toolWindow;
 
-		internal NoScrollTreeView noScrollTreeView_0;
+		internal NoScrollTreeView noScrollTreeView;
 
 		internal ToolWindow toolWindow_1;
 
@@ -49,14 +49,14 @@ namespace CopyPasteKiller
 
 		internal ToolWindow toolWindow_3;
 
-		private bool bool_1;
+		private bool _isInitialized;
 
 		public Window1()
 		{
-			this.InitializeComponent();
-			base.DataContext = this.mainViewModel_0;
-			base.Closing += new CancelEventHandler(this.Window1_Closing);
-			base.Loaded += new RoutedEventHandler(this.Window1_Loaded);
+			InitializeComponent();
+			base.DataContext = _mainViewModel;
+			base.Closing += Window1_Closing;
+			base.Loaded += Window1_Loaded;
 		}
 
 		private void Window1_Loaded(object sender, RoutedEventArgs e)
@@ -73,7 +73,7 @@ namespace CopyPasteKiller
 			using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream("dock.site", FileMode.Create))
 			{
 				DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-				dockSiteLayoutSerializer.SaveToStream(isolatedStorageFileStream, this.dockSite_0);
+				dockSiteLayoutSerializer.SaveToStream(isolatedStorageFileStream, this.dockSite);
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace CopyPasteKiller
 					else
 					{
 						DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-						dockSiteLayoutSerializer.LoadFromStream(isolatedStorageFileStream, this.dockSite_0);
+						dockSiteLayoutSerializer.LoadFromStream(isolatedStorageFileStream, this.dockSite);
 					}
 				}
 			}
@@ -106,7 +106,7 @@ namespace CopyPasteKiller
 			{
 				Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CopyPasteKiller.Resources.dock.site");
 				DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-				dockSiteLayoutSerializer.LoadFromStream(manifestResourceStream, this.dockSite_0);
+				dockSiteLayoutSerializer.LoadFromStream(manifestResourceStream, this.dockSite);
 			}
 			catch (Exception)
 			{
@@ -123,16 +123,16 @@ namespace CopyPasteKiller
 			if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
 				DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-				dockSiteLayoutSerializer.SaveToFile(saveFileDialog.FileName, this.dockSite_0);
+				dockSiteLayoutSerializer.SaveToFile(saveFileDialog.FileName, dockSite);
 			}
 		}
 
 		private void method_3(object sender, RoutedEventArgs e)
 		{
-			this.mainViewModel_0.Files.Clear();
-			new OptionsEdit(this.mainViewModel_0.Options)
+			_mainViewModel.Files.Clear();
+			new OptionsEdit(_mainViewModel.Options)
 			{
-				DataContext = this.mainViewModel_0.Options
+				DataContext = _mainViewModel.Options
 			}.ShowDialog();
 			if (!(new RecentDirectories().ShowDialog() != true))
 			{
@@ -144,7 +144,7 @@ namespace CopyPasteKiller
 			if (e.NewValue is CodeFile)
 			{
 				Console.WriteLine(((CodeFile)e.NewValue).Name);
-				this.mainViewModel_0.SelectedFile = (CodeFile)e.NewValue;
+				_mainViewModel.SelectedFile = (CodeFile)e.NewValue;
 			}
 		}
 
@@ -158,13 +158,13 @@ namespace CopyPasteKiller
 		private void method_4(object sender, RoutedEventArgs e)
 		{
 			Func<Document, bool> func = null;
-			if (this.mainViewModel_0 != null && this.mainViewModel_0.SelectedSimilarity != null && this.mainViewModel_0.SelectedSimilarity.MyFile != null && !string.IsNullOrEmpty(this.mainViewModel_0.SelectedSimilarity.MyFile.Path))
+			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.MyFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.MyFile.Path))
 			{
 				if (!Window1.bool_0)
 				{
 					try
 					{
-						System.Diagnostics.Process.Start("\"" + this.mainViewModel_0.SelectedSimilarity.MyFile.Path + "\"");
+						System.Diagnostics.Process.Start("\"" + _mainViewModel.SelectedSimilarity.MyFile.Path + "\"");
 						return;
 					}
 					catch (Exception)
@@ -188,7 +188,7 @@ namespace CopyPasteKiller
 					}
 					catch (Exception)
 					{
-						System.Diagnostics.Process.Start("\"" + this.mainViewModel_0.SelectedSimilarity.MyFile.Path + "\"");
+						System.Diagnostics.Process.Start("\"" + _mainViewModel.SelectedSimilarity.MyFile.Path + "\"");
 					}
 					if (dTE != null)
 					{
@@ -200,21 +200,21 @@ namespace CopyPasteKiller
 						}
 						dTE = (DTE2)Marshal.GetActiveObject(Window1.string_0);
 					}
-					dTE.ItemOperations.OpenFile(this.mainViewModel_0.SelectedSimilarity.MyFile.Path, "{7651A703-06E5-11D1-8EBD-00A0C90F26EA}");
-					IEnumerable<Document> enumerable = dTE.Documents.Cast<Document>().ToList<Document>();
-					foreach (Document current in enumerable)
+					dTE.ItemOperations.OpenFile(_mainViewModel.SelectedSimilarity.MyFile.Path, "{7651A703-06E5-11D1-8EBD-00A0C90F26EA}");
+					IEnumerable<Document> documents = dTE.Documents.Cast<Document>().ToList<Document>();
+					foreach (Document current in documents)
 					{
 						Console.WriteLine(current.FullName);
 					}
-					IEnumerable<Document> arg_1E4_0 = enumerable;
+					IEnumerable<Document> arg_1E4_0 = documents;
 					if (func == null)
 					{
 						func = new Func<Document, bool>(this.method_21);
 					}
 					Document document = arg_1E4_0.Where(func).First<Document>();
 					TextSelection textSelection = (TextSelection)document.Selection;
-					textSelection.GotoLine(this.mainViewModel_0.SelectedSimilarity.MyRange.Start + 1, false);
-					textSelection.LineDown(true, this.mainViewModel_0.SelectedSimilarity.MyRange.Length - 1);
+					textSelection.GotoLine(_mainViewModel.SelectedSimilarity.MyRange.Start + 1, false);
+					textSelection.LineDown(true, _mainViewModel.SelectedSimilarity.MyRange.Length - 1);
 					document.Activate();
 				}
 				catch
@@ -231,22 +231,22 @@ namespace CopyPasteKiller
 
 		private void method_5(object sender, RoutedEventArgs e)
 		{
-			if (this.mainViewModel_0 != null && this.mainViewModel_0.SelectedSimilarity != null && this.mainViewModel_0.SelectedSimilarity.MyFile != null && !string.IsNullOrEmpty(this.mainViewModel_0.SelectedSimilarity.MyFile.Path))
+			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.MyFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.MyFile.Path))
 			{
-				System.Windows.Clipboard.SetText(this.mainViewModel_0.SelectedSimilarity.MyTextNoLines);
+				System.Windows.Clipboard.SetText(_mainViewModel.SelectedSimilarity.MyTextNoLines);
 			}
 		}
 
 		private void method_6(object sender, RoutedEventArgs e)
 		{
 			Func<Document, bool> func = null;
-			if (this.mainViewModel_0 != null && this.mainViewModel_0.SelectedSimilarity != null && this.mainViewModel_0.SelectedSimilarity.OtherFile != null && !string.IsNullOrEmpty(this.mainViewModel_0.SelectedSimilarity.OtherFile.Path))
+			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.OtherFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.OtherFile.Path))
 			{
 				if (!Window1.bool_0)
 				{
 					try
 					{
-						System.Diagnostics.Process.Start("\"" + this.mainViewModel_0.SelectedSimilarity.OtherFile.Path + "\"");
+						System.Diagnostics.Process.Start("\"" + _mainViewModel.SelectedSimilarity.OtherFile.Path + "\"");
 						return;
 					}
 					catch (Exception)
@@ -270,7 +270,7 @@ namespace CopyPasteKiller
 					}
 					catch (Exception)
 					{
-						System.Diagnostics.Process.Start("\"" + this.mainViewModel_0.SelectedSimilarity.OtherFile.Path + "\"");
+						System.Diagnostics.Process.Start("\"" + _mainViewModel.SelectedSimilarity.OtherFile.Path + "\"");
 					}
 					if (dTE != null)
 					{
@@ -282,7 +282,7 @@ namespace CopyPasteKiller
 						}
 						dTE = (DTE2)Marshal.GetActiveObject(Window1.string_0);
 					}
-					dTE.ItemOperations.OpenFile(this.mainViewModel_0.SelectedSimilarity.OtherFile.Path, "{7651A703-06E5-11D1-8EBD-00A0C90F26EA}");
+					dTE.ItemOperations.OpenFile(_mainViewModel.SelectedSimilarity.OtherFile.Path, "{7651A703-06E5-11D1-8EBD-00A0C90F26EA}");
 					IEnumerable<Document> enumerable = dTE.Documents.Cast<Document>().ToList<Document>();
 					foreach (Document current in enumerable)
 					{
@@ -295,8 +295,8 @@ namespace CopyPasteKiller
 					}
 					Document document = arg_1E4_0.Where(func).First<Document>();
 					TextSelection textSelection = (TextSelection)document.Selection;
-					textSelection.GotoLine(this.mainViewModel_0.SelectedSimilarity.OtherRange.Start + 1, false);
-					textSelection.LineDown(true, this.mainViewModel_0.SelectedSimilarity.OtherRange.Length - 1);
+					textSelection.GotoLine(_mainViewModel.SelectedSimilarity.OtherRange.Start + 1, false);
+					textSelection.LineDown(true, _mainViewModel.SelectedSimilarity.OtherRange.Length - 1);
 					document.Activate();
 				}
 				catch
@@ -307,23 +307,23 @@ namespace CopyPasteKiller
 
 		private void method_7(object sender, RoutedEventArgs e)
 		{
-			if (this.mainViewModel_0 != null && this.mainViewModel_0.SelectedSimilarity != null && this.mainViewModel_0.SelectedSimilarity.OtherFile != null && !string.IsNullOrEmpty(this.mainViewModel_0.SelectedSimilarity.OtherFile.Path))
+			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.OtherFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.OtherFile.Path))
 			{
-				System.Windows.Clipboard.SetText(this.mainViewModel_0.SelectedSimilarity.OtherTextNoLines);
+				System.Windows.Clipboard.SetText(_mainViewModel.SelectedSimilarity.OtherTextNoLines);
 			}
 		}
 
 		public void AnnotationTextBox_SimilaritySelected(object sender, SimilaritySelectedEventArgs e)
 		{
-			this.mainViewModel_0.method_0(e.Similarity.MyFile);
-			this.mainViewModel_0.SelectedSimilarity = e.Similarity;
+			_mainViewModel.method_0(e.Similarity.MyFile);
+			_mainViewModel.SelectedSimilarity = e.Similarity;
 		}
 
 		private void method_8(object sender, RoutedEventArgs e)
 		{
 			using (StreamWriter streamWriter = new StreamWriter("ignoreCode.txt", true))
 			{
-				streamWriter.Write(this.mainViewModel_0.SelectedSimilarity.MyTextNoLines);
+				streamWriter.Write(_mainViewModel.SelectedSimilarity.MyTextNoLines);
 				streamWriter.Write("~~CPK Code Chunk Delimiter~~");
 			}
 		}
@@ -375,7 +375,7 @@ namespace CopyPasteKiller
 			{
 				using (StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName))
 				{
-					string value = XmlUtil.ConvertToXml(this.mainViewModel_0.Options);
+					string value = XmlUtil.ConvertToXml(_mainViewModel.Options);
 					streamWriter.Write(value);
 				}
 			}
@@ -383,28 +383,28 @@ namespace CopyPasteKiller
 
 		private void method_13(object sender, ExecuteRoutedEventArgs e)
 		{
-			if (new OptionsEdit(this.mainViewModel_0.Options).ShowDialog() == true)
+			if (new OptionsEdit(_mainViewModel.Options).ShowDialog() == true)
 			{
-				this.method_14(this.mainViewModel_0.Options);
+				this.method_14(_mainViewModel.Options);
 			}
 		}
 
-		private void method_14(Options options_0)
+		private void method_14(Options options)
 		{
-			AnalyzingWindow analyzingWindow = new AnalyzingWindow(options_0);
+			AnalyzingWindow analyzingWindow = new AnalyzingWindow(options);
 			analyzingWindow.ShowDialog();
 			if (analyzingWindow.Analysis.method_5())
 			{
-				if (this.wheelView_0 != null)
+				if (this.wheelView != null)
 				{
-					this.wheelView_0.Close();
+					this.wheelView.Close();
 				}
-				this.mainViewModel_0 = new MainViewModel();
-				this.mainViewModel_0.Options = options_0;
-				this.mainViewModel_0.RootDirectories = analyzingWindow.Analysis.RootDirectories;
-				this.mainViewModel_0.Files = analyzingWindow.Analysis.Files;
-				this.mainViewModel_0.SelectedFile = this.mainViewModel_0.Files.FirstOrDefault<CodeFile>();
-				base.DataContext = this.mainViewModel_0;
+				_mainViewModel = new MainViewModel();
+				_mainViewModel.Options = options;
+				_mainViewModel.RootDirectories = analyzingWindow.Analysis.RootDirectories;
+				_mainViewModel.Files = analyzingWindow.Analysis.Files;
+				_mainViewModel.SelectedFile = _mainViewModel.Files.FirstOrDefault<CodeFile>();
+				base.DataContext = _mainViewModel;
 			}
 			else if (analyzingWindow.Analysis.CaughtException != null)
 			{
@@ -415,7 +415,7 @@ namespace CopyPasteKiller
 
 		private void method_15(object sender, ExecuteRoutedEventArgs e)
 		{
-			if (this.mainViewModel_0.BlockCount > 1500)
+			if (_mainViewModel.BlockCount > 1500)
 			{
 				MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Whoa, it looks like you have *a lot* of duplicate code there. Drawing this much duplication on the wheel may take a long time to draw and will make interaction with the wheel very very slow. Are you sure you want to continue?", "Continue?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 				if (messageBoxResult != MessageBoxResult.Yes)
@@ -423,31 +423,31 @@ namespace CopyPasteKiller
 					return;
 				}
 			}
-			if (this.wheelView_0 == null)
+			if (wheelView == null)
 			{
-				WheelView wheelView = new WheelView(this.mainViewModel_0.Files, this.mainViewModel_0.RootDirectories.First<CodeDir>());
+				WheelView wheelView = new WheelView(_mainViewModel.Files, _mainViewModel.RootDirectories.First<CodeDir>());
 				wheelView.Closed += new EventHandler(this.method_18);
 				wheelView.CodeFileSelected += new EventHandler<CodeFileSelectedEventArgs>(this.method_17);
 				wheelView.SimilaritySelected += new EventHandler<SimilaritySelectedEventArgs>(this.method_16);
 				wheelView.Show();
-				this.wheelView_0 = wheelView;
+				this.wheelView = wheelView;
 			}
 			else
 			{
-				this.wheelView_0.Activate();
+				wheelView.Activate();
 			}
 		}
 
 		private void method_16(object sender, SimilaritySelectedEventArgs e)
 		{
-			this.mainViewModel_0.method_0(e.Similarity.MyFile);
-			this.mainViewModel_0.SelectedSimilarity = e.Similarity;
+			_mainViewModel.method_0(e.Similarity.MyFile);
+			_mainViewModel.SelectedSimilarity = e.Similarity;
 			base.Focus();
 		}
 
 		private void method_17(object sender, CodeFileSelectedEventArgs e)
 		{
-			this.mainViewModel_0.SelectedFile = e.CodeFile;
+			_mainViewModel.SelectedFile = e.CodeFile;
 			base.Focus();
 		}
 
@@ -457,7 +457,7 @@ namespace CopyPasteKiller
 			wheelView.Closed -= new EventHandler(this.method_18);
 			wheelView.CodeFileSelected -= new EventHandler<CodeFileSelectedEventArgs>(this.method_17);
 			wheelView.SimilaritySelected -= new EventHandler<SimilaritySelectedEventArgs>(this.method_16);
-			this.wheelView_0 = null;
+			this.wheelView = null;
 		}
 
 		private void method_19(object sender, RoutedEventArgs e)
@@ -468,18 +468,18 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!this.bool_1)
+			if (!_isInitialized)
 			{
-				this.bool_1 = true;
+				_isInitialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/window1.xaml", UriKind.Relative);
 				System.Windows.Application.LoadComponent(this, resourceLocator);
 			}
 		}
 
 		[DebuggerNonUserCode]
-		internal Delegate method_20(Type type_0, string string_2)
+		internal Delegate method_20(Type type, string str)
 		{
-			return Delegate.CreateDelegate(type_0, this, string_2);
+			return Delegate.CreateDelegate(type, this, str);
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never), DebuggerNonUserCode]
@@ -488,8 +488,8 @@ namespace CopyPasteKiller
 			switch (connectionId)
 			{
 			case 1:
-				this.button_0 = (ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target;
-				this.button_0.Click += new EventHandler<ExecuteRoutedEventArgs>(this.method_9);
+				button_0 = (ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target;
+				button_0.Click += new EventHandler<ExecuteRoutedEventArgs>(this.method_9);
 				break;
 			case 2:
 				((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.method_11);
@@ -504,28 +504,28 @@ namespace CopyPasteKiller
 				((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.method_15);
 				break;
 			case 6:
-				this.group_0 = (Group)target;
+				group = (Group)target;
 				break;
 			case 7:
 				((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.method_2);
 				break;
 			case 8:
-				this.dockSite_0 = (DockSite)target;
+				dockSite = (DockSite)target;
 				break;
 			case 9:
-				this.toolWindow_0 = (ToolWindow)target;
+				toolWindow = (ToolWindow)target;
 				break;
 			case 10:
-				this.noScrollTreeView_0 = (NoScrollTreeView)target;
+				noScrollTreeView = (NoScrollTreeView)target;
 				break;
 			case 11:
-				this.toolWindow_1 = (ToolWindow)target;
+				toolWindow_1 = (ToolWindow)target;
 				break;
 			case 12:
-				this.toolWindow_2 = (ToolWindow)target;
+				toolWindow_2 = (ToolWindow)target;
 				break;
 			case 13:
-				this.toolWindow_3 = (ToolWindow)target;
+				toolWindow_3 = (ToolWindow)target;
 				break;
 			case 14:
 				((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(this.method_4);
@@ -543,21 +543,21 @@ namespace CopyPasteKiller
 				((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(this.method_7);
 				break;
 			default:
-				this.bool_1 = true;
+				_isInitialized = true;
 				break;
 			}
 		}
 
 		[CompilerGenerated]
-		private bool method_21(Document document_0)
+		private bool method_21(Document document)
 		{
-			return document_0.FullName.ToLowerInvariant() == this.mainViewModel_0.SelectedSimilarity.MyFile.Path.ToLowerInvariant();
+			return document.FullName.ToLowerInvariant() == _mainViewModel.SelectedSimilarity.MyFile.Path.ToLowerInvariant();
 		}
 
 		[CompilerGenerated]
-		private bool method_22(Document document_0)
+		private bool method_22(Document document)
 		{
-			return document_0.FullName.ToLowerInvariant() == this.mainViewModel_0.SelectedSimilarity.OtherFile.Path.ToLowerInvariant();
+			return document.FullName.ToLowerInvariant() == _mainViewModel.SelectedSimilarity.OtherFile.Path.ToLowerInvariant();
 		}
 	}
 }
