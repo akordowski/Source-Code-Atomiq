@@ -111,9 +111,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler != null)
+			if (propertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 	}

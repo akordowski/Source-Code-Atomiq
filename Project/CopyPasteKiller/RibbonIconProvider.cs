@@ -42,6 +42,7 @@ namespace CopyPasteKiller
 		private ImageSource GetImage(string fileName)
 		{
 			ImageSource result;
+
 			if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\CrystalIcons\\32x32\\" + fileName))
 			{
 				BitmapImage bitmapImage = new BitmapImage();
@@ -58,6 +59,7 @@ namespace CopyPasteKiller
 				bitmapImage.EndInit();
 				result = bitmapImage;
 			}
+
 			return result;
 		}
 	}

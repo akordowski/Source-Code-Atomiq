@@ -10,6 +10,7 @@ namespace CopyPasteKiller
 			double num = 0.017453292519943295 * (angle - 90.0);
 			double x = radius * Math.Cos(num);
 			double y = radius * Math.Sin(num);
+
 			return new Point(x, y);
 		}
 
@@ -18,6 +19,7 @@ namespace CopyPasteKiller
 			Point result = Utils.ComputeCartesianCoordinate(angle, radius);
 			Point point = new Point(centerX, centerY);
 			result.Offset(point.X, point.Y);
+
 			return result;
 		}
 	}

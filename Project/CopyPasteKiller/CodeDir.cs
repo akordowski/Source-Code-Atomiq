@@ -14,22 +14,22 @@ namespace CopyPasteKiller
 		private PropertyChangedEventHandler PropertyChangedEventHandler;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, int> func_0;
+		private static Func<CodeFile, int> func0;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, int> func_1;
+		private static Func<CodeFile, int> func1;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, int> func_2;
+		private static Func<CodeFile, int> func2;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, int> func_3;
+		private static Func<CodeFile, int> func3;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, IEnumerable<Similarity>> func_4;
+		private static Func<CodeFile, IEnumerable<Similarity>> func4;
 
 		[CompilerGenerated]
-		private static Func<Similarity, CodeFile> func_5;
+		private static Func<Similarity, CodeFile> func5;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
@@ -37,6 +37,7 @@ namespace CopyPasteKiller
 			{
 				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
+
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
@@ -49,6 +50,7 @@ namespace CopyPasteKiller
 			{
 				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
+
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
@@ -66,6 +68,7 @@ namespace CopyPasteKiller
 			get
 			{
 				int result;
+
 				if (DirectParent == null)
 				{
 					result = 1;
@@ -74,6 +77,7 @@ namespace CopyPasteKiller
 				{
 					result = DirectParent.Depth + 1;
 				}
+
 				return result;
 			}
 		}
@@ -83,14 +87,16 @@ namespace CopyPasteKiller
 			get
 			{
 				CodeFile result;
-				if (this.Directories.Count > 0)
+
+				if (Directories.Count > 0)
 				{
-					result = this.Directories.First<CodeDir>().FirstDeepestFile;
+					result = Directories.First<CodeDir>().FirstDeepestFile;
 				}
 				else
 				{
-					result = this.Files.First<CodeFile>();
+					result = Files.First<CodeFile>();
 				}
+
 				return result;
 			}
 		}
@@ -102,6 +108,7 @@ namespace CopyPasteKiller
 			get
 			{
 				string result;
+
 				if (DirectParent == null)
 				{
 					result = "";
@@ -110,6 +117,7 @@ namespace CopyPasteKiller
 				{
 					result = DirectParent.ShortPath + "\\" + DirectParent.Name;
 				}
+
 				return result;
 			}
 		}
@@ -126,11 +134,12 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				if (CodeDir.func_0 == null)
+				if (CodeDir.func0 == null)
 				{
-					CodeDir.func_0 = new Func<CodeFile, int>(CodeDir.GetRawLines);
+					CodeDir.func0 = new Func<CodeFile, int>(CodeDir.GetRawLines);
 				}
-				return this.method_2(CodeDir.func_0);
+
+				return method2(CodeDir.func0);
 			}
 		}
 
@@ -138,11 +147,12 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				if (CodeDir.func_1 == null)
+				if (CodeDir.func1 == null)
 				{
-					CodeDir.func_1 = new Func<CodeFile, int>(CodeDir.GetProcessedLines);
+					CodeDir.func1 = new Func<CodeFile, int>(CodeDir.GetProcessedLines);
 				}
-				return this.method_2(CodeDir.func_1);
+
+				return method2(CodeDir.func1);
 			}
 		}
 
@@ -150,7 +160,8 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				HashSet<CodeFile> hashSet = this.method_0();
+				HashSet<CodeFile> hashSet = method0();
+
 				return hashSet.Count;
 			}
 		}
@@ -159,13 +170,15 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				HashSet<CodeFile> hashSet = this.method_1();
+				HashSet<CodeFile> hashSet = method1();
 				IEnumerable<CodeFile> codeFiles = hashSet;
-				if (CodeDir.func_2 == null)
+
+				if (CodeDir.func2 == null)
 				{
-					CodeDir.func_2 = new Func<CodeFile, int>(CodeDir.GetSimilaritiesCount);
+					CodeDir.func2 = new Func<CodeFile, int>(CodeDir.GetSimilaritiesCount);
 				}
-				return codeFiles.Sum(CodeDir.func_2);
+
+				return codeFiles.Sum(CodeDir.func2);
 			}
 		}
 
@@ -173,11 +186,12 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				if (CodeDir.func_3 == null)
+				if (CodeDir.func3 == null)
 				{
-					CodeDir.func_3 = new Func<CodeFile, int>(CodeDir.GetHashesLength);
+					CodeDir.func3 = new Func<CodeFile, int>(CodeDir.GetHashesLength);
 				}
-				return this.method_2(CodeDir.func_3);
+
+				return method2(CodeDir.func3);
 			}
 		}
 
@@ -202,65 +216,74 @@ namespace CopyPasteKiller
 		public int GetAllFilesCount()
 		{
 			int num = Files.Count;
+
 			foreach (CodeDir codeDir in Directories)
 			{
 				num += codeDir.GetAllFilesCount();
 			}
+
 			return num;
 		}
 
-		private HashSet<CodeFile> method_0()
+		private HashSet<CodeFile> method0()
 		{
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
 			IEnumerable<CodeFile> files = Files;
-			if (CodeDir.func_4 == null)
+
+			if (CodeDir.func4 == null)
 			{
-				CodeDir.func_4 = new Func<CodeFile, IEnumerable<Similarity>>(CodeDir.GetSimilarities);
+				CodeDir.func4 = new Func<CodeFile, IEnumerable<Similarity>>(CodeDir.GetSimilarities);
 			}
-			IEnumerable<Similarity> arg_4B_0 = files.SelectMany(CodeDir.func_4);
-			if (CodeDir.func_5 == null)
+
+			IEnumerable<Similarity> similarities = files.SelectMany(CodeDir.func4);
+
+			if (CodeDir.func5 == null)
 			{
-				CodeDir.func_5 = new Func<Similarity, CodeFile>(CodeDir.GetOtherFile);
+				CodeDir.func5 = new Func<Similarity, CodeFile>(CodeDir.GetOtherFile);
 			}
-			IEnumerable<CodeFile> range = arg_4B_0.Select(CodeDir.func_5);
+
+			IEnumerable<CodeFile> range = similarities.Select(CodeDir.func5);
 			hashSet.AddRange(range);
+
 			foreach (CodeDir current in Directories)
 			{
-				range = current.method_0();
+				range = current.method0();
 				hashSet.AddRange(range);
 			}
 			return hashSet;
 		}
 
-		private HashSet<CodeFile> method_1()
+		private HashSet<CodeFile> method1()
 		{
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
 			hashSet.AddRange(Files);
 
 			foreach (CodeDir current in Directories)
 			{
-				HashSet<CodeFile> range = current.method_1();
+				HashSet<CodeFile> range = current.method1();
 				hashSet.AddRange(range);
 			}
 
 			return hashSet;
 		}
 
-		private int method_2(Func<CodeFile, int> sumFunc)
+		private int method2(Func<CodeFile, int> sumFunc)
 		{
 			int num = Files.Sum(sumFunc);
+
 			foreach (CodeDir current in Directories)
 			{
-				num += current.method_2(sumFunc);
+				num += current.method2(sumFunc);
 			}
+
 			return num;
 		}
 
 		private void OnPropertyChanged(string str)
 		{
-			if (this.PropertyChangedEventHandler != null)
+			if (PropertyChangedEventHandler != null)
 			{
-				this.PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 

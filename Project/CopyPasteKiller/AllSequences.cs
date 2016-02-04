@@ -10,7 +10,8 @@ namespace CopyPasteKiller
 		public void AddCoordToAppropriateSequence(Coord coord)
 		{
 			bool flag = false;
-			foreach (Sequence current in this.Sequences)
+
+			foreach (Sequence current in Sequences)
 			{
 				if (current.LastCoord.I + 1 == coord.I && current.LastCoord.J + 1 == coord.J)
 				{
@@ -19,9 +20,10 @@ namespace CopyPasteKiller
 					break;
 				}
 			}
+
 			if (!flag)
 			{
-				this.Sequences.Add(new Sequence
+				Sequences.Add(new Sequence
 				{
 					FirstCoord = new Coord
 					{

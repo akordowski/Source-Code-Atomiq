@@ -9,7 +9,7 @@ namespace CopyPasteKiller
 	public class Similarity
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private static Regex regex_0;
+		private static Regex regex0;
 
 		public CodeFile MyFile { get; set; }
 
@@ -67,7 +67,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.method_1(MyFile, MyHashIndexRange);
+				return method1(MyFile, MyHashIndexRange);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.method_1(OtherFile, OtherHashIndexRange);
+				return method1(OtherFile, OtherHashIndexRange);
 			}
 		}
 
@@ -85,13 +85,14 @@ namespace CopyPasteKiller
 
 		public void SetLineRanges()
 		{
-			MyRange = this.method_0(MyFile, MyHashIndexRange, MyRange);
-			OtherRange = this.method_0(OtherFile, OtherHashIndexRange, OtherRange);
+			MyRange = method0(MyFile, MyHashIndexRange, MyRange);
+			OtherRange = method0(OtherFile, OtherHashIndexRange, OtherRange);
 		}
 
-		private LineRange method_0(CodeFile codeFile, HashIndexRange hashIndexRange, LineRange lineRange)
+		private LineRange method0(CodeFile codeFile, HashIndexRange hashIndexRange, LineRange lineRange)
 		{
 			lineRange.Start = codeFile.HashIndexToLineIndex[hashIndexRange.Start];
+
 			if (codeFile.HashIndexToLineIndex.Length <= hashIndexRange.End)
 			{
 				lineRange.End = codeFile.HashIndexToLineIndex[codeFile.HashIndexToLineIndex.Length - 1];
@@ -100,40 +101,46 @@ namespace CopyPasteKiller
 			{
 				lineRange.End = codeFile.HashIndexToLineIndex[hashIndexRange.End];
 			}
+
 			return lineRange;
 		}
 
 		public string GetText(CodeFile file, LineRange range)
 		{
-			return this.GetText(file, range, true);
+			return GetText(file, range, true);
 		}
 
 		public string GetText(CodeFile file, LineRange range, bool includeLineNumbers)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			int num = 1000;
+
 			for (int i = range.Start; i < range.End; i++)
 			{
-				if (!Similarity.regex_0.IsMatch(file.Lines[i]))
+				if (!Similarity.regex0.IsMatch(file.Lines[i]))
 				{
 					string text = file.Lines[i];
 					int num2 = 0;
+
 					while (num2 < text.Length && text[num2] == ' ')
 					{
 						num2++;
 					}
+
 					if (num > num2)
 					{
 						num = num2;
 					}
 				}
 			}
+
 			for (int i = range.Start; i < range.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
+
 				if (includeLineNumbers)
 				{
 					if (file.Lines[i].Length <= num)
@@ -154,12 +161,14 @@ namespace CopyPasteKiller
 					stringBuilder.Append("\t" + file.Lines[i].Substring(num));
 				}
 			}
+
 			return stringBuilder.ToString();
 		}
 
-		private string method_1(CodeFile codeFile, HashIndexRange hashIndexRange)
+		private string method1(CodeFile codeFile, HashIndexRange hashIndexRange)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
+
 			for (int i = hashIndexRange.Start; i < hashIndexRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
@@ -170,39 +179,47 @@ namespace CopyPasteKiller
 				{
 					break;
 				}
+
 				stringBuilder.Append(codeFile.Hashes[i].ToString().PadLeft(13, ' ') + "  " + codeFile.HashToLine[codeFile.Hashes[i]]);
 			}
+
 			return stringBuilder.ToString();
 		}
 
 		public string GetSimilarText()
 		{
 			StringBuilder stringBuilder = new StringBuilder();
+
 			for (int i = MyRange.Start; i < MyRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
+
 				stringBuilder.Append(MyFile.Lines[i]);
 			}
+
 			stringBuilder.AppendLine();
 			stringBuilder.AppendLine("********************");
 			stringBuilder.AppendLine();
+
 			for (int i = OtherRange.Start; i < OtherRange.End; i++)
 			{
 				if (stringBuilder.Length != 0)
 				{
 					stringBuilder.AppendLine();
 				}
+
 				stringBuilder.Append(OtherFile.Lines[i]);
 			}
+
 			return stringBuilder.ToString();
 		}
 
 		static Similarity()
 		{
-			Similarity.regex_0 = new Regex("^\\s*$", RegexOptions.Compiled);
+			Similarity.regex0 = new Regex("^\\s*$", RegexOptions.Compiled);
 		}
 	}
 }

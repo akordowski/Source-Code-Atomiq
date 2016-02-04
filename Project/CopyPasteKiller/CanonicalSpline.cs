@@ -7,7 +7,7 @@ namespace CopyPasteKiller
 {
 	public class CanonicalSpline : Shape
 	{
-		private PathGeometry pathGeometry_0;
+		private PathGeometry _pathGeometry;
 
 		public static readonly DependencyProperty PointsProperty;
 
@@ -111,45 +111,46 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.pathGeometry_0;
+				return _pathGeometry;
 			}
 		}
 
-		private static void smethod_0(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+		private static void smethod0(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			(dependencyObject as CanonicalSpline).method_0(eventArgs);
+			(dependencyObject as CanonicalSpline).method0(eventArgs);
 		}
 
-		private void method_0(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs_0)
+		private void method0(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
-			this.pathGeometry_0 = CanonicalSplineHelper.smethod_0(Points, Tension, Tensions, IsClosed, IsFilled, Tolerance);
+			_pathGeometry = CanonicalSplineHelper.smethod0(Points, Tension, Tensions, IsClosed, IsFilled, Tolerance);
 			base.InvalidateMeasure();
-			this.method_1(dependencyPropertyChangedEventArgs_0);
+			method1(dependencyPropertyChangedEventArgs);
 		}
 
-		private static void smethod_1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+		private static void smethod1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
-			(dependencyObject as CanonicalSpline).method_1(eventArgs);
+			(dependencyObject as CanonicalSpline).method1(eventArgs);
 		}
 
-		private void method_1(DependencyPropertyChangedEventArgs eventArgs)
+		private void method1(DependencyPropertyChangedEventArgs eventArgs)
 		{
-			if (this.pathGeometry_0 != null)
+			if (_pathGeometry != null)
 			{
-				this.pathGeometry_0.FillRule = this.FillRule;
+				_pathGeometry.FillRule = FillRule;
 			}
+
 			base.InvalidateVisual();
 		}
 
 		static CanonicalSpline()
 		{
-			CanonicalSpline.PointsProperty = Polyline.PointsProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
-			CanonicalSpline.TensionProperty = DependencyProperty.Register("Tension", typeof(double), typeof(CanonicalSpline), new FrameworkPropertyMetadata(0.5, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
-			CanonicalSpline.TensionsProperty = DependencyProperty.Register("Tensions", typeof(DoubleCollection), typeof(CanonicalSpline), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
-			CanonicalSpline.IsClosedProperty = PathFigure.IsClosedProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(false, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
-			CanonicalSpline.IsFilledProperty = PathFigure.IsFilledProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(false, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
-			CanonicalSpline.FillRuleProperty = Polyline.FillRuleProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(FillRule.EvenOdd, new PropertyChangedCallback(CanonicalSpline.smethod_1)));
-			CanonicalSpline.ToleranceProperty = DependencyProperty.Register("Tolerance", typeof(double), typeof(CanonicalSpline), new FrameworkPropertyMetadata(Geometry.StandardFlatteningTolerance, new PropertyChangedCallback(CanonicalSpline.smethod_0)));
+			CanonicalSpline.PointsProperty = Polyline.PointsProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(CanonicalSpline.smethod0)));
+			CanonicalSpline.TensionProperty = DependencyProperty.Register("Tension", typeof(double), typeof(CanonicalSpline), new FrameworkPropertyMetadata(0.5, new PropertyChangedCallback(CanonicalSpline.smethod0)));
+			CanonicalSpline.TensionsProperty = DependencyProperty.Register("Tensions", typeof(DoubleCollection), typeof(CanonicalSpline), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(CanonicalSpline.smethod0)));
+			CanonicalSpline.IsClosedProperty = PathFigure.IsClosedProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(false, new PropertyChangedCallback(CanonicalSpline.smethod0)));
+			CanonicalSpline.IsFilledProperty = PathFigure.IsFilledProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(false, new PropertyChangedCallback(CanonicalSpline.smethod0)));
+			CanonicalSpline.FillRuleProperty = Polyline.FillRuleProperty.AddOwner(typeof(CanonicalSpline), new FrameworkPropertyMetadata(FillRule.EvenOdd, new PropertyChangedCallback(CanonicalSpline.smethod1)));
+			CanonicalSpline.ToleranceProperty = DependencyProperty.Register("Tolerance", typeof(double), typeof(CanonicalSpline), new FrameworkPropertyMetadata(Geometry.StandardFlatteningTolerance, new PropertyChangedCallback(CanonicalSpline.smethod0)));
 		}
 	}
 }

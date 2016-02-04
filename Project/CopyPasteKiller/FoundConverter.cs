@@ -9,6 +9,7 @@ namespace CopyPasteKiller
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			object result;
+
 			if (!(value is int))
 			{
 				result = value;
@@ -18,6 +19,7 @@ namespace CopyPasteKiller
 				int num = (int)value;
 				result = num.NumShortener();
 			}
+
 			return result;
 		}
 

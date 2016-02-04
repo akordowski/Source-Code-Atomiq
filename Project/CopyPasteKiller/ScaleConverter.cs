@@ -25,6 +25,7 @@ namespace CopyPasteKiller
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			object result;
+
 			if (value is double)
 			{
 				result = ScaleConverter.Scale((double)value, OldMin, OldMax, NewMin, NewMax);
@@ -33,6 +34,7 @@ namespace CopyPasteKiller
 			{
 				result = null;
 			}
+
 			return result;
 		}
 

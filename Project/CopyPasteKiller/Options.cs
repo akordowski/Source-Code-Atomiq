@@ -11,9 +11,9 @@ namespace CopyPasteKiller
 {
 	public class Options : INotifyPropertyChanged
 	{
-		private string string_0 = "[Tt]est\r\nAssemblyInfo\\.(vb|cs)$\r\n\\.g\\.(vb|cs)$\r\n\\.g\\.i\\.(vb|cs)$\r\n\\.Designer\\.(vb|cs)$";
+		private string _excludeFileRegexes = "[Tt]est\r\nAssemblyInfo\\.(vb|cs)$\r\n\\.g\\.(vb|cs)$\r\n\\.g\\.i\\.(vb|cs)$\r\n\\.Designer\\.(vb|cs)$";
 
-		private ObservableCollection<string> observableCollection_0 = new ObservableCollection<string>
+		private ObservableCollection<string> _availableSearchPatterns = new ObservableCollection<string>
 		{
 			"*.cs",
 			"*.vb",
@@ -30,38 +30,38 @@ namespace CopyPasteKiller
 			"*.*"
 		};
 
-		private string string_1 = "*.cs";
+		private string _fileSearchPattern = "*.cs";
 
-		private string string_2 = "";
+		private string _directory = "";
 
-		private int int_0 = 10;
+		private int _minSimilarityLineLength = 10;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler_0;
+		private PropertyChangedEventHandler propertyChangedEventHandler;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler_0;
+				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler_0, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -71,14 +71,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.string_0;
+				return _excludeFileRegexes;
 			}
 			set
 			{
-				if (this.string_0 != value)
+				if (_excludeFileRegexes != value)
 				{
-					this.string_0 = value;
-					this.method_0("ExcludeFileRegexes");
+					_excludeFileRegexes = value;
+					OnPropertyChanged("ExcludeFileRegexes");
 				}
 			}
 		}
@@ -88,7 +88,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.observableCollection_0;
+				return _availableSearchPatterns;
 			}
 		}
 
@@ -96,14 +96,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.string_1;
+				return _fileSearchPattern;
 			}
 			set
 			{
-				if (this.observableCollection_0.Contains(value) && this.string_1 != value)
+				if (_availableSearchPatterns.Contains(value) && _fileSearchPattern != value)
 				{
-					this.string_1 = value;
-					this.method_0("FileSearchPattern");
+					_fileSearchPattern = value;
+					OnPropertyChanged("FileSearchPattern");
 				}
 			}
 		}
@@ -112,14 +112,14 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.string_2;
+				return _directory;
 			}
 			set
 			{
-				if (this.string_2 != value)
+				if (_directory != value)
 				{
-					this.string_2 = value;
-					this.method_0("Directory");
+					_directory = value;
+					OnPropertyChanged("Directory");
 				}
 			}
 		}
@@ -128,26 +128,28 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return this.int_0;
+				return _minSimilarityLineLength;
 			}
 			set
 			{
-				if (this.int_0 != value)
+				if (_minSimilarityLineLength != value)
 				{
-					this.int_0 = value;
-					this.method_0("MinSimilarityLineLength");
+					_minSimilarityLineLength = value;
+					OnPropertyChanged("MinSimilarityLineLength");
 				}
 			}
 		}
 
 		public string ValidateRegexes()
 		{
-			string[] array = Regex.Split(this.ExcludeFileRegexes, "\\r?\\n");
+			string[] array = Regex.Split(ExcludeFileRegexes, "\\r?\\n");
 			StringBuilder stringBuilder = new StringBuilder();
 			string[] array2 = array;
+
 			for (int i = 0; i < array2.Length; i++)
 			{
 				string text = array2[i];
+
 				if (!(text.Trim() == ""))
 				{
 					try
@@ -164,6 +166,7 @@ namespace CopyPasteKiller
 					}
 				}
 			}
+
 			return stringBuilder.ToString();
 		}
 
@@ -172,23 +175,26 @@ namespace CopyPasteKiller
 			List<Regex> list = new List<Regex>();
 			string[] array = Regex.Split(this.ExcludeFileRegexes, "\\r?\\n");
 			string[] array2 = array;
+
 			for (int i = 0; i < array2.Length; i++)
 			{
 				string text = array2[i];
+
 				if (!(text.Trim() == ""))
 				{
 					Regex item = new Regex(text, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 					list.Add(item);
 				}
 			}
+
 			return list;
 		}
 
-		private void method_0(string string_3)
+		private void OnPropertyChanged(string str)
 		{
-			if (this.propertyChangedEventHandler_0 != null)
+			if (propertyChangedEventHandler != null)
 			{
-				this.propertyChangedEventHandler_0(this, new PropertyChangedEventArgs(string_3));
+				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 	}

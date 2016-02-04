@@ -11,18 +11,18 @@ namespace CopyPasteKiller
 	{
 		public static double TextHeight;
 
-		private static Brush brush_0;
+		private static Brush brush1;
 
-		private static Brush brush_1;
+		private static Brush brush2;
 
-		internal static double double_0;
+		internal static double double1;
 
-		internal static double double_1;
+		internal static double double2;
 
-		private double double_2;
+		private double double3;
 
 		[CompilerGenerated]
-		private static Func<Annotation, double> func_0;
+		private static Func<Annotation, double> func0;
 
 		public CodeFile CodeFile { get; private set; }
 
@@ -46,45 +46,52 @@ namespace CopyPasteKiller
 			Similarity = sim;
 			Height = (double)sim.MyRange.Length * Annotation.TextHeight;
 			Top = (double)sim.MyRange.Start * Annotation.TextHeight;
-			this.double_2 = Top + Height;
+			double3 = Top + Height;
+
 			if (file == sim.OtherFile)
 			{
-				Brush = Annotation.brush_1;
+				Brush = Annotation.brush2;
 			}
 			else
 			{
-				Brush = Annotation.brush_0;
+				Brush = Annotation.brush1;
 			}
+
 			if (func == null)
 			{
-				func = new Func<Annotation, bool>(this.method_0);
+				func = new Func<Annotation, bool>(method0);
 			}
+
 			List<Annotation> list = existingAnnotations.Where(func).ToList<Annotation>();
+
 			if (list.Count == 0)
 			{
-				Left = Annotation.double_1 + 2.0;
+				Left = Annotation.double2 + 2.0;
 			}
 			else
 			{
-				IEnumerable<Annotation> arg_EE_0 = list;
-				if (Annotation.func_0 == null)
+				IEnumerable<Annotation> annotations = list;
+
+				if (Annotation.func0 == null)
 				{
-					Annotation.func_0 = new Func<Annotation, double>(Annotation.smethod_0);
+					Annotation.func0 = new Func<Annotation, double>(Annotation.smethod0);
 				}
-				double num = arg_EE_0.Max(Annotation.func_0);
-				Left = num + Annotation.double_1 + Annotation.double_0;
+
+				double num = annotations.Max(Annotation.func0);
+				Left = num + Annotation.double2 + Annotation.double1;
 			}
+
 			Margin = new Thickness(Left, Top, 0.0, 0.0);
 		}
 
 		[CompilerGenerated]
-		private bool method_0(Annotation annotation)
+		private bool method0(Annotation annotation)
 		{
-			return Top <= annotation.double_2 && double_2 >= annotation.Top;
+			return Top <= annotation.double3 && double3 >= annotation.Top;
 		}
 
 		[CompilerGenerated]
-		private static double smethod_0(Annotation annotation)
+		private static double smethod0(Annotation annotation)
 		{
 			return annotation.Left;
 		}
@@ -92,10 +99,10 @@ namespace CopyPasteKiller
 		static Annotation()
 		{
 			Annotation.TextHeight = 12.885;
-			Annotation.brush_0 = new SolidColorBrush(Color.FromArgb(255, 17, 112, 189));
-			Annotation.brush_1 = new SolidColorBrush(Color.FromArgb(255, 200, 44, 38));
-			Annotation.double_0 = 5.0;
-			Annotation.double_1 = 3.0;
+			Annotation.brush1 = new SolidColorBrush(Color.FromArgb(255, 17, 112, 189));
+			Annotation.brush2 = new SolidColorBrush(Color.FromArgb(255, 200, 44, 38));
+			Annotation.double1 = 5.0;
+			Annotation.double2 = 3.0;
 		}
 	}
 }

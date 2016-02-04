@@ -31,14 +31,17 @@ namespace CopyPasteKiller
 			{
 				OpenDirectory = directory;
 				int num = 0;
+
 				using (StreamWriter streamWriter = new StreamWriter("RecentDirectories.txt"))
 				{
 					streamWriter.WriteLine(OpenDirectory);
+
 					foreach (string current in RecentDirectories)
 					{
 						if (!(OpenDirectory == current))
 						{
 							streamWriter.WriteLine(current);
+
 							if (num++ >= 10)
 							{
 								break;

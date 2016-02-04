@@ -12,241 +12,138 @@ namespace CopyPasteKiller
 {
 	public class Analysis
 	{
-		private Thread thread_0;
-
-		private string string_0;
-
-		private Action action_0;
-
-		private Action action_1;
-
-		private Action<string> action_2;
-
-		private Action<int, int, string> action_3;
-
-		private Action<int> action_4;
-
-		private ObservableCollection<CodeDir> observableCollection_0 = new ObservableCollection<CodeDir>();
-
-		private ObservableCollection<CodeFile> observableCollection_1 = new ObservableCollection<CodeFile>();
-
-		private Options options_0;
+		private Thread _thread;
 
 		private bool bool_0 = false;
 
-		private Exception exception_0;
+		internal static int int0;
 
-		internal static int int_0;
-
-		private static int int_1;
+		private static int int1;
 
 		[CompilerGenerated]
-		private static Func<CodeDir, bool> func_0;
+		private static Func<CodeDir, bool> func0;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, bool> func_1;
+		private static Func<CodeFile, bool> func1;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, bool> func_2;
+		private static Func<CodeFile, bool> func2;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, int> func_3;
+		private static Func<CodeFile, int> func3;
 
-		public string Path
-		{
-			get
-			{
-				return this.string_0;
-			}
-			set
-			{
-				this.string_0 = value;
-			}
-		}
+		public string Path { get; set; }
 
-		public Action Done
-		{
-			get
-			{
-				return this.action_0;
-			}
-			set
-			{
-				this.action_0 = value;
-			}
-		}
+		public Action Done { get; set; }
 
-		public Action IncrementProgressValue
-		{
-			get
-			{
-				return this.action_1;
-			}
-			set
-			{
-				this.action_1 = value;
-			}
-		}
+		public Action IncrementProgressValue { get; set; }
 
-		public Action<string> AlertAction
-		{
-			get
-			{
-				return this.action_2;
-			}
-			set
-			{
-				this.action_2 = value;
-			}
-		}
+		public Action<string> AlertAction { get; set; }
 
-		public Action<int, int, string> UpdateProgressAction
-		{
-			get
-			{
-				return this.action_3;
-			}
-			set
-			{
-				this.action_3 = value;
-			}
-		}
+		public Action<int, int, string> UpdateProgressAction { get; set; }
 
-		public Action<int> UpdateProgressValue
-		{
-			get
-			{
-				return this.action_4;
-			}
-			set
-			{
-				this.action_4 = value;
-			}
-		}
+		public Action<int> UpdateProgressValue { get; set; }
 
-		public ObservableCollection<CodeDir> RootDirectories
-		{
-			get
-			{
-				return this.observableCollection_0;
-			}
-			set
-			{
-				this.observableCollection_0 = value;
-			}
-		}
+		public ObservableCollection<CodeDir> RootDirectories { get; set; }
 
-		public ObservableCollection<CodeFile> Files
-		{
-			get
-			{
-				return this.observableCollection_1;
-			}
-		}
+		public ObservableCollection<CodeFile> Files { get; private set; }
 
-		public Options Options
-		{
-			get
-			{
-				return this.options_0;
-			}
-			set
-			{
-				this.options_0 = value;
-			}
-		}
+		public Options Options { get; set; }
 
-		public Exception CaughtException
-		{
-			get
-			{
-				return this.exception_0;
-			}
-			set
-			{
-				this.exception_0 = value;
-			}
-		}
+		public Exception CaughtException { get; set; }
 
 		public Analysis(string path)
 		{
-			this.string_0 = path;
+			Path = path;
 		}
 
-		internal void method_0()
+		internal void StartNewThread()
 		{
-			this.thread_0 = new Thread(new ThreadStart(this.method_10));
-			this.thread_0.Start();
+			_thread = new Thread(new ThreadStart(ThreadStartDelegate));
+			_thread.Start();
 		}
 
-		internal void method_1()
+		internal void AbortThread()
 		{
-			if (this.thread_0 != null && this.thread_0.IsAlive)
+			if (_thread != null && _thread.IsAlive)
 			{
-				this.thread_0.Abort();
+				_thread.Abort();
 			}
 		}
 
-		private static int smethod_0(Similarity similarity_0, Similarity similarity_1)
+		private static int CompareSimilarity(Similarity similarity1, Similarity similarity2)
 		{
-			return similarity_0.MyRange.Start.CompareTo(similarity_1.MyRange.Start);
+			return similarity1.MyRange.Start.CompareTo(similarity2.MyRange.Start);
 		}
 
-		private void method_2(CodeDir codeDir_0)
+		private void method2(CodeDir codeDir0)
 		{
-			foreach (CodeDir codeDir in codeDir_0.Directories)
+			foreach (CodeDir codeDir in codeDir0.Directories)
 			{
-				this.method_2(codeDir);
+				method2(codeDir);
 			}
-			IEnumerable<CodeDir> arg_59_0 = codeDir_0.Directories;
-			if (Analysis.func_0 == null)
+
+			IEnumerable<CodeDir> directories = codeDir0.Directories;
+
+			if (Analysis.func0 == null)
 			{
-				Analysis.func_0 = new Func<CodeDir, bool>(Analysis.smethod_5);
+				Analysis.func0 = new Func<CodeDir, bool>(Analysis.smethod5);
 			}
-			CodeDir[] array = arg_59_0.Where(Analysis.func_0).ToArray<CodeDir>();
+
+			CodeDir[] array = directories.Where(Analysis.func0).ToArray<CodeDir>();
+
 			for (int i = 0; i < array.Length; i++)
 			{
 				CodeDir codeDir = array[i];
-				codeDir_0.Directories.Remove(codeDir);
-				codeDir_0.ItemCollection.Remove(codeDir);
+				codeDir0.Directories.Remove(codeDir);
+				codeDir0.ItemCollection.Remove(codeDir);
 			}
-			IEnumerable<CodeFile> arg_BB_0 = codeDir_0.Files;
-			if (Analysis.func_1 == null)
+
+			IEnumerable<CodeFile> files = codeDir0.Files;
+
+			if (Analysis.func1 == null)
 			{
-				Analysis.func_1 = new Func<CodeFile, bool>(Analysis.smethod_6);
+				Analysis.func1 = new Func<CodeFile, bool>(Analysis.smethod6);
 			}
-			CodeFile[] array2 = arg_BB_0.Where(Analysis.func_1).ToArray<CodeFile>();
-			for (int i = 0; i < array2.Length; i++)
+
+			CodeFile[] filteredFiles = files.Where(Analysis.func1).ToArray<CodeFile>();
+
+			for (int i = 0; i < filteredFiles.Length; i++)
 			{
-				CodeFile item = array2[i];
-				codeDir_0.Files.Remove(item);
-				codeDir_0.ItemCollection.Remove(item);
+				CodeFile file = filteredFiles[i];
+				codeDir0.Files.Remove(file);
+				codeDir0.ItemCollection.Remove(file);
 			}
 		}
 
-		private void method_3()
+		private void method3()
 		{
-			ICollection<CodeFile> arg_23_0 = this.Files;
-			if (Analysis.func_2 == null)
+			ICollection<CodeFile> files = Files;
+
+			if (Analysis.func2 == null)
 			{
-				Analysis.func_2 = new Func<CodeFile, bool>(Analysis.smethod_7);
+				Analysis.func2 = new Func<CodeFile, bool>(Analysis.smethod7);
 			}
-			arg_23_0.RemoveWhere(Analysis.func_2);
+
+			files.RemoveWhere(Analysis.func2);
 		}
 
-		private CodeDir method_4(DirectoryInfo directoryInfo_0, int int_2, string string_1)
+		private CodeDir method4(DirectoryInfo directoryInfo, int intValue, string shortPath)
 		{
 			CodeDir codeDir = new CodeDir
 			{
-				Path = directoryInfo_0.FullName,
-				Name = directoryInfo_0.Name
+				Path = directoryInfo.FullName,
+				Name = directoryInfo.Name
 			};
-			string_1 = string_1 + "\\" + directoryInfo_0.Name;
-			DirectoryInfo[] directories = directoryInfo_0.GetDirectories();
+
+			shortPath = shortPath + "\\" + directoryInfo.Name;
+			DirectoryInfo[] directories = directoryInfo.GetDirectories();
+
 			for (int i = 0; i < directories.Length; i++)
 			{
-				DirectoryInfo directoryInfo_ = directories[i];
-				CodeDir codeDir2 = this.method_4(directoryInfo_, int_2, string_1);
+				DirectoryInfo dirInfo = directories[i];
+				CodeDir codeDir2 = method4(dirInfo, intValue, shortPath);
+
 				if (codeDir2 != null)
 				{
 					codeDir2.DirectParent = codeDir;
@@ -254,12 +151,15 @@ namespace CopyPasteKiller
 					codeDir.ItemCollection.Add(codeDir2);
 				}
 			}
-			List<Regex> excludeRegexes = this.options_0.GetExcludeRegexes();
-			FileInfo[] files = directoryInfo_0.GetFiles(this.options_0.FileSearchPattern, SearchOption.TopDirectoryOnly);
+
+			List<Regex> excludeRegexes = Options.GetExcludeRegexes();
+			FileInfo[] files = directoryInfo.GetFiles(Options.FileSearchPattern, SearchOption.TopDirectoryOnly);
+
 			for (int i = 0; i < files.Length; i++)
 			{
 				FileInfo fileInfo = files[i];
 				bool flag = false;
+
 				for (int j = 0; j < excludeRegexes.Count; j++)
 				{
 					if (excludeRegexes[j].IsMatch(fileInfo.FullName))
@@ -267,22 +167,27 @@ namespace CopyPasteKiller
 						flag = true;
 					}
 				}
+
 				if (!flag)
 				{
-					this.IncrementProgressValue();
+					IncrementProgressValue();
 					string code = null;
+
 					using (StreamReader streamReader = new StreamReader(fileInfo.FullName))
 					{
 						code = streamReader.ReadToEnd();
 					}
+
 					CodeFile codeFile = new CodeFile(fileInfo.FullName, code, codeDir);
-					codeFile.ShortPath = string_1;
-					this.observableCollection_1.Add(codeFile);
+					codeFile.ShortPath = shortPath;
+					Files.Add(codeFile);
 					codeDir.Files.Add(codeFile);
 					codeDir.ItemCollection.Add(codeFile);
 				}
 			}
+
 			CodeDir result;
+
 			if (codeDir.GetAllFilesCount() == 0)
 			{
 				result = null;
@@ -291,22 +196,24 @@ namespace CopyPasteKiller
 			{
 				result = codeDir;
 			}
+
 			return result;
 		}
 
-		internal bool method_5()
+		internal bool method5()
 		{
-			return this.bool_0;
+			return bool_0;
 		}
 
-		internal void method_6(bool value)
+		internal void method6(bool value)
 		{
-			this.bool_0 = value;
+			bool_0 = value;
 		}
 
 		public static string FindLcs(string str1, string str2)
 		{
 			string result;
+
 			if (string.IsNullOrEmpty(str1) || string.IsNullOrEmpty(str2))
 			{
 				result = "";
@@ -317,6 +224,7 @@ namespace CopyPasteKiller
 				int num = 0;
 				int num2 = 0;
 				StringBuilder stringBuilder = new StringBuilder();
+
 				for (int i = 0; i < str1.Length; i++)
 				{
 					for (int j = 0; j < str2.Length; j++)
@@ -353,37 +261,45 @@ namespace CopyPasteKiller
 						}
 					}
 				}
+
 				Builder builder = new Builder("\r\n");
 				Builder builder2 = new Builder(".");
+
 				for (int i = 0; i < str1.Length; i++)
 				{
 					builder2.Clear();
+
 					for (int j = 0; j < str2.Length; j++)
 					{
 						builder2.Append(array[i, j].ToString().PadLeft(2, ' '));
 					}
+
 					builder.Append(builder2);
 				}
+
 				result = stringBuilder.ToString();
 			}
+
 			return result;
 		}
 
-		internal static AllSequences smethod_1(CodeFile codeFile_0, CodeFile codeFile_1, int int_2)
+		internal static AllSequences smethod1(CodeFile codeFile1, CodeFile codeFile2, int intValue)
 		{
 			AllSequences result;
-			if (codeFile_0 == codeFile_1)
+
+			if (codeFile1 == codeFile2)
 			{
-				result = Analysis.smethod_2(codeFile_0, int_2);
+				result = Analysis.smethod2(codeFile1, intValue);
 			}
 			else
 			{
-				int[] hashes = codeFile_0.Hashes;
-				int[] hashes2 = codeFile_1.Hashes;
+				int[] hashes = codeFile1.Hashes;
+				int[] hashes2 = codeFile2.Hashes;
 				AllSequences allSequences = new AllSequences();
+
 				if (hashes.Intersect(hashes2).Count<int>() == 0)
 				{
-					Analysis.int_0++;
+					Analysis.int0++;
 					result = allSequences;
 				}
 				else if (hashes.Length == 0 || hashes2.Length == 0)
@@ -394,6 +310,7 @@ namespace CopyPasteKiller
 				{
 					int[] array = new int[hashes2.Length];
 					int[] array2 = new int[hashes2.Length];
+
 					for (int i = 0; i < hashes.Length; i++)
 					{
 						for (int j = 0; j < hashes2.Length; j++)
@@ -412,7 +329,7 @@ namespace CopyPasteKiller
 								{
 									array2[j] = 1 + array[j - 1];
 								}
-								if (array2[j] > int_2)
+								if (array2[j] > intValue)
 								{
 									allSequences.AddCoordToAppropriateSequence(new Coord
 									{
@@ -423,22 +340,26 @@ namespace CopyPasteKiller
 								}
 							}
 						}
+
 						int[] array3 = array;
 						array = array2;
 						array2 = array3;
 					}
+
 					result = allSequences;
 				}
 			}
+
 			return result;
 		}
 
-		private static AllSequences smethod_2(CodeFile codeFile_0, int int_2)
+		private static AllSequences smethod2(CodeFile codeFile, int intValue)
 		{
-			int[] hashes = codeFile_0.Hashes;
-			int[] hashes2 = codeFile_0.Hashes;
+			int[] hashes = codeFile.Hashes;
+			int[] hashes2 = codeFile.Hashes;
 			AllSequences allSequences = new AllSequences();
 			AllSequences result;
+
 			if (hashes.Length == 0)
 			{
 				result = allSequences;
@@ -467,7 +388,7 @@ namespace CopyPasteKiller
 								{
 									array2[j] = 1 + array[j - 1];
 								}
-								if (array2[j] > int_2)
+								if (array2[j] > intValue)
 								{
 									allSequences.AddCoordToAppropriateSequence(new Coord
 									{
@@ -479,125 +400,136 @@ namespace CopyPasteKiller
 							}
 						}
 					}
+
 					int[] array3 = array;
 					array = array2;
 					array2 = array3;
 				}
+
 				result = allSequences;
 			}
+
 			return result;
 		}
 
-		private static void smethod_3(CodeFile codeFile_0, CodeFile codeFile_1, int int_2, List<int> sequenceBuilder, int int_3, int int_4, int[,] int_5)
+		private static void smethod3(CodeFile codeFile1, CodeFile codeFile2, int intValue1, List<int> sequenceBuilder, int end1, int end2, int[,] intValue4)
 		{
-			if (sequenceBuilder.Count > int_2)
+			if (sequenceBuilder.Count > intValue1)
 			{
-				int arg_17_0 = sequenceBuilder.Count;
-				int start = int_3 - int_5[int_3, int_4] + 1;
-				int start2 = int_4 - int_5[int_3, int_4] + 1;
+				int sequenceCount = sequenceBuilder.Count;
+				int start1 = end1 - intValue4[end1, end2] + 1;
+				int start2 = end2 - intValue4[end1, end2] + 1;
+
 				Similarity similarity = new Similarity();
-				similarity.MyFile = codeFile_0;
-				similarity.OtherFile = codeFile_1;
+				similarity.MyFile = codeFile1;
+				similarity.OtherFile = codeFile2;
 				similarity.MyHashIndexRange = new HashIndexRange
 				{
-					Start = start,
-					End = int_3
+					Start = start1,
+					End = end1
 				};
 				similarity.OtherHashIndexRange = new HashIndexRange
 				{
 					Start = start2,
-					End = int_4
+					End = end2
 				};
 				similarity.SetLineRanges();
-				codeFile_0.Similarities.Add(similarity);
-				if (codeFile_0 != codeFile_1)
+				codeFile1.Similarities.Add(similarity);
+
+				if (codeFile1 != codeFile2)
 				{
 					Similarity similarity2 = new Similarity();
-					similarity2.MyFile = codeFile_1;
-					similarity2.OtherFile = codeFile_0;
+					similarity2.MyFile = codeFile2;
+					similarity2.OtherFile = codeFile1;
 					similarity2.OtherHashIndexRange = new HashIndexRange
 					{
-						Start = start,
-						End = int_3
+						Start = start1,
+						End = end1
 					};
 					similarity2.MyHashIndexRange = new HashIndexRange
 					{
 						Start = start2,
-						End = int_4
+						End = end2
 					};
 					similarity2.SetLineRanges();
-					codeFile_1.Similarities.Add(similarity2);
+					codeFile2.Similarities.Add(similarity2);
 				}
 			}
 		}
 
-		private static void smethod_4(CodeFile codeFile_0, CodeFile codeFile_1, Sequence sequence_0)
+		private static void smethod4(CodeFile codeFile1, CodeFile codeFile2, Sequence sequence)
 		{
 			Similarity similarity = new Similarity();
-			similarity.MyFile = codeFile_0;
-			similarity.OtherFile = codeFile_1;
+			similarity.MyFile = codeFile1;
+			similarity.OtherFile = codeFile2;
 			similarity.MyHashIndexRange = new HashIndexRange
 			{
-				Start = sequence_0.FirstCoord.I,
-				End = sequence_0.LastCoord.I + 1
+				Start = sequence.FirstCoord.I,
+				End = sequence.LastCoord.I + 1
 			};
 			similarity.OtherHashIndexRange = new HashIndexRange
 			{
-				Start = sequence_0.FirstCoord.J,
-				End = sequence_0.LastCoord.J + 1
+				Start = sequence.FirstCoord.J,
+				End = sequence.LastCoord.J + 1
 			};
 			similarity.SetLineRanges();
-			similarity.UniqueId = Analysis.int_1;
-			codeFile_0.Similarities.Add(similarity);
+			similarity.UniqueId = Analysis.int1;
+			codeFile1.Similarities.Add(similarity);
+
 			Similarity similarity2 = new Similarity();
-			similarity2.MyFile = codeFile_1;
-			similarity2.OtherFile = codeFile_0;
+			similarity2.MyFile = codeFile2;
+			similarity2.OtherFile = codeFile1;
 			similarity2.OtherHashIndexRange = new HashIndexRange
 			{
-				Start = sequence_0.FirstCoord.I,
-				End = sequence_0.LastCoord.I + 1
+				Start = sequence.FirstCoord.I,
+				End = sequence.LastCoord.I + 1
 			};
 			similarity2.MyHashIndexRange = new HashIndexRange
 			{
-				Start = sequence_0.FirstCoord.J,
-				End = sequence_0.LastCoord.J + 1
+				Start = sequence.FirstCoord.J,
+				End = sequence.LastCoord.J + 1
 			};
 			similarity2.SetLineRanges();
-			similarity.UniqueId = Analysis.int_1;
-			codeFile_1.Similarities.Add(similarity2);
+			similarity.UniqueId = Analysis.int1;
+			codeFile2.Similarities.Add(similarity2);
 			similarity.CorrespondingSimilarity = similarity2;
 			similarity2.CorrespondingSimilarity = similarity;
-			Analysis.int_1++;
+			Analysis.int1++;
 		}
 
-		internal void method_7()
+		internal void method7()
 		{
 			if (File.Exists("ignoreCode.txt"))
 			{
-				string string_;
+				string str;
+
 				using (StreamReader streamReader = new StreamReader("ignoreCode.txt"))
 				{
-					string_ = streamReader.ReadToEnd();
+					str = streamReader.ReadToEnd();
 				}
-				List<CodeFile> list = this.method_8(string_);
+
+				List<CodeFile> list = method8(str);
+
 				foreach (CodeFile current in list)
 				{
-					foreach (CodeFile current2 in this.observableCollection_1)
+					foreach (CodeFile current2 in Files)
 					{
-						AllSequences allSequences_ = Analysis.smethod_1(current, current2, current.Hashes.Length - 1);
-						this.method_9(current2, allSequences_);
+						AllSequences allSequences_ = Analysis.smethod1(current, current2, current.Hashes.Length - 1);
+						method9(current2, allSequences_);
 					}
 				}
-				this.method_2(this.observableCollection_0.First<CodeDir>());
-				this.method_3();
+
+				method2(RootDirectories.First<CodeDir>());
+				method3();
 			}
 		}
 
-		private List<CodeFile> method_8(string string_1)
+		private List<CodeFile> method8(string str)
 		{
-			string[] array = Regex.Split(string_1, "~~CPK\\sCode\\sChunk\\sDelimiter~~", RegexOptions.IgnoreCase);
-			string arg = this.options_0.FileSearchPattern.Substring(1, this.options_0.FileSearchPattern.Length - 1);
+			string[] array = Regex.Split(str, "~~CPK\\sCode\\sChunk\\sDelimiter~~", RegexOptions.IgnoreCase);
+			string arg = Options.FileSearchPattern.Substring(1, Options.FileSearchPattern.Length - 1);
 			List<CodeFile> list = new List<CodeFile>();
+
 			for (int i = 0; i < array.Length; i++)
 			{
 				if (!(array[i].Trim() == ""))
@@ -606,35 +538,40 @@ namespace CopyPasteKiller
 					list.Add(item);
 				}
 			}
-			IEnumerable<CodeFile> arg_A0_0 = list;
-			if (Analysis.func_3 == null)
+
+			IEnumerable<CodeFile> files = list;
+
+			if (Analysis.func3 == null)
 			{
-				Analysis.func_3 = new Func<CodeFile, int>(Analysis.smethod_8);
+				Analysis.func3 = new Func<CodeFile, int>(Analysis.GetHashesLength);
 			}
-			return arg_A0_0.OrderByDescending(Analysis.func_3).ToList<CodeFile>();
+
+			return files.OrderByDescending(Analysis.func3).ToList<CodeFile>();
 		}
 
-		private void method_9(CodeFile codeFile_0, AllSequences allSequences_0)
+		private void method9(CodeFile codeFile, AllSequences allSequences)
 		{
-			if (allSequences_0.Sequences.Count != 0)
+			if (allSequences.Sequences.Count != 0)
 			{
 				int i = 0;
-				IL_A1:
-				while (i < codeFile_0.Similarities.Count)
+			IL_A1:
+
+				while (i < codeFile.Similarities.Count)
 				{
-					Similarity similarity = codeFile_0.Similarities[i];
+					Similarity similarity = codeFile.Similarities[i];
 					bool flag = false;
 					int j = 0;
-					while (j < allSequences_0.Sequences.Count)
+
+					while (j < allSequences.Sequences.Count)
 					{
-						Sequence sequence = allSequences_0.Sequences[j];
+						Sequence sequence = allSequences.Sequences[j];
 						if (sequence.FirstCoord.J < similarity.MyHashIndexRange.Start || sequence.LastCoord.J > similarity.MyHashIndexRange.End)
 						{
 							j++;
 						}
 						else
 						{
-							codeFile_0.Similarities.Remove(similarity);
+							codeFile.Similarities.Remove(similarity);
 							flag = true;
 							//IL_9A:
 							if (!flag)
@@ -651,18 +588,19 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private void method_10()
+		private void ThreadStartDelegate()
 		{
 			try
 			{
-				DirectoryInfo directoryInfo = new DirectoryInfo(this.string_0);
-				int minSimilarityLineLength = this.options_0.MinSimilarityLineLength;
-				FileInfo[] files = directoryInfo.GetFiles(this.options_0.FileSearchPattern, SearchOption.AllDirectories);
+				DirectoryInfo directoryInfo = new DirectoryInfo(Path);
+				int minSimilarityLineLength = Options.MinSimilarityLineLength;
+				FileInfo[] files = directoryInfo.GetFiles(Options.FileSearchPattern, SearchOption.AllDirectories);
 				int num = 0;
-				List<Regex> excludeRegexes = this.options_0.GetExcludeRegexes();
+				List<Regex> excludeRegexes = Options.GetExcludeRegexes();
 				FileInfo[] array = files;
 				int i = 0;
-				IL_98:
+			IL_98:
+
 				while (i < array.Length)
 				{
 					FileInfo fileInfo = array[i];
@@ -683,37 +621,42 @@ namespace CopyPasteKiller
 					}
 					//goto IL_87;
 				}
+
 				if (num == 0)
 				{
-					this.AlertAction("No " + this.options_0.FileSearchPattern + " Files Found");
+					this.AlertAction("No " + Options.FileSearchPattern + " Files Found");
 					this.Done();
 				}
 				else
 				{
-					this.UpdateProgressAction(0, num, "Loading Files...");
-					CodeDir codeDir = this.method_4(directoryInfo, this.options_0.MinSimilarityLineLength, "");
-					this.observableCollection_0.Add(codeDir);
-					ObservableCollection<CodeFile> observableCollection = this.observableCollection_1;
-					this.UpdateProgressAction(0, observableCollection.Count * observableCollection.Count / 2, "Comparing Files...");
+					UpdateProgressAction(0, num, "Loading Files...");
+					CodeDir codeDir = method4(directoryInfo, Options.MinSimilarityLineLength, "");
+					RootDirectories.Add(codeDir);
+					ObservableCollection<CodeFile> observableCollection = Files;
+					UpdateProgressAction(0, observableCollection.Count * observableCollection.Count / 2, "Comparing Files...");
 					int num2 = 0;
 					StringBuilder stringBuilder = new StringBuilder();
+
 					for (int j = 0; j < observableCollection.Count; j++)
 					{
 						CodeFile codeFile = observableCollection[j];
+
 						for (int k = j; k < observableCollection.Count; k++)
 						{
 							num2++;
+
 							if (num2 % 500 == 0)
 							{
 								this.UpdateProgressValue(num2);
 							}
+
 							try
 							{
 								CodeFile codeFile_ = observableCollection[k];
-								AllSequences allSequences = Analysis.smethod_1(codeFile, codeFile_, minSimilarityLineLength);
+								AllSequences allSequences = Analysis.smethod1(codeFile, codeFile_, minSimilarityLineLength);
 								foreach (Sequence current in allSequences.Sequences)
 								{
-									Analysis.smethod_4(codeFile, codeFile_, current);
+									Analysis.smethod4(codeFile, codeFile_, current);
 								}
 								goto IL_24D;
 							}
@@ -722,61 +665,67 @@ namespace CopyPasteKiller
 								stringBuilder.AppendLine(codeFile.Name + " - " + observableCollection[k].Name);
 								goto IL_24D;
 							}
+
 							break;
-							IL_24D:;
+						IL_24D:;
 						}
-						codeFile.method_1();
-						codeFile.Similarities.Sort(new Comparison<Similarity>(Analysis.smethod_0));
+
+						codeFile.method1();
+						codeFile.Similarities.Sort(new Comparison<Similarity>(Analysis.CompareSimilarity));
 					}
-					this.method_2(codeDir);
-					this.method_3();
-					this.method_7();
+
+					method2(codeDir);
+					method3();
+					method7();
+
 					if (stringBuilder.Length > 0)
 					{
 						this.AlertAction("Atomiq experienced an error with the following file combinations: " + stringBuilder.ToString());
 					}
-					this.bool_0 = true;
-					this.Done();
+
+					bool_0 = true;
+					Done();
 				}
 			}
 			catch (Exception ex)
 			{
 				if (!(ex is ThreadAbortException))
 				{
-					this.CaughtException = ex;
+					CaughtException = ex;
 				}
-				this.Done();
+
+				Done();
 			}
 		}
 
 		[CompilerGenerated]
-		private static bool smethod_5(CodeDir codeDir_0)
+		private static bool smethod5(CodeDir codeDir)
 		{
-			return codeDir_0.GetAllFilesCount() == 0;
+			return codeDir.GetAllFilesCount() == 0;
 		}
 
 		[CompilerGenerated]
-		private static bool smethod_6(CodeFile codeFile_0)
+		private static bool smethod6(CodeFile codeFile)
 		{
-			return codeFile_0.Similarities.Count == 0;
+			return codeFile.Similarities.Count == 0;
 		}
 
 		[CompilerGenerated]
-		private static bool smethod_7(CodeFile codeFile_0)
+		private static bool smethod7(CodeFile codeFile)
 		{
-			return codeFile_0.Similarities.Count == 0;
+			return codeFile.Similarities.Count == 0;
 		}
 
 		[CompilerGenerated]
-		private static int smethod_8(CodeFile codeFile_0)
+		private static int GetHashesLength(CodeFile codeFile)
 		{
-			return codeFile_0.Hashes.Length;
+			return codeFile.Hashes.Length;
 		}
 
 		static Analysis()
 		{
-			Analysis.int_0 = 0;
-			Analysis.int_1 = 0;
+			Analysis.int0 = 0;
+			Analysis.int1 = 0;
 		}
 	}
 }

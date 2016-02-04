@@ -34,7 +34,7 @@ namespace CopyPasteKiller
 			base.DataContext = _recentViewModel;
 		}
 
-		private void eventHandler_1(object sender, RoutedEventArgs e)
+		private void butoon_Click1(object sender, RoutedEventArgs e)
 		{
 			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 			folderBrowserDialog.ShowNewFolderButton = false;
@@ -48,7 +48,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void eventHandler_2(object sender, RoutedEventArgs e)
+		private void butoon_Click2(object sender, RoutedEventArgs e)
 		{
 			FrameworkElement frameworkElement = sender as FrameworkElement;
 			_recentViewModel.Open(frameworkElement.DataContext.ToString());
@@ -77,7 +77,7 @@ namespace CopyPasteKiller
 			}
 			else
 			{
-				((System.Windows.Controls.Button)target).Click += eventHandler_1;
+				((System.Windows.Controls.Button)target).Click += butoon_Click1;
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace CopyPasteKiller
 		{
 			if (connectionId == 2)
 			{
-				((System.Windows.Controls.Button)target).Click += eventHandler_2;
+				((System.Windows.Controls.Button)target).Click += butoon_Click2;
 			}
 		}
 	}

@@ -20,13 +20,14 @@ namespace CopyPasteKiller
 		{
 			string text = "exception " + DateTime.Now.ToString("yyyyMMdd HH mm ss") + ".log";
 			MessageBox.Show("Oh Noes! Atomiq experienced an unhandled exception. We'd really appreciate it if you could email \"" + text + "\" to support@nitriq.com", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Hand);
+
 			using (StreamWriter streamWriter = new StreamWriter(text))
 			{
 				streamWriter.Write(e.Exception.ToString());
 			}
 		}
 
-		internal static string smethod_0(Exception ex)
+		internal static string smethod0(Exception ex)
 		{
 			string text = "exception " + DateTime.Now.ToString("yyyyMMdd HH mm ss") + ".log";
 			using (StreamWriter streamWriter = new StreamWriter(text))

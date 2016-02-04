@@ -18,6 +18,7 @@ namespace CopyPasteKiller
 		{
 			T[] array = collection.Where(removalPredicate).ToArray<T>();
 			T[] array2 = array;
+
 			for (int i = 0; i < array2.Length; i++)
 			{
 				T item = array2[i];
@@ -28,6 +29,7 @@ namespace CopyPasteKiller
 		public static string NumShortener(this int num)
 		{
 			string result;
+
 			if (num >= 1000000)
 			{
 				double value = (double)num / 1000000.0;
@@ -42,6 +44,7 @@ namespace CopyPasteKiller
 			{
 				result = num.ToString();
 			}
+
 			return result;
 		}
 	}

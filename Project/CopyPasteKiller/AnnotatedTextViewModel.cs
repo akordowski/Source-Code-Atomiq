@@ -24,7 +24,7 @@ namespace CopyPasteKiller
 		private PropertyChangedEventHandler propertyChangedEventHandler;
 
 		[CompilerGenerated]
-		private static Func<Annotation, double> func_0;
+		private static Func<Annotation, double> func0;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
@@ -36,7 +36,7 @@ namespace CopyPasteKiller
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -65,8 +65,8 @@ namespace CopyPasteKiller
 				if (_codeFile != value)
 				{
 					_codeFile = value;
-					this.method_0();
-					this.method_1();
+					method0();
+					method1();
 					OnPropertyChanged("CodeFile");
 				}
 			}
@@ -128,7 +128,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void method_0()
+		private void method0()
 		{
 			_annotations.Clear();
 			AnnotationHeight = 0.0;
@@ -144,23 +144,23 @@ namespace CopyPasteKiller
 
 				if (_annotations.Count > 0)
 				{
-					IEnumerable<Annotation> annotations = this._annotations;
+					IEnumerable<Annotation> annotations = _annotations;
 
-					if (AnnotatedTextViewModel.func_0 == null)
+					if (AnnotatedTextViewModel.func0 == null)
 					{
-						AnnotatedTextViewModel.func_0 = new Func<Annotation, double>(AnnotatedTextViewModel.smethod_0);
+						AnnotatedTextViewModel.func0 = new Func<Annotation, double>(AnnotatedTextViewModel.smethod0);
 					}
 
-					AnnotationWidth = annotations.Max(AnnotatedTextViewModel.func_0);
+					AnnotationWidth = annotations.Max(AnnotatedTextViewModel.func0);
 				}
 				else
 				{
-					AnnotationWidth = Annotation.double_0;
+					AnnotationWidth = Annotation.double1;
 				}
 			}
 		}
 
-		private void method_1()
+		private void method1()
 		{
 			LineNumbers = null;
 
@@ -186,9 +186,9 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static double smethod_0(Annotation annotation)
+		private static double smethod0(Annotation annotation)
 		{
-			return annotation.Left + Annotation.double_1 * 2.0 + Annotation.double_0;
+			return annotation.Left + Annotation.double2 * 2.0 + Annotation.double1;
 		}
 	}
 }

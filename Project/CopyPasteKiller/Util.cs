@@ -6,15 +6,15 @@ namespace CopyPasteKiller
 {
 	public static class Util
 	{
-		private const int int_0 = 299;
+		private const int int0 = 299;
 
-		private const int int_1 = 587;
+		private const int int1 = 587;
 
-		private const int int_2 = 114;
+		private const int int2 = 114;
 
-		private const int int_3 = 255;
+		private const int int3 = 255;
 
-		private const int int_4 = 127;
+		private const int int4 = 127;
 
 		public static int count;
 
@@ -24,6 +24,7 @@ namespace CopyPasteKiller
 		{
 			int num = ((int)backColor.R * 299 + (int)backColor.G * 587 + (int)(backColor.B * 114)) / 1000;
 			Color result;
+
 			if (num <= 127)
 			{
 				result = Colors.White;
@@ -32,6 +33,7 @@ namespace CopyPasteKiller
 			{
 				result = Colors.Black;
 			}
+
 			return result;
 		}
 
@@ -45,6 +47,7 @@ namespace CopyPasteKiller
 			Util.count++;
 			Util.stopwatch.Start();
 			Color result;
+
 			if (value < min)
 			{
 				result = minColor;
@@ -62,8 +65,10 @@ namespace CopyPasteKiller
 				byte r = (byte)(num4 * (double)num + (double)minColor.R);
 				byte g = (byte)(num4 * (double)num2 + (double)minColor.G);
 				byte b = (byte)(num4 * (double)num3 + (double)minColor.B);
+
 				result = Color.FromArgb(255, r, g, b);
 			}
+
 			return result;
 		}
 

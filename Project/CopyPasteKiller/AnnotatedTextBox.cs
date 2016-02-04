@@ -86,10 +86,11 @@ namespace CopyPasteKiller
 			grid.DataContext = annotatedTextViewModel;
 		}
 
-		private static object smethod_0(DependencyObject dependencyObject, CodeFile codeFile)
+		private static object smethod0(DependencyObject dependencyObject, CodeFile codeFile)
 		{
 			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			object result;
+
 			if (annotatedTextBox != null)
 			{
 				result = annotatedTextBox.OnCoerceCodeFile((CodeFile)codeFile);
@@ -98,12 +99,14 @@ namespace CopyPasteKiller
 			{
 				result = codeFile;
 			}
+
 			return result;
 		}
 
-		private static void smethod_1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+		private static void smethod1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
 			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
+
 			if (annotatedTextBox != null)
 			{
 				annotatedTextBox.OnCodeFileChanged((CodeFile)eventArgs.OldValue, (CodeFile)eventArgs.NewValue);
@@ -120,10 +123,11 @@ namespace CopyPasteKiller
 			annotatedTextViewModel.CodeFile = newValue;
 		}
 
-		private static object smethod_2(DependencyObject dependencyObject, Similarity similarity)
+		private static object smethod2(DependencyObject dependencyObject, Similarity similarity)
 		{
 			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
 			object result;
+
 			if (annotatedTextBox != null)
 			{
 				result = annotatedTextBox.OnCoerceSimilarity((Similarity)similarity);
@@ -132,12 +136,14 @@ namespace CopyPasteKiller
 			{
 				result = similarity;
 			}
+
 			return result;
 		}
 
-		private static void smethod_3(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+		private static void smethod3(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
 			AnnotatedTextBox annotatedTextBox = dependencyObject as AnnotatedTextBox;
+
 			if (annotatedTextBox != null)
 			{
 				annotatedTextBox.OnSimilarityChanged((Similarity)eventArgs.OldValue, (Similarity)eventArgs.NewValue);
@@ -148,12 +154,13 @@ namespace CopyPasteKiller
 		{
 			if (similarity == null)
 			{
-				method_1(0);
+				method1(0);
 			}
 			else
 			{
-				this.method_1(similarity.MyRange.Start);
+				method1(similarity.MyRange.Start);
 			}
+
 			return similarity;
 		}
 
@@ -161,7 +168,7 @@ namespace CopyPasteKiller
 		{
 		}
 
-		private void method_0(object sender, MouseButtonEventArgs e)
+		private void method0(object sender, MouseButtonEventArgs e)
 		{
 			FrameworkElement frameworkElement = (FrameworkElement)sender;
 			Annotation annotation = (Annotation)frameworkElement.DataContext;
@@ -174,7 +181,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		internal void method_1(int value)
+		internal void method1(int value)
 		{
 			try
 			{
@@ -220,14 +227,14 @@ namespace CopyPasteKiller
 		{
 			if (connectionId == 2)
 			{
-				((Rectangle)target).MouseDown += new MouseButtonEventHandler(this.method_0);
+				((Rectangle)target).MouseDown += new MouseButtonEventHandler(method0);
 			}
 		}
 
 		static AnnotatedTextBox()
 		{
-			//AnnotatedTextBox.CodeFileProperty = DependencyProperty.Register("CodeFile", typeof(CodeFile), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_1), new CoerceValueCallback(AnnotatedTextBox.smethod_0)));
-			//AnnotatedTextBox.SimilarityProperty = DependencyProperty.Register("Similarity", typeof(Similarity), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod_3), new CoerceValueCallback(AnnotatedTextBox.smethod_2)));
+			//AnnotatedTextBox.CodeFileProperty = DependencyProperty.Register("CodeFile", typeof(CodeFile), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod1), new CoerceValueCallback(AnnotatedTextBox.smethod0)));
+			//AnnotatedTextBox.SimilarityProperty = DependencyProperty.Register("Similarity", typeof(Similarity), typeof(AnnotatedTextBox), new UIPropertyMetadata(null, new PropertyChangedCallback(AnnotatedTextBox.smethod3), new CoerceValueCallback(AnnotatedTextBox.smethod2)));
 		}
 	}
 }

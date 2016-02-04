@@ -11,22 +11,22 @@ namespace CopyPasteKiller
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
-		private bool bool_0;
+		private bool bool0;
 
 		[NonSerialized]
 		private PropertyChangedEventHandler PropertyChangedEventHandler;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, IEnumerable<int>> func_0;
+		private static Func<CodeFile, IEnumerable<int>> func0;
 
 		[CompilerGenerated]
-		private static Func<Similarity, int> func_1;
+		private static Func<Similarity, int> func1;
 
 		[CompilerGenerated]
-		private static Func<CodeFile, IEnumerable<int>> func_2;
+		private static Func<CodeFile, IEnumerable<int>> func2;
 
 		[CompilerGenerated]
-		private static Func<Similarity, int> func_3;
+		private static Func<Similarity, int> func3;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
@@ -150,12 +150,15 @@ namespace CopyPasteKiller
 			get
 			{
 				IEnumerable<CodeFile> files = Files;
-				if (MainViewModel.func_0 == null)
+
+				if (MainViewModel.func0 == null)
 				{
-					MainViewModel.func_0 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod_0);
+					MainViewModel.func0 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod0);
 				}
-				List<int> list = files.SelectMany(MainViewModel.func_0).ToList<int>();
+
+				List<int> list = files.SelectMany(MainViewModel.func0).ToList<int>();
 				int result;
+
 				if (list.Count == 0)
 				{
 					result = 0;
@@ -164,6 +167,7 @@ namespace CopyPasteKiller
 				{
 					result = list.Count / 2;
 				}
+
 				return result;
 			}
 		}
@@ -173,12 +177,15 @@ namespace CopyPasteKiller
 			get
 			{
 				IEnumerable<CodeFile> files = Files;
-				if (MainViewModel.func_2 == null)
+
+				if (MainViewModel.func2 == null)
 				{
-					MainViewModel.func_2 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod_2);
+					MainViewModel.func2 = new Func<CodeFile, IEnumerable<int>>(MainViewModel.smethod2);
 				}
-				List<int> list = files.SelectMany(MainViewModel.func_2).ToList<int>();
+
+				List<int> list = files.SelectMany(MainViewModel.func2).ToList<int>();
 				int result;
+
 				if (list.Count == 0)
 				{
 					result = 0;
@@ -187,6 +194,7 @@ namespace CopyPasteKiller
 				{
 					result = list.Sum() / 2;
 				}
+
 				return result;
 			}
 		}
@@ -199,7 +207,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		internal void method_0(CodeFile codeFile)
+		internal void method0(CodeFile codeFile)
 		{
 			if (_selectedFile != codeFile)
 			{
@@ -217,14 +225,16 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static IEnumerable<int> smethod_0(CodeFile codeFile)
+		private static IEnumerable<int> smethod0(CodeFile codeFile)
 		{
 			IEnumerable<Similarity> similarities = codeFile.Similarities;
-			if (MainViewModel.func_1 == null)
+
+			if (MainViewModel.func1 == null)
 			{
-				MainViewModel.func_1 = new Func<Similarity, int>(MainViewModel.GetMyRangeLength);
+				MainViewModel.func1 = new Func<Similarity, int>(MainViewModel.GetMyRangeLength);
 			}
-			return similarities.Select(MainViewModel.func_1);
+
+			return similarities.Select(MainViewModel.func1);
 		}
 
 		[CompilerGenerated]
@@ -234,14 +244,16 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static IEnumerable<int> smethod_2(CodeFile codeFile)
+		private static IEnumerable<int> smethod2(CodeFile codeFile)
 		{
 			IEnumerable<Similarity> similarities = codeFile.Similarities;
-			if (MainViewModel.func_3 == null)
+
+			if (MainViewModel.func3 == null)
 			{
-				MainViewModel.func_3 = new Func<Similarity, int>(MainViewModel.GetMyHashIndexRangeLength);
+				MainViewModel.func3 = new Func<Similarity, int>(MainViewModel.GetMyHashIndexRangeLength);
 			}
-			return similarities.Select(MainViewModel.func_3);
+
+			return similarities.Select(MainViewModel.func3);
 		}
 
 		[CompilerGenerated]

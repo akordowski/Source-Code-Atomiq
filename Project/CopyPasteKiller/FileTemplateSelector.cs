@@ -13,6 +13,7 @@ namespace CopyPasteKiller
 		public override DataTemplate SelectTemplate(object item, DependencyObject container)
 		{
 			DataTemplate result;
+
 			if (item is CodeFile)
 			{
 				result = CodeFileTemplate;
@@ -25,6 +26,7 @@ namespace CopyPasteKiller
 			{
 				result = base.SelectTemplate(item, container);
 			}
+
 			return result;
 		}
 	}
