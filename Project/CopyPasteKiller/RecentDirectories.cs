@@ -12,7 +12,7 @@ namespace CopyPasteKiller
 	{
 		private RecentViewModel _recentViewModel;
 
-		private bool _initialized;
+		private bool _isInitialize;
 
 		public string SelectedPath
 		{
@@ -34,7 +34,7 @@ namespace CopyPasteKiller
 			base.DataContext = _recentViewModel;
 		}
 
-		private void butoon_Click1(object sender, RoutedEventArgs e)
+		private void button_Click(object sender, RoutedEventArgs e)
 		{
 			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 			folderBrowserDialog.ShowNewFolderButton = false;
@@ -48,11 +48,10 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void butoon_Click2(object sender, RoutedEventArgs e)
+		private void method1(object sender, RoutedEventArgs e)
 		{
 			FrameworkElement frameworkElement = sender as FrameworkElement;
 			_recentViewModel.Open(frameworkElement.DataContext.ToString());
-
 			base.DialogResult = new bool?(true);
 			base.Close();
 		}
@@ -60,9 +59,9 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!_initialized)
+			if (!_isInitialize)
 			{
-				_initialized = true;
+				_isInitialize = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/recentdirectories.xaml", UriKind.Relative);
 				System.Windows.Application.LoadComponent(this, resourceLocator);
 			}
@@ -73,11 +72,11 @@ namespace CopyPasteKiller
 		{
 			if (connectionId != 1)
 			{
-				_initialized = true;
+				_isInitialize = true;
 			}
 			else
 			{
-				((System.Windows.Controls.Button)target).Click += butoon_Click1;
+				((System.Windows.Controls.Button)target).Click += button_Click;
 			}
 		}
 
@@ -86,7 +85,7 @@ namespace CopyPasteKiller
 		{
 			if (connectionId == 2)
 			{
-				((System.Windows.Controls.Button)target).Click += butoon_Click2;
+				((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method1);
 			}
 		}
 	}

@@ -21,7 +21,7 @@ namespace CopyPasteKiller
 		private ObservableCollection<Annotation> _annotations = new ObservableCollection<Annotation>();
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler;
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<Annotation, double> func0;
@@ -30,25 +30,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -137,9 +137,9 @@ namespace CopyPasteKiller
 			{
 				AnnotationHeight = Annotation.TextHeight * (double)(_codeFile.Lines.Length + 1);
 
-				foreach (Similarity current in _codeFile.Similarities)
+				foreach (Similarity similarity in _codeFile.Similarities)
 				{
-					_annotations.Add(new Annotation(_codeFile, current, _annotations));
+					_annotations.Add(new Annotation(_codeFile, similarity, _annotations));
 				}
 
 				if (_annotations.Count > 0)
@@ -179,9 +179,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (propertyChangedEventHandler != null)
+			if (_propertyChangedEventHandler != null)
 			{
-				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				_propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 

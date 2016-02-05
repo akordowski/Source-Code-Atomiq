@@ -7,11 +7,12 @@ namespace CopyPasteKiller
 	{
 		private string _delimiter;
 
-		private StringBuilder stringBuilder = new StringBuilder();
+		private StringBuilder _stringBuilder = new StringBuilder();
 
 		private bool _isCleared = true;
 
-		public Builder() : this(", ")
+		public Builder()
+			: this(", ")
 		{
 		}
 
@@ -22,7 +23,7 @@ namespace CopyPasteKiller
 
 		public void Clear()
 		{
-			stringBuilder.Remove(0, stringBuilder.Length);
+			_stringBuilder.Remove(0, _stringBuilder.Length);
 			_isCleared = true;
 		}
 
@@ -39,15 +40,15 @@ namespace CopyPasteKiller
 			}
 			else
 			{
-				stringBuilder.Append(_delimiter);
+				_stringBuilder.Append(_delimiter);
 			}
 
-			stringBuilder.Append(text.ToString());
+			_stringBuilder.Append(text.ToString());
 		}
 
 		public override string ToString()
 		{
-			return stringBuilder.ToString();
+			return _stringBuilder.ToString();
 		}
 	}
 }

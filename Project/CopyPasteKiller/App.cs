@@ -14,26 +14,27 @@ namespace CopyPasteKiller
 
 		public static string InitialProject;
 
-		private bool _isInitialiezed;
+		private bool _isInitialized;
 
 		private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 		{
 			string text = "exception " + DateTime.Now.ToString("yyyyMMdd HH mm ss") + ".log";
 			MessageBox.Show("Oh Noes! Atomiq experienced an unhandled exception. We'd really appreciate it if you could email \"" + text + "\" to support@nitriq.com", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Hand);
-
 			using (StreamWriter streamWriter = new StreamWriter(text))
 			{
 				streamWriter.Write(e.Exception.ToString());
 			}
 		}
 
-		internal static string smethod0(Exception ex)
+		internal static string LogException(Exception ex)
 		{
 			string text = "exception " + DateTime.Now.ToString("yyyyMMdd HH mm ss") + ".log";
+
 			using (StreamWriter streamWriter = new StreamWriter(text))
 			{
 				streamWriter.Write(ex.ToString());
 			}
+
 			return text;
 		}
 
@@ -48,11 +49,11 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!_isInitialiezed)
+			if (!_isInitialized)
 			{
-				_isInitialiezed = true;
-				base.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(this.App_DispatcherUnhandledException);
-				base.Startup += new StartupEventHandler(this.App_Startup);
+				_isInitialized = true;
+				base.DispatcherUnhandledException += App_DispatcherUnhandledException;
+				base.Startup += new StartupEventHandler(App_Startup);
 				base.StartupUri = new Uri("Window1.xaml", UriKind.Relative);
 				Uri resourceLocator = new Uri("/Atomiq;component/app.xaml", UriKind.Relative);
 				Application.LoadComponent(this, resourceLocator);

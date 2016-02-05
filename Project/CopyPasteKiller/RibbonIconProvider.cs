@@ -26,28 +26,28 @@ namespace CopyPasteKiller
 		{
 			try
 			{
-				New = GetImage("filenew.png");
-				Save = GetImage("filesave.png");
-				Open = GetImage("fileopen.png");
-				Execute = GetImage("1rightarrow.png");
-				Import = GetImage("fileimport.png");
-				Export = GetImage("fileexport.png");
-				Reanalyze = GetImage("exec.png");
+				New = GetFile("filenew.png");
+				Save = GetFile("filesave.png");
+				Open = GetFile("fileopen.png");
+				Execute = GetFile("1rightarrow.png");
+				Import = GetFile("fileimport.png");
+				Export = GetFile("fileexport.png");
+				Reanalyze = GetFile("exec.png");
 			}
 			catch (Exception)
 			{
 			}
 		}
 
-		private ImageSource GetImage(string fileName)
+		private ImageSource GetFile(string str)
 		{
 			ImageSource result;
 
-			if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\CrystalIcons\\32x32\\" + fileName))
+			if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\CrystalIcons\\32x32\\" + str))
 			{
 				BitmapImage bitmapImage = new BitmapImage();
 				bitmapImage.BeginInit();
-				bitmapImage.UriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + "\\CrystalIcons\\32x32\\" + fileName, UriKind.Absolute);
+				bitmapImage.UriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + "\\CrystalIcons\\32x32\\" + str, UriKind.Absolute);
 				bitmapImage.EndInit();
 				result = bitmapImage;
 			}
@@ -55,7 +55,7 @@ namespace CopyPasteKiller
 			{
 				BitmapImage bitmapImage = new BitmapImage();
 				bitmapImage.BeginInit();
-				bitmapImage.StreamSource = Application.GetResourceStream(new Uri("CrystalIcons/32x32/" + fileName, UriKind.RelativeOrAbsolute)).Stream;
+				bitmapImage.StreamSource = Application.GetResourceStream(new Uri("CrystalIcons/32x32/" + str, UriKind.RelativeOrAbsolute)).Stream;
 				bitmapImage.EndInit();
 				result = bitmapImage;
 			}

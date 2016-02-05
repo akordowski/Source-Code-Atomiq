@@ -42,6 +42,7 @@ namespace CopyPasteKiller
 		{
 			Func<Annotation, bool> func = null;
 			Left = 0.0;
+			//base..ctor();
 			CodeFile = file;
 			Similarity = sim;
 			Height = (double)sim.MyRange.Length * Annotation.TextHeight;

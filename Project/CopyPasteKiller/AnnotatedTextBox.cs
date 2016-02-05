@@ -12,13 +12,13 @@ namespace CopyPasteKiller
 {
 	public class AnnotatedTextBox : UserControl, IComponentConnector, IStyleConnector
 	{
-		private AnnotatedTextViewModel annotatedTextViewModel = new AnnotatedTextViewModel();
+		private AnnotatedTextViewModel _annotatedTextViewModel = new AnnotatedTextViewModel();
 
 		public static readonly DependencyProperty CodeFileProperty;
 
 		public static readonly DependencyProperty SimilarityProperty;
 
-		private EventHandler<SimilaritySelectedEventArgs> eventHandler;
+		private EventHandler<SimilaritySelectedEventArgs> _similaritySelectedEventHandler;
 
 		internal Grid grid;
 
@@ -32,25 +32,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = _similaritySelectedEventHandler;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Combine(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref _similaritySelectedEventHandler, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
 			remove
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = _similaritySelectedEventHandler;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Remove(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref _similaritySelectedEventHandler, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
@@ -83,7 +83,7 @@ namespace CopyPasteKiller
 		public AnnotatedTextBox()
 		{
 			InitializeComponent();
-			grid.DataContext = annotatedTextViewModel;
+			grid.DataContext = _annotatedTextViewModel;
 		}
 
 		private static object smethod0(DependencyObject dependencyObject, CodeFile codeFile)
@@ -120,7 +120,7 @@ namespace CopyPasteKiller
 
 		protected virtual void OnCodeFileChanged(CodeFile oldValue, CodeFile newValue)
 		{
-			annotatedTextViewModel.CodeFile = newValue;
+			_annotatedTextViewModel.CodeFile = newValue;
 		}
 
 		private static object smethod2(DependencyObject dependencyObject, Similarity similarity)
@@ -168,24 +168,25 @@ namespace CopyPasteKiller
 		{
 		}
 
-		private void method0(object sender, MouseButtonEventArgs e)
+		private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			FrameworkElement frameworkElement = (FrameworkElement)sender;
 			Annotation annotation = (Annotation)frameworkElement.DataContext;
-			if (eventHandler != null)
+
+			if (_similaritySelectedEventHandler != null)
 			{
-				eventHandler(this, new SimilaritySelectedEventArgs
+				_similaritySelectedEventHandler(this, new SimilaritySelectedEventArgs
 				{
 					Similarity = annotation.Similarity.CorrespondingSimilarity
 				});
 			}
 		}
 
-		internal void method1(int value)
+		internal void method1(int int0)
 		{
 			try
 			{
-				textBox2.ScrollToVerticalOffset((double)value * Annotation.TextHeight);
+				textBox2.ScrollToVerticalOffset((double)int0 * Annotation.TextHeight);
 			}
 			catch (Exception)
 			{
@@ -227,7 +228,7 @@ namespace CopyPasteKiller
 		{
 			if (connectionId == 2)
 			{
-				((Rectangle)target).MouseDown += new MouseButtonEventHandler(method0);
+				((Rectangle)target).MouseDown += Rectangle_MouseDown;
 			}
 		}
 

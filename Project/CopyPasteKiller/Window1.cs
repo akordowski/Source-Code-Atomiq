@@ -33,9 +33,9 @@ namespace CopyPasteKiller
 
 		private WheelView _wheelView;
 
-		internal ActiproSoftware.Windows.Controls.Ribbon.Controls.Button button0;
+		internal ActiproSoftware.Windows.Controls.Ribbon.Controls.Button button_0;
 
-		internal Group group;
+		internal Group group_0;
 
 		internal DockSite dockSite;
 
@@ -55,8 +55,8 @@ namespace CopyPasteKiller
 		{
 			InitializeComponent();
 			base.DataContext = _mainViewModel;
-			base.Closing += Window1_Closing;
-			base.Loaded += Window1_Loaded;
+			base.Closing += new CancelEventHandler(Window1_Closing);
+			base.Loaded += new RoutedEventHandler(Window1_Loaded);
 		}
 
 		private void Window1_Loaded(object sender, RoutedEventArgs e)
@@ -65,7 +65,7 @@ namespace CopyPasteKiller
 
 			if (!string.IsNullOrEmpty(App.InitialProject) && File.Exists(App.InitialProject))
 			{
-				LoadAtomiqProject(App.InitialProject);
+				method10(App.InitialProject);
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace CopyPasteKiller
 			using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream("dock.site", FileMode.Create))
 			{
 				DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-				dockSiteLayoutSerializer.SaveToStream(isolatedStorageFileStream, this.dockSite);
+				dockSiteLayoutSerializer.SaveToStream(isolatedStorageFileStream, dockSite);
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace CopyPasteKiller
 					else
 					{
 						DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-						dockSiteLayoutSerializer.LoadFromStream(isolatedStorageFileStream, this.dockSite);
+						dockSiteLayoutSerializer.LoadFromStream(isolatedStorageFileStream, dockSite);
 					}
 				}
 			}
@@ -107,14 +107,14 @@ namespace CopyPasteKiller
 			{
 				Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CopyPasteKiller.Resources.dock.site");
 				DockSiteLayoutSerializer dockSiteLayoutSerializer = new DockSiteLayoutSerializer();
-				dockSiteLayoutSerializer.LoadFromStream(manifestResourceStream, this.dockSite);
+				dockSiteLayoutSerializer.LoadFromStream(manifestResourceStream, dockSite);
 			}
 			catch (Exception)
 			{
 			}
 		}
 
-		private void saveButton_Click(object sender, RoutedEventArgs e)
+		private void method2(object sender, RoutedEventArgs e)
 		{
 			System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			saveFileDialog.Title = "Save Tool Window Layout";
@@ -159,7 +159,7 @@ namespace CopyPasteKiller
 			Window1.string1 = null;
 		}
 
-		private void method4(object sender, RoutedEventArgs e)
+		private void button0_Click(object sender, RoutedEventArgs e)
 		{
 			Func<Document, bool> func = null;
 
@@ -178,7 +178,6 @@ namespace CopyPasteKiller
 						return;
 					}
 				}
-
 				try
 				{
 					DTE2 dTE = null;
@@ -214,14 +213,14 @@ namespace CopyPasteKiller
 					}
 
 					dTE.ItemOperations.OpenFile(_mainViewModel.SelectedSimilarity.MyFile.Path, "{7651A703-06E5-11D1-8EBD-00A0C90F26EA}");
-					IEnumerable<Document> documents = dTE.Documents.Cast<Document>().ToList<Document>();
+					IEnumerable<Document> enumerable = dTE.Documents.Cast<Document>().ToList<Document>();
 
-					foreach (Document current in documents)
+					foreach (Document current in enumerable)
 					{
 						Console.WriteLine(current.FullName);
 					}
 
-					IEnumerable<Document> arg_1E4_0 = documents;
+					IEnumerable<Document> arg_1E4_0 = enumerable;
 
 					if (func == null)
 					{
@@ -246,7 +245,7 @@ namespace CopyPasteKiller
 		[DllImport("user32.dll")]
 		private static extern int ShowWindow(IntPtr intptr, int int0);
 
-		private void method5(object sender, RoutedEventArgs e)
+		private void button1_Click(object sender, RoutedEventArgs e)
 		{
 			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.MyFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.MyFile.Path))
 			{
@@ -254,7 +253,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void method6(object sender, RoutedEventArgs e)
+		private void button3_Click(object sender, RoutedEventArgs e)
 		{
 			Func<Document, bool> func = null;
 
@@ -335,7 +334,7 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void method7(object sender, RoutedEventArgs e)
+		private void button4_Click(object sender, RoutedEventArgs e)
 		{
 			if (_mainViewModel != null && _mainViewModel.SelectedSimilarity != null && _mainViewModel.SelectedSimilarity.OtherFile != null && !string.IsNullOrEmpty(_mainViewModel.SelectedSimilarity.OtherFile.Path))
 			{
@@ -349,7 +348,7 @@ namespace CopyPasteKiller
 			_mainViewModel.SelectedSimilarity = e.Similarity;
 		}
 
-		private void method8(object sender, RoutedEventArgs e)
+		private void button2_Click(object sender, RoutedEventArgs e)
 		{
 			using (StreamWriter streamWriter = new StreamWriter("ignoreCode.txt", true))
 			{
@@ -361,13 +360,14 @@ namespace CopyPasteKiller
 		private void method9(object sender, ExecuteRoutedEventArgs e)
 		{
 			Options options = new Options();
+
 			if (new OptionsEdit(options).ShowDialog() == true)
 			{
-				this.Reanalyze(options);
+				OpenAnalyzingWindow(options);
 			}
 		}
 
-		private void LoadAtomiqProject(string str)
+		private void method10(string str)
 		{
 			string xml;
 
@@ -380,35 +380,35 @@ namespace CopyPasteKiller
 
 			if (new OptionsEdit(options).ShowDialog() == true)
 			{
-				Reanalyze(options);
+				OpenAnalyzingWindow(options);
 			}
 		}
 
-		private void openButton_Click(object sender, ExecuteRoutedEventArgs e)
+		private void buttonOpen_Click(object sender, ExecuteRoutedEventArgs e)
 		{
-			Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-			dialog.Title = "Load Atomiq Project";
-			dialog.DefaultExt = "atomiqProj";
-			dialog.Filter = "Atomiq Project (*.atomiqProj)|*.atomiqProj";
-			dialog.RestoreDirectory = true;
+			Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+			openFileDialog.Title = "Load Atomiq Project";
+			openFileDialog.DefaultExt = "atomiqProj";
+			openFileDialog.Filter = "Atomiq Project (*.atomiqProj)|*.atomiqProj";
+			openFileDialog.RestoreDirectory = true;
 
-			if (dialog.ShowDialog() == true)
+			if (openFileDialog.ShowDialog() == true)
 			{
-				LoadAtomiqProject(dialog.FileName);
+				method10(openFileDialog.FileName);
 			}
 		}
 
-		private void saveButton_Click(object sender, ExecuteRoutedEventArgs e)
+		private void buttonSave_Click(object sender, ExecuteRoutedEventArgs e)
 		{
-			Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-			dialog.Title = "Save Atomiq Project";
-			dialog.DefaultExt = "atomiqProj";
-			dialog.Filter = "Atomiq Project (*.atomiqProj)|*.atomiqProj";
-			dialog.RestoreDirectory = true;
+			Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+			saveFileDialog.Title = "Save Atomiq Project";
+			saveFileDialog.DefaultExt = "atomiqProj";
+			saveFileDialog.Filter = "Atomiq Project (*.atomiqProj)|*.atomiqProj";
+			saveFileDialog.RestoreDirectory = true;
 
-			if (dialog.ShowDialog() == true)
+			if (saveFileDialog.ShowDialog() == true)
 			{
-				using (StreamWriter streamWriter = new StreamWriter(dialog.FileName))
+				using (StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName))
 				{
 					string value = XmlUtil.ConvertToXml(_mainViewModel.Options);
 					streamWriter.Write(value);
@@ -416,15 +416,15 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void reanalyzeButton_Click(object sender, ExecuteRoutedEventArgs e)
+		private void buttonReanalyze_Click(object sender, ExecuteRoutedEventArgs e)
 		{
 			if (new OptionsEdit(_mainViewModel.Options).ShowDialog() == true)
 			{
-				Reanalyze(_mainViewModel.Options);
+				OpenAnalyzingWindow(_mainViewModel.Options);
 			}
 		}
 
-		private void Reanalyze(Options options)
+		private void OpenAnalyzingWindow(Options options)
 		{
 			AnalyzingWindow analyzingWindow = new AnalyzingWindow(options);
 			analyzingWindow.ShowDialog();
@@ -441,18 +441,16 @@ namespace CopyPasteKiller
 				_mainViewModel.RootDirectories = analyzingWindow.Analysis.RootDirectories;
 				_mainViewModel.Files = analyzingWindow.Analysis.Files;
 				_mainViewModel.SelectedFile = _mainViewModel.Files.FirstOrDefault<CodeFile>();
-
 				base.DataContext = _mainViewModel;
 			}
-
 			else if (analyzingWindow.Analysis.CaughtException != null)
 			{
-				string str = App.smethod0(analyzingWindow.Analysis.CaughtException);
+				string str = App.LogException(analyzingWindow.Analysis.CaughtException);
 				System.Windows.MessageBox.Show("Atomiq has experienced a problem analyzing the directory. We'd really appreciate it if you could email \"" + str + "\" to support@nitriq.com", "Analysis Exception", MessageBoxButton.OK, MessageBoxImage.Hand);
 			}
 		}
 
-		private void wheelButton_Click(object sender, ExecuteRoutedEventArgs e)
+		private void buttonWheel_Click(object sender, ExecuteRoutedEventArgs e)
 		{
 			if (_mainViewModel.BlockCount > 1500)
 			{
@@ -466,11 +464,12 @@ namespace CopyPasteKiller
 			if (_wheelView == null)
 			{
 				WheelView wheelView = new WheelView(_mainViewModel.Files, _mainViewModel.RootDirectories.First<CodeDir>());
-				wheelView.Closed += new EventHandler(wheelView_Closed);
-				wheelView.CodeFileSelected += new EventHandler<CodeFileSelectedEventArgs>(wheelView_CodeFileSelected);
-				wheelView.SimilaritySelected += new EventHandler<SimilaritySelectedEventArgs>(wheelView_SimilaritySelected);
+				wheelView.Closed += wheelView_Closed;
+				wheelView.CodeFileSelected += wheelView_CodeFileSelected;
+				wheelView.SimilaritySelected += wheelView_SimilaritySelected;
 				wheelView.Show();
-				this._wheelView = wheelView;
+
+				_wheelView = wheelView;
 			}
 			else
 			{
@@ -494,9 +493,10 @@ namespace CopyPasteKiller
 		private void wheelView_Closed(object sender, EventArgs e)
 		{
 			WheelView wheelView = (WheelView)sender;
-			wheelView.Closed -= new EventHandler(this.wheelView_Closed);
-			wheelView.CodeFileSelected -= new EventHandler<CodeFileSelectedEventArgs>(this.wheelView_CodeFileSelected);
-			wheelView.SimilaritySelected -= new EventHandler<SimilaritySelectedEventArgs>(this.wheelView_SimilaritySelected);
+			wheelView.Closed -= wheelView_Closed;
+			wheelView.CodeFileSelected -= wheelView_CodeFileSelected;
+			wheelView.SimilaritySelected -= wheelView_SimilaritySelected;
+
 			_wheelView = null;
 		}
 
@@ -528,62 +528,62 @@ namespace CopyPasteKiller
 			switch (connectionId)
 			{
 				case 1:
-					button0 = (ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target;
-					button0.Click += new EventHandler<ExecuteRoutedEventArgs>(method9);
+					button_0 = (ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target;
+					button_0.Click += new EventHandler<ExecuteRoutedEventArgs>(method9);
 					break;
 				case 2:
-					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.openButton_Click);
+					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(buttonOpen_Click);
 					break;
 				case 3:
-					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.saveButton_Click);
+					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(buttonSave_Click);
 					break;
 				case 4:
-					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.reanalyzeButton_Click);
+					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(buttonReanalyze_Click);
 					break;
 				case 5:
-					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.wheelButton_Click);
+					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(buttonWheel_Click);
 					break;
 				case 6:
-					group = (Group)target;
+					this.group_0 = (Group)target;
 					break;
 				case 7:
-					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(this.saveButton_Click);
+					((ActiproSoftware.Windows.Controls.Ribbon.Controls.Button)target).Click += new EventHandler<ExecuteRoutedEventArgs>(method2);
 					break;
 				case 8:
-					dockSite = (DockSite)target;
+					this.dockSite = (DockSite)target;
 					break;
 				case 9:
-					toolWindow = (ToolWindow)target;
+					this.toolWindow = (ToolWindow)target;
 					break;
 				case 10:
-					noScrollTreeView = (NoScrollTreeView)target;
+					this.noScrollTreeView = (NoScrollTreeView)target;
 					break;
 				case 11:
-					toolWindow1 = (ToolWindow)target;
+					this.toolWindow1 = (ToolWindow)target;
 					break;
 				case 12:
-					toolWindow2 = (ToolWindow)target;
+					this.toolWindow2 = (ToolWindow)target;
 					break;
 				case 13:
-					toolWindow3 = (ToolWindow)target;
+					this.toolWindow3 = (ToolWindow)target;
 					break;
 				case 14:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method4);
+					((System.Windows.Controls.Button)target).Click += button0_Click;
 					break;
 				case 15:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method5);
+					((System.Windows.Controls.Button)target).Click += button1_Click;
 					break;
 				case 16:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method8);
+					((System.Windows.Controls.Button)target).Click += button2_Click;
 					break;
 				case 17:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method6);
+					((System.Windows.Controls.Button)target).Click += button3_Click;
 					break;
 				case 18:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method7);
+					((System.Windows.Controls.Button)target).Click += button4_Click;
 					break;
 				default:
-					_isInitialized = true;
+					this._isInitialized = true;
 					break;
 			}
 		}

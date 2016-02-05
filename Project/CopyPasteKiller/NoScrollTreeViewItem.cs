@@ -8,15 +8,16 @@ namespace CopyPasteKiller
 	public class NoScrollTreeViewItem : TreeViewItem
 	{
 		[CompilerGenerated]
-		private static RequestBringIntoViewEventHandler requestBringIntoViewEventHandler;
+		private static RequestBringIntoViewEventHandler _requestBringIntoViewEventHandler;
 
 		public NoScrollTreeViewItem()
 		{
-			if (NoScrollTreeViewItem.requestBringIntoViewEventHandler == null)
+			if (NoScrollTreeViewItem._requestBringIntoViewEventHandler == null)
 			{
-				NoScrollTreeViewItem.requestBringIntoViewEventHandler = new RequestBringIntoViewEventHandler(NoScrollTreeViewItem.smethod0);
+				NoScrollTreeViewItem._requestBringIntoViewEventHandler = new RequestBringIntoViewEventHandler(NoScrollTreeViewItem.BringIntoView);
 			}
-			base.RequestBringIntoView += NoScrollTreeViewItem.requestBringIntoViewEventHandler;
+
+			base.RequestBringIntoView += NoScrollTreeViewItem._requestBringIntoViewEventHandler;
 		}
 
 		protected override DependencyObject GetContainerForItemOverride()
@@ -25,7 +26,7 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static void smethod0(object sender, RequestBringIntoViewEventArgs e)
+		private static void BringIntoView(object sender, RequestBringIntoViewEventArgs e)
 		{
 			e.Handled = true;
 		}

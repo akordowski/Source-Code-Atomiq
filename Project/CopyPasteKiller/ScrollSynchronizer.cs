@@ -10,11 +10,11 @@ namespace CopyPasteKiller
 	{
 		public static readonly DependencyProperty ScrollGroupProperty;
 
-		private static Dictionary<ScrollViewer, string> dictionary0;
+		private static Dictionary<ScrollViewer, string> _dictionary0;
 
-		private static Dictionary<string, double> dictionary1;
+		private static Dictionary<string, double> _dictionary1;
 
-		private static Dictionary<string, double> dictionary2;
+		private static Dictionary<string, double> _dictionary2;
 
 		public static void SetScrollGroup(DependencyObject obj, string scrollGroup)
 		{
@@ -26,37 +26,39 @@ namespace CopyPasteKiller
 			return (string)obj.GetValue(ScrollSynchronizer.ScrollGroupProperty);
 		}
 
-		private static void smethod0(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+		private static void smethod0(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
 		{
 			ScrollViewer scrollViewer = dependencyObject as ScrollViewer;
 
 			if (scrollViewer != null)
 			{
-				if (!string.IsNullOrEmpty((string)dependencyPropertyChangedEventArgs.OldValue) && ScrollSynchronizer.dictionary0.ContainsKey(scrollViewer))
+				if (!string.IsNullOrEmpty((string)eventArgs.OldValue) && ScrollSynchronizer._dictionary0.ContainsKey(scrollViewer))
 				{
 					scrollViewer.ScrollChanged -= new ScrollChangedEventHandler(ScrollSynchronizer.smethod1);
-					ScrollSynchronizer.dictionary0.Remove(scrollViewer);
+					ScrollSynchronizer._dictionary0.Remove(scrollViewer);
 				}
 
-				if (!string.IsNullOrEmpty((string)dependencyPropertyChangedEventArgs.NewValue))
+				if (!string.IsNullOrEmpty((string)eventArgs.NewValue))
 				{
-					if (ScrollSynchronizer.dictionary1.Keys.Contains((string)dependencyPropertyChangedEventArgs.NewValue))
+					if (ScrollSynchronizer._dictionary1.Keys.Contains((string)eventArgs.NewValue))
 					{
-						scrollViewer.ScrollToHorizontalOffset(ScrollSynchronizer.dictionary1[(string)dependencyPropertyChangedEventArgs.NewValue]);
+						scrollViewer.ScrollToHorizontalOffset(ScrollSynchronizer._dictionary1[(string)eventArgs.NewValue]);
 					}
 					else
 					{
-						ScrollSynchronizer.dictionary1.Add((string)dependencyPropertyChangedEventArgs.NewValue, scrollViewer.HorizontalOffset);
+						ScrollSynchronizer._dictionary1.Add((string)eventArgs.NewValue, scrollViewer.HorizontalOffset);
 					}
-					if (ScrollSynchronizer.dictionary2.Keys.Contains((string)dependencyPropertyChangedEventArgs.NewValue))
+
+					if (ScrollSynchronizer._dictionary2.Keys.Contains((string)eventArgs.NewValue))
 					{
-						scrollViewer.ScrollToVerticalOffset(ScrollSynchronizer.dictionary2[(string)dependencyPropertyChangedEventArgs.NewValue]);
+						scrollViewer.ScrollToVerticalOffset(ScrollSynchronizer._dictionary2[(string)eventArgs.NewValue]);
 					}
 					else
 					{
-						ScrollSynchronizer.dictionary2.Add((string)dependencyPropertyChangedEventArgs.NewValue, scrollViewer.VerticalOffset);
+						ScrollSynchronizer._dictionary2.Add((string)eventArgs.NewValue, scrollViewer.VerticalOffset);
 					}
-					ScrollSynchronizer.dictionary0.Add(scrollViewer, (string)dependencyPropertyChangedEventArgs.NewValue);
+
+					ScrollSynchronizer._dictionary0.Add(scrollViewer, (string)eventArgs.NewValue);
 					scrollViewer.ScrollChanged += new ScrollChangedEventHandler(ScrollSynchronizer.smethod1);
 				}
 			}
@@ -73,12 +75,13 @@ namespace CopyPasteKiller
 
 		private static void smethod2(ScrollViewer scrollViewer)
 		{
-			string group = ScrollSynchronizer.dictionary0[scrollViewer];
-			ScrollSynchronizer.dictionary2[group] = scrollViewer.VerticalOffset;
-			ScrollSynchronizer.dictionary1[group] = scrollViewer.HorizontalOffset;
-			foreach (KeyValuePair<ScrollViewer, string> current in from s in ScrollSynchronizer.dictionary0
-																   where s.Value == @group && s.Key != scrollViewer
-																   select s)
+			string group = ScrollSynchronizer._dictionary0[scrollViewer];
+			ScrollSynchronizer._dictionary2[group] = scrollViewer.VerticalOffset;
+			ScrollSynchronizer._dictionary1[group] = scrollViewer.HorizontalOffset;
+
+			foreach (KeyValuePair<ScrollViewer, string> current in from s in ScrollSynchronizer._dictionary0
+			where s.Value == @group && s.Key != scrollViewer
+			select s)
 			{
 				if (current.Key.VerticalOffset != scrollViewer.VerticalOffset)
 				{
@@ -94,9 +97,9 @@ namespace CopyPasteKiller
 		static ScrollSynchronizer()
 		{
 			ScrollSynchronizer.ScrollGroupProperty = DependencyProperty.RegisterAttached("ScrollGroup", typeof(string), typeof(ScrollSynchronizer), new PropertyMetadata(new PropertyChangedCallback(ScrollSynchronizer.smethod0)));
-			ScrollSynchronizer.dictionary0 = new Dictionary<ScrollViewer, string>();
-			ScrollSynchronizer.dictionary1 = new Dictionary<string, double>();
-			ScrollSynchronizer.dictionary2 = new Dictionary<string, double>();
+			ScrollSynchronizer._dictionary0 = new Dictionary<ScrollViewer, string>();
+			ScrollSynchronizer._dictionary1 = new Dictionary<string, double>();
+			ScrollSynchronizer._dictionary2 = new Dictionary<string, double>();
 		}
 	}
 }

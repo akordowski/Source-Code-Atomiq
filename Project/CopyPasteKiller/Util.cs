@@ -65,7 +65,6 @@ namespace CopyPasteKiller
 				byte r = (byte)(num4 * (double)num + (double)minColor.R);
 				byte g = (byte)(num4 * (double)num2 + (double)minColor.G);
 				byte b = (byte)(num4 * (double)num3 + (double)minColor.B);
-
 				result = Color.FromArgb(255, r, g, b);
 			}
 

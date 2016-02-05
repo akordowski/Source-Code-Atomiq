@@ -37,31 +37,31 @@ namespace CopyPasteKiller
 		private int _minSimilarityLineLength = 10;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler;
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -88,7 +88,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return _availableSearchPatterns;
+				return this._availableSearchPatterns;
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace CopyPasteKiller
 			}
 			set
 			{
-				if (_availableSearchPatterns.Contains(value) && _fileSearchPattern != value)
+				if (AvailableSearchPatterns.Contains(value) && _fileSearchPattern != value)
 				{
 					_fileSearchPattern = value;
 					OnPropertyChanged("FileSearchPattern");
@@ -162,6 +162,7 @@ namespace CopyPasteKiller
 						{
 							stringBuilder.AppendLine();
 						}
+
 						stringBuilder.Append(text);
 					}
 				}
@@ -192,9 +193,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (propertyChangedEventHandler != null)
+			if (_propertyChangedEventHandler != null)
 			{
-				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				_propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 	}

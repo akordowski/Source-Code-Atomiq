@@ -15,7 +15,7 @@ namespace CopyPasteKiller
 		private bool _isInitialized;
 
 		[CompilerGenerated]
-		private static Action<string> action;
+		private static Action<string> action0;
 
 		public Analysis Analysis { get; private set; }
 
@@ -25,8 +25,9 @@ namespace CopyPasteKiller
 			_analyzingViewModel = new AnalyzingViewModel();
 			Analysis = new Analysis(options.Directory);
 			Analysis.Options = options;
+
 			base.DataContext = _analyzingViewModel;
-			base.Loaded += AnalyzingWindow_Loaded;
+			base.Loaded += new RoutedEventHandler(AnalyzingWindow_Loaded);
 		}
 
 		private void AnalyzingWindow_Loaded(object sender, RoutedEventArgs e)
@@ -34,17 +35,17 @@ namespace CopyPasteKiller
 			Analysis.UpdateProgressAction = new Action<int, int, string>(method2);
 			Analysis.IncrementProgressValue = new Action(method3);
 			Analysis.UpdateProgressValue = new Action<int>(method4);
+
 			Analysis analysis = Analysis;
 
-			if (AnalyzingWindow.action == null)
+			if (AnalyzingWindow.action0 == null)
 			{
-				AnalyzingWindow.action = new Action<string>(AnalyzingWindow.smethod0);
+				AnalyzingWindow.action0 = new Action<string>(AnalyzingWindow.ShowMessageBox);
 			}
 
-			analysis.AlertAction = AnalyzingWindow.action;
-
+			analysis.AlertAction = AnalyzingWindow.action0;
 			Analysis.Done = new Action(method5);
-			Analysis.StartNewThread();
+			Analysis.StartThread();
 		}
 
 		private void Close()
@@ -83,13 +84,13 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private void method2(int value1, int value2, string str)
+		private void method2(int int1, int int2, string str)
 		{
 			base.Dispatcher.Invoke(new Action(delegate
 			{
-				_analyzingViewModel.Value = value1;
-				_analyzingViewModel.Max = value2;
-				_analyzingViewModel.Message = str;
+				this._analyzingViewModel.Value = int1;
+				this._analyzingViewModel.Max = int2;
+				this._analyzingViewModel.Message = str;
 			}), new object[0]);
 		}
 
@@ -100,24 +101,24 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private void method4(int int1)
+		private void method4(int value)
 		{
 			base.Dispatcher.Invoke(new Action(delegate
 			{
-				_analyzingViewModel.Value = int1;
+				_analyzingViewModel.Value = value;
 			}), new object[0]);
 		}
 
 		[CompilerGenerated]
-		private static void smethod0(string str)
+		private static void ShowMessageBox(string text)
 		{
-			MessageBox.Show(str);
+			MessageBox.Show(text);
 		}
 
 		[CompilerGenerated]
 		private void method5()
 		{
-			base.Dispatcher.Invoke(new Action(this.Close), new object[0]);
+			base.Dispatcher.Invoke(new Action(Close), new object[0]);
 		}
 
 		[CompilerGenerated]

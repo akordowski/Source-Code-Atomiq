@@ -11,7 +11,7 @@ namespace CopyPasteKiller
 	public class CodeDir : INotifyPropertyChanged
 	{
 		[NonSerialized]
-		private PropertyChangedEventHandler PropertyChangedEventHandler;
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<CodeFile, int> func0;
@@ -35,31 +35,30 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
-
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
-
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 		}
+
 
 		public CodeDir DirectParent { get; set; }
 
@@ -117,7 +116,6 @@ namespace CopyPasteKiller
 				{
 					result = DirectParent.ShortPath + "\\" + DirectParent.Name;
 				}
-
 				return result;
 			}
 		}
@@ -161,7 +159,6 @@ namespace CopyPasteKiller
 			get
 			{
 				HashSet<CodeFile> hashSet = method0();
-
 				return hashSet.Count;
 			}
 		}
@@ -217,9 +214,9 @@ namespace CopyPasteKiller
 		{
 			int num = Files.Count;
 
-			foreach (CodeDir codeDir in Directories)
+			foreach (CodeDir current in Directories)
 			{
-				num += codeDir.GetAllFilesCount();
+				num += current.GetAllFilesCount();
 			}
 
 			return num;
@@ -228,21 +225,21 @@ namespace CopyPasteKiller
 		private HashSet<CodeFile> method0()
 		{
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
-			IEnumerable<CodeFile> files = Files;
+			IEnumerable<CodeFile> codeFiles = Files;
 
 			if (CodeDir.func4 == null)
 			{
 				CodeDir.func4 = new Func<CodeFile, IEnumerable<Similarity>>(CodeDir.GetSimilarities);
 			}
 
-			IEnumerable<Similarity> similarities = files.SelectMany(CodeDir.func4);
+			IEnumerable<Similarity> similarites = codeFiles.SelectMany(CodeDir.func4);
 
 			if (CodeDir.func5 == null)
 			{
 				CodeDir.func5 = new Func<Similarity, CodeFile>(CodeDir.GetOtherFile);
 			}
 
-			IEnumerable<CodeFile> range = similarities.Select(CodeDir.func5);
+			IEnumerable<CodeFile> range = similarites.Select(CodeDir.func5);
 			hashSet.AddRange(range);
 
 			foreach (CodeDir current in Directories)
@@ -250,6 +247,7 @@ namespace CopyPasteKiller
 				range = current.method0();
 				hashSet.AddRange(range);
 			}
+
 			return hashSet;
 		}
 
@@ -258,9 +256,9 @@ namespace CopyPasteKiller
 			HashSet<CodeFile> hashSet = new HashSet<CodeFile>();
 			hashSet.AddRange(Files);
 
-			foreach (CodeDir current in Directories)
+			foreach (CodeDir directory in Directories)
 			{
-				HashSet<CodeFile> range = current.method1();
+				HashSet<CodeFile> range = directory.method1();
 				hashSet.AddRange(range);
 			}
 
@@ -271,9 +269,9 @@ namespace CopyPasteKiller
 		{
 			int num = Files.Sum(sumFunc);
 
-			foreach (CodeDir current in Directories)
+			foreach (CodeDir directory in Directories)
 			{
-				num += current.method2(sumFunc);
+				num += directory.method2(sumFunc);
 			}
 
 			return num;
@@ -281,9 +279,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (PropertyChangedEventHandler != null)
+			if (_propertyChangedEventHandler != null)
 			{
-				PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				_propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 

@@ -11,11 +11,11 @@ namespace CopyPasteKiller
 		{
 			bool flag = false;
 
-			foreach (Sequence current in Sequences)
+			foreach (Sequence sequence in Sequences)
 			{
-				if (current.LastCoord.I + 1 == coord.I && current.LastCoord.J + 1 == coord.J)
+				if (sequence.LastCoord.I + 1 == coord.I && sequence.LastCoord.J + 1 == coord.J)
 				{
-					current.LastCoord = coord;
+					sequence.LastCoord = coord;
 					flag = true;
 					break;
 				}

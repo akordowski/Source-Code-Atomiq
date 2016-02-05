@@ -9,7 +9,7 @@ namespace CopyPasteKiller
 	public class Similarity
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private static Regex regex0;
+		private static Regex regex_0;
 
 		public CodeFile MyFile { get; set; }
 
@@ -117,7 +117,7 @@ namespace CopyPasteKiller
 
 			for (int i = range.Start; i < range.End; i++)
 			{
-				if (!Similarity.regex0.IsMatch(file.Lines[i]))
+				if (!Similarity.regex_0.IsMatch(file.Lines[i]))
 				{
 					string text = file.Lines[i];
 					int num2 = 0;
@@ -175,6 +175,7 @@ namespace CopyPasteKiller
 				{
 					stringBuilder.AppendLine();
 				}
+
 				if (i >= codeFile.Hashes.Length)
 				{
 					break;
@@ -219,7 +220,7 @@ namespace CopyPasteKiller
 
 		static Similarity()
 		{
-			Similarity.regex0 = new Regex("^\\s*$", RegexOptions.Compiled);
+			Similarity.regex_0 = new Regex("^\\s*$", RegexOptions.Compiled);
 		}
 	}
 }

@@ -6,6 +6,7 @@ namespace CopyPasteKiller
 {
 	public class FileTemplateSelector : DataTemplateSelector
 	{
+
 		public DataTemplate CodeFileTemplate { get; set; }
 
 		public DataTemplate CodeDirTemplate { get; set; }

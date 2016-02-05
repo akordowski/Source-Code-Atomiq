@@ -224,7 +224,7 @@ namespace CopyPasteKiller
 			return Regex.Replace(match.Groups["comment"].Value, "[^\\r\\n]+", "");
 		}
 
-		private void method0(string str)
+		private void method0(string string6)
 		{
 			List<string> list = new List<string>();
 			List<int> list2 = new List<int>();
@@ -233,29 +233,33 @@ namespace CopyPasteKiller
 
 			if (Extension == ".cs" || Extension == ".java" || Extension == ".js" || Extension == ".c" || Extension == ".cpp" || Extension == ".as3")
 			{
-				str = Regex.Replace(str, "/\\*(?<comment>.*?)\\*/", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, "/\\*(?<comment>.*?)\\*/", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
 			}
+
 			if (Extension == ".xaml" || Extension == ".html" || Extension == ".aspx" || Extension == ".xml")
 			{
-				str = Regex.Replace(str, "\\<!--(?<comment>.*?)--\\>", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, "\\<!--(?<comment>.*?)--\\>", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
 			}
+
 			if (Extension == ".cshtml")
 			{
-				str = Regex.Replace(str, "\\<!--(?<comment>.*?)--\\>", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
-				str = Regex.Replace(str, "@\\*(?<comment>.*?)\\*@", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, "\\<!--(?<comment>.*?)--\\>", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, "@\\*(?<comment>.*?)\\*@", new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
 			}
+
 			if (Extension == ".rb" || Extension == ".py")
 			{
 				string text = "\"\"\"";
-				str = Regex.Replace(str, text + "(?<comment>.*?)" + text, new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, text + "(?<comment>.*?)" + text, new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
 			}
+
 			if (Extension == ".py")
 			{
 				string text2 = "'''";
-				str = Regex.Replace(str, text2 + "(?<comment>.*?)" + text2, new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
+				string6 = Regex.Replace(string6, text2 + "(?<comment>.*?)" + text2, new MatchEvaluator(CodeFile.smethod0), RegexOptions.Singleline);
 			}
 
-			string[] array = Regex.Split(str, "\\r?\\n");
+			string[] array = Regex.Split(string6, "\\r?\\n");
 
 			if (CodeFile.func0 == null)
 			{
@@ -268,7 +272,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func1 == null)
 				{
-					CodeFile.func1 = new Func<string, string>(CodeFile.Replace1);
+					CodeFile.func1 = new Func<string, string>(CodeFile.smethod2);
 				}
 
 				func = CodeFile.func1;
@@ -277,7 +281,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func2 == null)
 				{
-					CodeFile.func2 = new Func<string, string>(CodeFile.Replace2);
+					CodeFile.func2 = new Func<string, string>(CodeFile.smethod3);
 				}
 
 				func = CodeFile.func2;
@@ -286,7 +290,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func3 == null)
 				{
-					CodeFile.func3 = new Func<string, string>(CodeFile.Replace3);
+					CodeFile.func3 = new Func<string, string>(CodeFile.smethod4);
 				}
 
 				func = CodeFile.func3;
@@ -295,7 +299,7 @@ namespace CopyPasteKiller
 			{
 				if (CodeFile.func4 == null)
 				{
-					CodeFile.func4 = new Func<string, string>(CodeFile.Replace4);
+					CodeFile.func4 = new Func<string, string>(CodeFile.smethod5);
 				}
 
 				func = CodeFile.func4;
@@ -382,7 +386,7 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static string Replace1(string str)
+		private static string smethod2(string str)
 		{
 			str = CodeFile.regex2.Replace(str, "");
 			str = CodeFile.regex4.Replace(str, "");
@@ -392,7 +396,7 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static string Replace2(string str)
+		private static string smethod3(string str)
 		{
 			str = CodeFile.regex2.Replace(str, "");
 			str = CodeFile.regex5.Replace(str, "");
@@ -402,7 +406,7 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static string Replace3(string str)
+		private static string smethod4(string str)
 		{
 			str = CodeFile.regex2.Replace(str, "");
 			str = CodeFile.regex6.Replace(str, "");
@@ -412,7 +416,7 @@ namespace CopyPasteKiller
 		}
 
 		[CompilerGenerated]
-		private static string Replace4(string str)
+		private static string smethod5(string str)
 		{
 			str = CodeFile.regex3.Replace(str, "");
 			str = CodeFile.regex7.Replace(str, "");
@@ -439,7 +443,6 @@ namespace CopyPasteKiller
 		private static string smethod8(string str)
 		{
 			str = CodeFile.regex12.Replace(str, "");
-
 			return str;
 		}
 

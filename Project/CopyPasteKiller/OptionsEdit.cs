@@ -10,46 +10,46 @@ namespace CopyPasteKiller
 {
 	public class OptionsEdit : Window, IComponentConnector
 	{
-		private Options options;
+		private Options _options;
 
 		internal DockPanel dockPanel;
 
 		internal System.Windows.Controls.TextBox textBox;
 
-		internal System.Windows.Controls.Button button;
+		internal System.Windows.Controls.Button button2;
 
-		private bool bool0;
+		private bool _isInitialized;
 
 		public OptionsEdit(Options options)
 		{
-			this.InitializeComponent();
-			this.options = options;
-			base.DataContext = this.options;
+			InitializeComponent();
+			_options = options;
+			base.DataContext = _options;
 		}
 
-		private void method0(object sender, RoutedEventArgs e)
+		private void button1_Click(object sender, RoutedEventArgs e)
 		{
 			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 			folderBrowserDialog.ShowNewFolderButton = false;
 			folderBrowserDialog.Description = "Pick Code Directory To Analyze";
 			folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
-			folderBrowserDialog.SelectedPath = this.options.Directory;
+			folderBrowserDialog.SelectedPath = _options.Directory;
 
 			if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
-				options.Directory = folderBrowserDialog.SelectedPath;
+				_options.Directory = folderBrowserDialog.SelectedPath;
 			}
 		}
 
-		private void button_0_Click(object sender, RoutedEventArgs e)
+		private void button2_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(options.Directory))
+			if (string.IsNullOrEmpty(_options.Directory))
 			{
 				System.Windows.MessageBox.Show("You have not selected a directory to analyze", "Select Directory", MessageBoxButton.OK, MessageBoxImage.Hand);
 			}
 			else
 			{
-				string text = options.ValidateRegexes();
+				string text = _options.ValidateRegexes();
 
 				if (text != "")
 				{
@@ -66,9 +66,9 @@ namespace CopyPasteKiller
 		[DebuggerNonUserCode]
 		public void InitializeComponent()
 		{
-			if (!bool0)
+			if (!_isInitialized)
 			{
-				bool0 = true;
+				_isInitialized = true;
 				Uri resourceLocator = new Uri("/Atomiq;component/optionsedit.xaml", UriKind.Relative);
 				System.Windows.Application.LoadComponent(this, resourceLocator);
 			}
@@ -79,22 +79,22 @@ namespace CopyPasteKiller
 		{
 			switch (connectionId)
 			{
-				case 1:
-					dockPanel = (DockPanel)target;
-					break;
-				case 2:
-					((System.Windows.Controls.Button)target).Click += new RoutedEventHandler(method0);
-					break;
-				case 3:
-					textBox = (System.Windows.Controls.TextBox)target;
-					break;
-				case 4:
-					button = (System.Windows.Controls.Button)target;
-					button.Click += new RoutedEventHandler(this.button_0_Click);
-					break;
-				default:
-					bool0 = true;
-					break;
+			case 1:
+				dockPanel = (DockPanel)target;
+				break;
+			case 2:
+				((System.Windows.Controls.Button)target).Click += button1_Click;
+				break;
+			case 3:
+				textBox = (System.Windows.Controls.TextBox)target;
+				break;
+			case 4:
+				button2 = (System.Windows.Controls.Button)target;
+				button2.Click += button2_Click;
+				break;
+			default:
+				_isInitialized = true;
+				break;
 			}
 		}
 	}

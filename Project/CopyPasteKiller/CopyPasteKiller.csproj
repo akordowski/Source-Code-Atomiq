@@ -20,7 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\CopyPasteKiller.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -95,51 +96,51 @@
     <Reference Include="XamlBuildTask" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllSequences.cs" />
-    <Compile Include="Analysis.cs" />
-    <Compile Include="AnalyzingViewModel.cs" />
-    <Compile Include="AnalyzingWindow.cs" />
-    <Compile Include="AnnotatedTextBox.cs" />
-    <Compile Include="AnnotatedTextViewModel.cs" />
-    <Compile Include="Annotation.cs" />
-    <Compile Include="Annotations.cs" />
-    <Compile Include="App.cs" />
-    <Compile Include="Builder.cs" />
-    <Compile Include="CanonicalSpline.cs" />
-    <Compile Include="CanonicalSplineHelper.cs" />
-    <Compile Include="CodeDir.cs" />
-    <Compile Include="CodeFile.cs" />
-    <Compile Include="CodeFileSelectedEventArgs.cs" />
-    <Compile Include="Coord.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FileTemplateSelector.cs" />
-    <Compile Include="FoundConverter.cs" />
-    <Compile Include="HashIndexRange.cs" />
-    <Compile Include="LicenseData.cs" />
-    <Compile Include="LineRange.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="NoScrollTreeView.cs" />
-    <Compile Include="NoScrollTreeViewItem.cs" />
-    <Compile Include="Options.cs" />
-    <Compile Include="OptionsEdit.cs" />
-    <Compile Include="PiePiece.cs" />
+    <Compile Include="fertig\AllSequences.cs" />
+    <Compile Include="fertig\Analysis.cs" />
+    <Compile Include="fertig\AnalyzingViewModel.cs" />
+    <Compile Include="fertig\AnalyzingWindow.cs" />
+    <Compile Include="fertig\AnnotatedTextBox.cs" />
+    <Compile Include="fertig\AnnotatedTextViewModel.cs" />
+    <Compile Include="fertig\Annotation.cs" />
+    <Compile Include="fertig\Annotations.cs" />
+    <Compile Include="fertig\App.cs" />
+    <Compile Include="fertig\Builder.cs" />
+    <Compile Include="fertig\CanonicalSpline.cs" />
+    <Compile Include="fertig\CanonicalSplineHelper.cs" />
+    <Compile Include="fertig\CodeDir.cs" />
+    <Compile Include="fertig\CodeFile.cs" />
+    <Compile Include="fertig\CodeFileSelectedEventArgs.cs" />
+    <Compile Include="fertig\Coord.cs" />
+    <Compile Include="fertig\Extensions.cs" />
+    <Compile Include="fertig\FileTemplateSelector.cs" />
+    <Compile Include="fertig\FoundConverter.cs" />
+    <Compile Include="fertig\HashIndexRange.cs" />
+    <Compile Include="fertig\LicenseData.cs" />
+    <Compile Include="fertig\LineRange.cs" />
+    <Compile Include="fertig\MainViewModel.cs" />
+    <Compile Include="fertig\NoScrollTreeView.cs" />
+    <Compile Include="fertig\NoScrollTreeViewItem.cs" />
+    <Compile Include="fertig\Options.cs" />
+    <Compile Include="fertig\OptionsEdit.cs" />
+    <Compile Include="fertig\PiePiece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Range.cs" />
-    <Compile Include="RecentDirectories.cs" />
-    <Compile Include="RecentViewModel.cs" />
-    <Compile Include="RibbonIconProvider.cs" />
-    <Compile Include="ScaleConverter.cs" />
-    <Compile Include="ScrollSynchronizer.cs" />
-    <Compile Include="Sequence.cs" />
-    <Compile Include="Similarity.cs" />
-    <Compile Include="SimilaritySelectedEventArgs.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="WheelFile.cs" />
-    <Compile Include="WheelView.cs" />
-    <Compile Include="WheelViewModel.cs" />
+    <Compile Include="fertig\Range.cs" />
+    <Compile Include="fertig\RecentDirectories.cs" />
+    <Compile Include="fertig\RecentViewModel.cs" />
+    <Compile Include="fertig\RibbonIconProvider.cs" />
+    <Compile Include="fertig\ScaleConverter.cs" />
+    <Compile Include="fertig\ScrollSynchronizer.cs" />
+    <Compile Include="fertig\Sequence.cs" />
+    <Compile Include="fertig\Similarity.cs" />
+    <Compile Include="fertig\SimilaritySelectedEventArgs.cs" />
+    <Compile Include="fertig\Util.cs" />
+    <Compile Include="fertig\Utils.cs" />
+    <Compile Include="fertig\WheelFile.cs" />
+    <Compile Include="fertig\WheelView.cs" />
+    <Compile Include="fertig\WheelViewModel.cs" />
     <Compile Include="Window1.cs" />
-    <Compile Include="XmlUtil.cs" />
+    <Compile Include="fertig\XmlUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

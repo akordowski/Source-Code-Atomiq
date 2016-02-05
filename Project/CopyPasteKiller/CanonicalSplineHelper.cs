@@ -17,13 +17,11 @@ namespace CopyPasteKiller
 			else
 			{
 				PolyLineSegment polyLineSegment = new PolyLineSegment();
-
 				PathFigure pathFigure = new PathFigure();
 				pathFigure.IsClosed = bool0;
 				pathFigure.IsFilled = bool1;
 				pathFigure.StartPoint = pointCollection[0];
 				pathFigure.Segments.Add(polyLineSegment);
-
 				PathGeometry pathGeometry = new PathGeometry();
 				pathGeometry.Figures.Add(pathFigure);
 

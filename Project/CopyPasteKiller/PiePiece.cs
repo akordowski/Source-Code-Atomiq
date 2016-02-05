@@ -49,9 +49,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty0);
 		}
 
-		public void method1(double double0)
+		public void method1(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty0, double0);
+			base.SetValue(PiePiece.dependencyProperty0, value);
 		}
 
 		public double method2()
@@ -59,9 +59,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty1);
 		}
 
-		public void method3(double double0)
+		public void method3(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty1, double0);
+			base.SetValue(PiePiece.dependencyProperty1, value);
 		}
 
 		public double method4()
@@ -69,9 +69,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty2);
 		}
 
-		public void method5(double double0)
+		public void method5(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty2, double0);
+			base.SetValue(PiePiece.dependencyProperty2, value);
 		}
 
 		public double method6()
@@ -79,10 +79,10 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty3);
 		}
 
-		public void method7(double double0)
+		public void method7(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty3, double0);
-			method15(double0 / 360.0);
+			base.SetValue(PiePiece.dependencyProperty3, value);
+			method15(value / 360.0);
 		}
 
 		public double method8()
@@ -90,9 +90,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty4);
 		}
 
-		public void method9(double double0)
+		public void method9(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty4, double0);
+			base.SetValue(PiePiece.dependencyProperty4, value);
 		}
 
 		public double method10()
@@ -100,9 +100,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty5);
 		}
 
-		public void method11(double double0)
+		public void method11(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty5, double0);
+			base.SetValue(PiePiece.dependencyProperty5, value);
 		}
 
 		public double method12()
@@ -110,9 +110,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty6);
 		}
 
-		public void method13(double double0)
+		public void method13(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty6, double0);
+			base.SetValue(PiePiece.dependencyProperty6, value);
 		}
 
 		public double method14()
@@ -120,9 +120,9 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty7);
 		}
 
-		private void method15(double double0)
+		private void method15(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty7, double0);
+			base.SetValue(PiePiece.dependencyProperty7, value);
 		}
 
 		public double method16()
@@ -130,12 +130,12 @@ namespace CopyPasteKiller
 			return (double)base.GetValue(PiePiece.dependencyProperty8);
 		}
 
-		public void method17(double double0)
+		public void method17(double value)
 		{
-			base.SetValue(PiePiece.dependencyProperty8, double0);
+			base.SetValue(PiePiece.dependencyProperty8, value);
 		}
 
-		private void method18(StreamGeometryContext streamGeometryContext_0)
+		private void method18(StreamGeometryContext streamGeometryContext)
 		{
 			Point point = new Point(method10(), method12());
 			Point point2 = Utils.ComputeCartesianCoordinate(method8(), method4());
@@ -160,11 +160,11 @@ namespace CopyPasteKiller
 			Size size = new Size(method0(), method0());
 			Size size2 = new Size(method4(), method4());
 
-			streamGeometryContext_0.BeginFigure(point2, true, true);
-			streamGeometryContext_0.LineTo(point4, true, true);
-			streamGeometryContext_0.ArcTo(point5, size, 0.0, isLargeArc, SweepDirection.Clockwise, true, true);
-			streamGeometryContext_0.LineTo(point3, true, true);
-			streamGeometryContext_0.ArcTo(point2, size2, 0.0, isLargeArc, SweepDirection.Counterclockwise, true, true);
+			streamGeometryContext.BeginFigure(point2, true, true);
+			streamGeometryContext.LineTo(point4, true, true);
+			streamGeometryContext.ArcTo(point5, size, 0.0, isLargeArc, SweepDirection.Clockwise, true, true);
+			streamGeometryContext.LineTo(point3, true, true);
+			streamGeometryContext.ArcTo(point2, size2, 0.0, isLargeArc, SweepDirection.Counterclockwise, true, true);
 		}
 
 		public PathFigure method19(double double0, double double1)

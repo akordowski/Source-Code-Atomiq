@@ -22,41 +22,41 @@ namespace CopyPasteKiller
 
 		public IList<CodeFile> CodeFiles { get; private set; }
 
-		public double TotalLineSize { get; private set; }
+		public double TotalLineSize { get; set; }
 
-		public double Diameter { get; private set; }
+		public double Diameter { get; set; }
 
 		public WheelViewModel(IList<CodeFile> files)
 		{
-			Diameter = 600;
-
 			int num = 0;
 
-			foreach (CodeFile current in files)
+			foreach (CodeFile file in files)
 			{
-				method0(current);
-				num += current.ProcessedLines;
+				method0(file);
+				num += file.ProcessedLines;
 			}
 
 			TotalLineSize = (double)num;
 			CodeFiles = files;
+			Diameter = 600.0;
 		}
 
 		private void method0(CodeFile codeFile)
 		{
-			IEnumerable<char> shortPaths = codeFile.ShortPath;
+			IEnumerable<char> shortPath = codeFile.ShortPath;
 
 			if (WheelViewModel.func0 == null)
 			{
 				WheelViewModel.func0 = new Func<char, bool>(WheelViewModel.smethod0);
 			}
 
-			int num = shortPaths.Count(WheelViewModel.func0);
+			int num = shortPath.Count(WheelViewModel.func0);
 
 			if (DeepestDir < num)
 			{
 				DeepestDir = num;
 			}
+
 			string text = codeFile.ShortPath.TrimStart(new char[]
 			{
 				'\\'
@@ -67,15 +67,18 @@ namespace CopyPasteKiller
 				if (!DirectoryToLoc.ContainsKey(text))
 				{
 					DirectoryToLoc.Add(text, 0);
-					Dictionary<string, int> arg_A3_0 = DirectoryToLevel;
+					Dictionary<string, int> directoryToLevel = DirectoryToLevel;
 					string arg_A3_1 = text;
-					IEnumerable<char> arg_9C_0 = text;
+					IEnumerable<char> textStr = text;
+
 					if (WheelViewModel.func1 == null)
 					{
 						WheelViewModel.func1 = new Func<char, bool>(WheelViewModel.smethod1);
 					}
-					arg_A3_0.Add(arg_A3_1, arg_9C_0.Count(WheelViewModel.func1) + 1);
+
+					directoryToLevel.Add(arg_A3_1, textStr.Count(WheelViewModel.func1) + 1);
 				}
+
 				SortedDictionary<string, int> sortedDictionary;
 				string key;
 				(sortedDictionary = DirectoryToLoc)[key = text] = sortedDictionary[key] + codeFile.Hashes.Length;
@@ -87,13 +90,13 @@ namespace CopyPasteKiller
 		{
 			Dictionary<int, Similarity> dictionary = new Dictionary<int, Similarity>();
 
-			foreach (CodeFile current in CodeFiles)
+			foreach (CodeFile codeFile in CodeFiles)
 			{
-				foreach (Similarity current2 in current.Similarities)
+				foreach (Similarity similarity in codeFile.Similarities)
 				{
-					if (!dictionary.ContainsKey(current2.UniqueId))
+					if (!dictionary.ContainsKey(similarity.UniqueId))
 					{
-						dictionary.Add(current2.UniqueId, current2);
+						dictionary.Add(similarity.UniqueId, similarity);
 					}
 				}
 			}

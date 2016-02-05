@@ -40,9 +40,9 @@ namespace CopyPasteKiller
 
 		private double double5;
 
-		private EventHandler<SimilaritySelectedEventArgs> eventHandler0;
+		private EventHandler<SimilaritySelectedEventArgs> _eventHandler0;
 
-		private EventHandler<CodeFileSelectedEventArgs> eventHandler1;
+		private EventHandler<CodeFileSelectedEventArgs> _eventHandler1;
 
 		internal Viewbox viewbox;
 
@@ -54,25 +54,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler0;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = _eventHandler0;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Combine(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler0, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref _eventHandler0, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
 			remove
 			{
-				EventHandler<SimilaritySelectedEventArgs> eventHandler = this.eventHandler0;
+				EventHandler<SimilaritySelectedEventArgs> eventHandler = _eventHandler0;
 				EventHandler<SimilaritySelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<SimilaritySelectedEventArgs> value2 = (EventHandler<SimilaritySelectedEventArgs>)Delegate.Remove(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref this.eventHandler0, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<SimilaritySelectedEventArgs>>(ref _eventHandler0, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
@@ -82,25 +82,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				EventHandler<CodeFileSelectedEventArgs> eventHandler = this.eventHandler1;
+				EventHandler<CodeFileSelectedEventArgs> eventHandler = _eventHandler1;
 				EventHandler<CodeFileSelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<CodeFileSelectedEventArgs> value2 = (EventHandler<CodeFileSelectedEventArgs>)Delegate.Combine(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<CodeFileSelectedEventArgs>>(ref this.eventHandler1, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<CodeFileSelectedEventArgs>>(ref _eventHandler1, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
 			remove
 			{
-				EventHandler<CodeFileSelectedEventArgs> eventHandler = this.eventHandler1;
+				EventHandler<CodeFileSelectedEventArgs> eventHandler = _eventHandler1;
 				EventHandler<CodeFileSelectedEventArgs> eventHandler2;
 				do
 				{
 					eventHandler2 = eventHandler;
 					EventHandler<CodeFileSelectedEventArgs> value2 = (EventHandler<CodeFileSelectedEventArgs>)Delegate.Remove(eventHandler2, value);
-					eventHandler = Interlocked.CompareExchange<EventHandler<CodeFileSelectedEventArgs>>(ref this.eventHandler1, value2, eventHandler2);
+					eventHandler = Interlocked.CompareExchange<EventHandler<CodeFileSelectedEventArgs>>(ref _eventHandler1, value2, eventHandler2);
 				}
 				while (eventHandler != eventHandler2);
 			}
@@ -119,10 +119,10 @@ namespace CopyPasteKiller
 
 		private void WheelView_Loaded(object sender, RoutedEventArgs e)
 		{
-			method0();
+			WheelViewLoaded();
 		}
 
-		internal void method0()
+		internal void WheelViewLoaded()
 		{
 			double0 = double4 + (double)(_wheelViewModel.DeepestDir + 1) * double2;
 			double1 = double0;
@@ -130,14 +130,12 @@ namespace CopyPasteKiller
 			base.Width = double0 * 2.0;
 			canvas.Width = base.Width;
 			canvas.Height = base.Height;
-
 			Color.FromRgb(0, 102, 255);
 			Color.FromRgb(255, 0, 0);
 			Dictionary<CodeFile, PiePiece> dictionary = new Dictionary<CodeFile, PiePiece>();
 			Dictionary<CodeDir, PiePiece> dictionary2 = new Dictionary<CodeDir, PiePiece>();
 			Dictionary<PiePiece, double> dictionary3 = new Dictionary<PiePiece, double>();
 			double5 = double4 + double2;
-
 			Ellipse element = new Ellipse
 			{
 				Height = base.Height * 2.0,
@@ -145,13 +143,13 @@ namespace CopyPasteKiller
 				StrokeThickness = base.Width - double4,
 				Stroke = Brushes.Black
 			};
-
 			Canvas.SetTop(element, -1.0 * base.Height / 2.0);
 			Canvas.SetLeft(element, -1.0 * base.Width / 2.0);
 			Panel.SetZIndex(element, 5);
 			canvas.Children.Add(element);
 			double num = 0.0;
 			double num2 = 360.0 / _wheelViewModel.TotalLineSize;
+
 			foreach (CodeFile current in _wheelViewModel.CodeFiles)
 			{
 				PiePiece piePiece = new PiePiece();
@@ -183,7 +181,7 @@ namespace CopyPasteKiller
 				int processedLines = current2.ProcessedLines;
 				int num3 = _wheelViewModel.DeepestDir - current2.Depth + 1;
 				PiePiece piePiece = new PiePiece();
-				piePiece.Style = _style1;
+				piePiece.Style = this._style1;
 				piePiece.method11(double0);
 				piePiece.method13(double1);
 				piePiece.method1(double5 + (double)num3 * double2);
@@ -258,11 +256,11 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private void method1(PiePiece piePiece, string string0, double double6)
+		private void method1(PiePiece piePiece, string str, double double6)
 		{
 			if (piePiece.method6() >= 6.0)
 			{
-				string text = string0;
+				string text = str;
 				TextOnPathElement textOnPathElement;
 				double num3;
 
@@ -361,18 +359,18 @@ namespace CopyPasteKiller
 			double num = method4(canonicalSpline.Points[0], position);
 			double num2 = method4(canonicalSpline.Points[2], position);
 
-			if (eventHandler0 != null)
+			if (_eventHandler0 != null)
 			{
 				if (num < num2)
 				{
-					eventHandler0(this, new SimilaritySelectedEventArgs
+					_eventHandler0(this, new SimilaritySelectedEventArgs
 					{
 						Similarity = similarity
 					});
 				}
 				else
 				{
-					eventHandler0(this, new SimilaritySelectedEventArgs
+					_eventHandler0(this, new SimilaritySelectedEventArgs
 					{
 						Similarity = similarity.CorrespondingSimilarity
 					});
@@ -390,9 +388,9 @@ namespace CopyPasteKiller
 			FrameworkElement frameworkElement = (FrameworkElement)sender;
 			CodeFile codeFile = frameworkElement.DataContext as CodeFile;
 
-			if (codeFile != null && eventHandler1 != null)
+			if (codeFile != null && _eventHandler1 != null)
 			{
-				eventHandler1(this, new CodeFileSelectedEventArgs
+				_eventHandler1(this, new CodeFileSelectedEventArgs
 				{
 					CodeFile = codeFile
 				});
@@ -416,6 +414,7 @@ namespace CopyPasteKiller
 				double num9 = num4 * num6 * num8;
 				double num10 = num5 + num9;
 				double num11 = num4 - num9;
+
 				switch (num7)
 				{
 					case 0:
@@ -483,7 +482,7 @@ namespace CopyPasteKiller
 			switch (connectionId)
 			{
 				case 1:
-					this.viewbox = (Viewbox)target;
+					viewbox = (Viewbox)target;
 					break;
 				case 2:
 					canvas = (Canvas)target;

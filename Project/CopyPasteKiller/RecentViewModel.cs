@@ -36,11 +36,11 @@ namespace CopyPasteKiller
 				{
 					streamWriter.WriteLine(OpenDirectory);
 
-					foreach (string current in RecentDirectories)
+					foreach (string dir in RecentDirectories)
 					{
-						if (!(OpenDirectory == current))
+						if (!(OpenDirectory == dir))
 						{
-							streamWriter.WriteLine(current);
+							streamWriter.WriteLine(dir);
 
 							if (num++ >= 10)
 							{

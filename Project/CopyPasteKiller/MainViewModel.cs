@@ -11,10 +11,16 @@ namespace CopyPasteKiller
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
-		private bool bool0;
+		private int _trialDays;
+
+		private CodeFile _selectedFile;
+
+		private Similarity _selectedSimilarity;
+
+		private Options _options;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler PropertyChangedEventHandler;
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
 
 		[CompilerGenerated]
 		private static Func<CodeFile, IEnumerable<int>> func0;
@@ -32,25 +38,25 @@ namespace CopyPasteKiller
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = PropertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.PropertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -59,8 +65,6 @@ namespace CopyPasteKiller
 		public string LicenseName { get; set; }
 
 		public string LicenseCompany { get; set; }
-
-		private int _trialDays;
 
 		public int TrialDays
 		{
@@ -84,8 +88,6 @@ namespace CopyPasteKiller
 
 		public ObservableCollection<CodeFile> Files { get; set; }
 
-		private CodeFile _selectedFile;
-
 		public CodeFile SelectedFile
 		{
 			get
@@ -103,8 +105,6 @@ namespace CopyPasteKiller
 			}
 		}
 
-		private Similarity _selectedSimilarity;
-
 		public Similarity SelectedSimilarity
 		{
 			get
@@ -117,8 +117,6 @@ namespace CopyPasteKiller
 				OnPropertyChanged("SelectedSimilarity");
 			}
 		}
-
-		private Options _options;
 
 		public Options Options
 		{
@@ -218,9 +216,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (PropertyChangedEventHandler != null)
+			if (_propertyChangedEventHandler != null)
 			{
-				PropertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				_propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 

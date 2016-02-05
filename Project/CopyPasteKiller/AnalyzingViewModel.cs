@@ -15,31 +15,31 @@ namespace CopyPasteKiller
 		private string _message;
 
 		[NonSerialized]
-		private PropertyChangedEventHandler propertyChangedEventHandler;
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
 
 		public event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
 			remove
 			{
-				PropertyChangedEventHandler propertyChangedEventHandler = this.propertyChangedEventHandler;
+				PropertyChangedEventHandler propertyChangedEventHandler = _propertyChangedEventHandler;
 				PropertyChangedEventHandler propertyChangedEventHandler2;
 				do
 				{
 					propertyChangedEventHandler2 = propertyChangedEventHandler;
 					PropertyChangedEventHandler value2 = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedEventHandler2, value);
-					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref this.propertyChangedEventHandler, value2, propertyChangedEventHandler2);
+					propertyChangedEventHandler = Interlocked.CompareExchange<PropertyChangedEventHandler>(ref _propertyChangedEventHandler, value2, propertyChangedEventHandler2);
 				}
 				while (propertyChangedEventHandler != propertyChangedEventHandler2);
 			}
@@ -111,9 +111,9 @@ namespace CopyPasteKiller
 
 		private void OnPropertyChanged(string str)
 		{
-			if (propertyChangedEventHandler != null)
+			if (_propertyChangedEventHandler != null)
 			{
-				propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
+				_propertyChangedEventHandler(this, new PropertyChangedEventArgs(str));
 			}
 		}
 	}

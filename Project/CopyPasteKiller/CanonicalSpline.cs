@@ -7,7 +7,7 @@ namespace CopyPasteKiller
 {
 	public class CanonicalSpline : Shape
 	{
-		private PathGeometry _pathGeometry;
+		private PathGeometry _definingGeometry;
 
 		public static readonly DependencyProperty PointsProperty;
 
@@ -111,7 +111,7 @@ namespace CopyPasteKiller
 		{
 			get
 			{
-				return _pathGeometry;
+				return _definingGeometry;
 			}
 		}
 
@@ -120,11 +120,11 @@ namespace CopyPasteKiller
 			(dependencyObject as CanonicalSpline).method0(eventArgs);
 		}
 
-		private void method0(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+		private void method0(DependencyPropertyChangedEventArgs eventArgs)
 		{
-			_pathGeometry = CanonicalSplineHelper.smethod0(Points, Tension, Tensions, IsClosed, IsFilled, Tolerance);
+			_definingGeometry = CanonicalSplineHelper.smethod0(Points, Tension, Tensions, IsClosed, IsFilled, Tolerance);
 			base.InvalidateMeasure();
-			method1(dependencyPropertyChangedEventArgs);
+			method1(eventArgs);
 		}
 
 		private static void smethod1(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
@@ -134,9 +134,9 @@ namespace CopyPasteKiller
 
 		private void method1(DependencyPropertyChangedEventArgs eventArgs)
 		{
-			if (_pathGeometry != null)
+			if (_definingGeometry != null)
 			{
-				_pathGeometry.FillRule = FillRule;
+				_definingGeometry.FillRule = FillRule;
 			}
 
 			base.InvalidateVisual();
